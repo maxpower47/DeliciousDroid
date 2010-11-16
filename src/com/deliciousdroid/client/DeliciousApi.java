@@ -231,10 +231,11 @@ public class DeliciousApi {
      * @return list The list of bookmarks received from the server.
      * @throws AuthenticationException 
      */
-    public static ArrayList<Bookmark> getAllBookmarks(String tagName, Account account, Context context) 
+    public static GetAllBookmarksResponse getAllBookmarks(String tagName, int start, int results, Account account, Context context) 
     	throws IOException, AuthenticationException {
     	
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+    	int total = 0;
     	String response = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String url = FETCH_BOOKMARKS_URI;
@@ -243,19 +244,29 @@ public class DeliciousApi {
     		params.put("tag", tagName);
     	}
     	
+    	if(start >= 0 && results > 0) {
+    		params.put("start", Integer.toString(start));
+    		params.put("results", Integer.toString(results));
+    	}
+    	
     	params.put("meta", "yes");
 
     	response = DeliciousApiCall(url, params, account, context);
     	
         if (response.contains("<?xml")) {
 
+    		int totalstart = response.indexOf("total=\"") + 7;
+    		int totalend = response.indexOf("\"", totalstart + 1);
+    		String stotal = response.substring(totalstart, totalend);
+    		total = Integer.parseInt(stotal);	
+        	
         	bookmarkList = Bookmark.valueOf(response);
          
         } else {
             Log.e(TAG, "Server error in fetching bookmark list");
             throw new IOException();
         }
-        return bookmarkList;
+        return new GetAllBookmarksResponse(bookmarkList, total);
     }
     
     /**
@@ -308,7 +319,6 @@ public class DeliciousApi {
     	String url = FETCH_TAGS_URI;
     	  	
     	response = DeliciousApiCall(url, params, account, context);
-    	Log.d("loadTagResponse", response);
     	
         if (response.contains("<?xml")) {
         	tagList = Tag.valueOf(response);
@@ -356,9 +366,8 @@ public class DeliciousApi {
 		post = new HttpGet(builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+"));
 		HttpHost host = new HttpHost(DELICIOUS_AUTHORITY);
 		maybeCreateHttpClient();
-		post.setHeader("User-Agent", "DeliciousDroid");
+		post.setHeader("User-Agent", "DeliciousDroid1");
     	
-
     	if(authtype.equals(Constants.AUTH_TYPE_OAUTH)) {
     		Log.d("apiCall", "oauth");
     		String tokenSecret = am.getUserData(account, Constants.OAUTH_TOKEN_SECRET_PROPERTY);
@@ -379,8 +388,13 @@ public class DeliciousApi {
     	if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
     		return EntityUtils.toString(resp.getEntity());
     	} else if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+    		Log.e("DeliciousApiCall", "Unauthorized");
     		throw new AuthenticationException();
-    	} else {
+    	} else if (resp.getStatusLine().getStatusCode() == 999){
+    		Log.e("DeliciousApiCall", "Throttled");
+    		throw new IOException();
+    	} else { 
+    		Log.e("DeliciousApiCall", "Unknown Error");
     		throw new IOException();
     	}
 

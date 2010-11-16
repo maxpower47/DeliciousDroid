@@ -41,6 +41,7 @@ import com.deliciousdroid.R;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.activity.Main;
 import com.deliciousdroid.client.DeliciousApi;
+import com.deliciousdroid.client.GetAllBookmarksResponse;
 import com.deliciousdroid.client.Update;
 import com.deliciousdroid.platform.BookmarkManager;
 import com.deliciousdroid.platform.TagManager;
@@ -61,6 +62,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = "BookmarkSyncAdapter";
 
     private final Context mContext;
+    private String username;
 
     public BookmarkSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -92,7 +94,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
     	long lastUpdate = settings.getLong(Constants.PREFS_LAST_SYNC, 0);
     	Boolean notifyPref = settings.getBoolean("pref_notification", true);
     	Update update = null;
-    	String username = account.name;
+    	username = account.name;
 
     	update = DeliciousApi.lastUpdate(account, mContext);
 		
@@ -118,7 +120,30 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			if(lastUpdate == 0){
 				Log.d("BookmarkSync", "In Bookmark Load");
 				tagList = DeliciousApi.getTags(account, mContext);
-				addBookmarkList = DeliciousApi.getAllBookmarks(null, account, mContext);
+				
+				int bookmarkcount = 0;
+				Log.d("BookmarkSync", "Getting Bookmarks 0 - " + (Constants.BOOKMARK_REQUEST_LIMIT - 1));
+				GetAllBookmarksResponse resp =  DeliciousApi.getAllBookmarks(null, 0, 
+						Constants.BOOKMARK_REQUEST_LIMIT, account, mContext);
+				
+				bookmarkcount = resp.getTotal();
+				Log.d("BookmarkSync", "Total Bookmarks: " + bookmarkcount);
+				addBookmarkList = resp.getBookmarkList();
+				
+				InsertBookmarks(addBookmarkList);
+				addBookmarkList.clear();
+				
+				for(int i = Constants.BOOKMARK_REQUEST_LIMIT; 
+					i < bookmarkcount; i += Constants.BOOKMARK_REQUEST_LIMIT) {
+					Log.d("BookmarkSync", "Getting Bookmarks " + i + " - " + (i + Constants.BOOKMARK_REQUEST_LIMIT));
+					resp = DeliciousApi.getAllBookmarks(null, i, 
+						Constants.BOOKMARK_REQUEST_LIMIT, account, mContext);
+					
+					addBookmarkList = resp.getBookmarkList();
+					InsertBookmarks(addBookmarkList);
+					addBookmarkList.clear();
+				}
+	
 			} else {
 				Log.d("BookmarkSync", "In Bookmark Update");
 				tagList = DeliciousApi.getTags(account, mContext);
@@ -175,23 +200,19 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 				if(updateHashes.size() > 0) {
 					updateBookmarkList = DeliciousApi.getBookmark(updateHashes, account, mContext);
 				}
+	
+				InsertBookmarks(addBookmarkList);
+				
+				if(!updateBookmarkList.isEmpty()){		
+					for(Bookmark b : updateBookmarkList){
+						BookmarkManager.UpdateBookmark(b, username, mContext);
+					}
+				}
 			}
 			
 			TagManager.TruncateTags(username, mContext);
 			for(Tag b : tagList){
 				TagManager.AddTag(b, username, mContext);
-			}
-
-			if(!addBookmarkList.isEmpty()){				
-				for(Bookmark b : addBookmarkList){
-					BookmarkManager.AddBookmark(b, username, mContext);
-				}
-			}
-			
-			if(!updateBookmarkList.isEmpty()){		
-				for(Bookmark b : updateBookmarkList){
-					BookmarkManager.UpdateBookmark(b, username, mContext);
-				}
 			}
 			
     		SharedPreferences.Editor editor = settings.edit();
@@ -200,5 +221,13 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
     	} else {
     		Log.d("BookmarkSync", "No update needed.  Last update time before last sync.");
     	}
+    }
+    
+    private void InsertBookmarks(ArrayList<Bookmark> list) {
+		if(!list.isEmpty()){				
+			for(Bookmark b : list){
+				BookmarkManager.AddBookmark(b, username, mContext);
+			}
+		}
     }
 }
