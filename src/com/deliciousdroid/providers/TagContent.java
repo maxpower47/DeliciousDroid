@@ -21,16 +21,6 @@
 
 package com.deliciousdroid.providers;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import org.xml.sax.InputSource;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -46,7 +36,7 @@ public class TagContent {
 		public static final String Count = "COUNT";
 		public static final String Account = "ACCOUNT";
 		
-        private final String mTagName;
+        private String mTagName;
         private int mCount = 0;
         private int mId = 0;
         private String mType = null;
@@ -58,6 +48,10 @@ public class TagContent {
         public String getTagName() {
             return mTagName;
         }
+        
+        public void setTagName(String tagName) {
+        	mTagName = tagName;
+        }
 
         public int getCount() {
             return mCount;
@@ -67,17 +61,20 @@ public class TagContent {
             return mType;
         }
         
+        public void setType(String type) {
+        	mType = type;
+        }
+        
         public void setCount(int count) {
         	mCount = count;
         }
         
-        public Tag(String tagName) {
-            mTagName = tagName;
+        public Tag() {
+        	
         }
         
-        public Tag(String tagName, String type) {
+        public Tag(String tagName) {
             mTagName = tagName;
-            mType = type;
         }
 
         public Tag(String tagName, int count) {
@@ -85,57 +82,13 @@ public class TagContent {
             mCount = count;
         }
         
-        public static ArrayList<Tag> valueOf(String userTag){
-        	      	
-        	SAXReader reader = new SAXReader();
-        	InputSource inputSource = new InputSource(new StringReader(userTag));
-        	Document document = null;
-			try {
-				document = reader.read(inputSource);
-			} catch (DocumentException e1) {
-				e1.printStackTrace();
-			}   	
-        	
-			String expression = "/tags/tag";
-			ArrayList<Tag> list = new ArrayList<Tag>();
-           
-        	List<Element> nodes = document.selectNodes(expression);
-			
-			for(int i = 0; i < nodes.size(); i++){
-				String scount = nodes.get(i).attributeValue("count");
-				String sname = nodes.get(i).attributeValue("tag");
-				
-				list.add(new Tag(sname, Integer.parseInt(scount)));
-			}
-
-			return list;
-        }
-        
-        public static ArrayList<Tag> suggestValueOf(String userTag){
-	      	
-        	SAXReader reader = new SAXReader();
-        	InputSource inputSource = new InputSource(new StringReader(userTag));
-        	Document document = null;
-			try {
-				document = reader.read(inputSource);
-			} catch (DocumentException e1) {
-				e1.printStackTrace();
-			}   	
-        	
-			String expression = "/suggest/recommended | /suggest/popular | /suggest/network";
-			ArrayList<Tag> list = new ArrayList<Tag>();
-           
-        	List<Element> nodes = document.selectNodes(expression);
-			
-			for(int i = 0; i < nodes.size(); i++){
-
-				String sname = nodes.get(i).getText();
-				String stype = nodes.get(i).getName();
-				
-				list.add(new Tag(sname, stype));
-			}
-
-			return list;
+        public Tag copy(){
+        	Tag t = new Tag();
+        	t.mCount = this.mCount;
+        	t.mId = this.mId;
+        	t.mTagName = this.mTagName;
+        	t.mType = this.mType;
+        	return t;
         }
 	}
 }

@@ -21,19 +21,12 @@
 
 package com.deliciousdroid.providers;
 
-import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
 
 import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.util.DateParser;
@@ -79,17 +72,33 @@ public class BookmarkContent {
         public String getUrl() {
             return mUrl;
         }
+        
+        public void setUrl(String url) {
+        	mUrl = url;
+        }
 
         public String getDescription() {
             return mDescription;
+        }
+        
+        public void setDescription(String desc) {
+        	mDescription = desc;
         }
         
         public String getNotes(){
         	return mNotes;
         }
         
+        public void setNotes(String notes) {
+        	mNotes = notes;
+        }
+        
         public String getTagString(){
         	return mTags;
+        }
+        
+        public void setTagString(String tags) {
+        	mTags = tags;
         }
         
         public ArrayList<Tag> getTags(){
@@ -105,12 +114,24 @@ public class BookmarkContent {
         	return mHash;
         }
 
+        public void setHash(String hash) {
+        	mHash = hash;
+        }
+        
         public String getMeta(){
         	return mMeta;
         }
         
+        public void setMeta(String meta) {
+        	mMeta = meta;
+        }
+        
         public long getTime(){
         	return mTime;
+        }
+        
+        public void setTime(long time) {
+        	mTime = time;
         }
         
         public long getLastUpdate(){
@@ -136,17 +157,6 @@ public class BookmarkContent {
             mUrl = url;
         }
         
-        public Bookmark(String url, String description) {
-            mUrl = url;
-            mDescription = description;
-        }
-        
-        public Bookmark(String url, String description, String notes) {
-            mUrl = url;
-            mDescription = description;
-            mNotes = notes;
-        }
-        
         public Bookmark(String url, String description, String notes, String tags, String account, long time) {
             mUrl = url;
             mDescription = description;
@@ -165,16 +175,6 @@ public class BookmarkContent {
             mTime = time;
         }
         
-        public Bookmark(String url, String description, String notes, String tags, String hash, String meta, long time) {
-            mUrl = url;
-            mDescription = description;
-            mNotes = notes;
-            mTags = tags;
-            mHash = hash;
-            mMeta = meta;
-            mTime = time;
-        }
-        
         public Bookmark(int id, String account, String url, String description, String notes, String tags, String hash, String meta, long time) {
             mId = id;
         	mUrl = url;
@@ -187,49 +187,21 @@ public class BookmarkContent {
             mAccount = account;
         }
         
-        public static ArrayList<Bookmark> valueOf(String userBookmark){
-        	SAXReader reader = new SAXReader();
-        	InputSource inputSource = new InputSource(new StringReader(userBookmark));
-        	Document document = null;
-			try {
-				document = reader.read(inputSource);
-			} catch (DocumentException e1) {
-				e1.printStackTrace();
-			}   	
+        public Bookmark copy() {
+        	Bookmark b = new Bookmark();
+        	b.mAccount = this.mAccount;
+        	b.mDescription = this.mDescription;
+        	b.mHash = this.mHash;
+        	b.mId = this.mId;
+        	b.mLastUpdate = this.mLastUpdate;
+        	b.mMeta = this.mMeta;
+        	b.mNotes = this.mNotes;
+        	b.mPrivate = this.mPrivate;
+        	b.mTags = this.mTags;
+        	b.mTime = this.mTime;
+        	b.mUrl = this.mUrl;
         	
-            String expression = "/posts/post";
-            ArrayList<Bookmark> list = new ArrayList<Bookmark>();
-           
-        	List<Element> nodes = document.selectNodes(expression);
-			
-			for(int i = 0; i < nodes.size(); i++){
-				String shref = nodes.get(i).attributeValue("href");
-				String stitle = nodes.get(i).attributeValue("description");
-				String snotes = nodes.get(i).attributeValue("extended");
-				String stags = nodes.get(i).attributeValue("tag");
-				String shash = nodes.get(i).attributeValue("hash");
-				String smeta = nodes.get(i).attributeValue("meta");
-				String stime = nodes.get(i).attributeValue("time");
-				String surl = nodes.get(i).attributeValue("url");
-				
-				if(shash == null)
-					shash = surl;
-				
-				Date d = new Date(0);
-				if(stime != null && stime != ""){
-					try {
-						d = DateParser.parse(stime);
-					} catch (ParseException e) {
-						Log.d("Parse error", stime);
-						e.printStackTrace();
-					}
-				}
-				
-				list.add(new Bookmark(shref, stitle, snotes, stags, shash, smeta, d.getTime()));
-
-			}
-				
-			return list;
+        	return b;
         }
         
         public static Bookmark valueOf(JSONObject userBookmark) {
