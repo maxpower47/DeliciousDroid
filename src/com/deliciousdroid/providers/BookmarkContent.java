@@ -23,7 +23,6 @@ package com.deliciousdroid.providers;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -221,17 +220,18 @@ public class BookmarkContent {
                 	account = userBookmark.getString("a");
                 }
                 
-				Date d = new Date(0);
+                long time = 0;
+                
 				if(stime != null && stime != ""){
 					try {
-						d = DateParser.parse(stime);
+						time = DateParser.parseTime(stime);
 					} catch (ParseException e) {
 						Log.d("Parse error", stime);
 						e.printStackTrace();
 					}
 				}
 
-                return new Bookmark(url, description, notes, tags.join(" ").replace("\"", ""), account, d.getTime());
+                return new Bookmark(url, description, notes, tags.join(" ").replace("\"", ""), account, time);
             } catch (final Exception ex) {
                 Log.i("User.Bookmark", "Error parsing JSON user object");
             }
