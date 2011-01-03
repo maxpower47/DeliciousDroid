@@ -49,7 +49,7 @@ public class Update {
         	int timeend = updateElement.indexOf("\"", timestart + 7);
         	String time = updateElement.substring(timestart + 6, timeend);
 
-			long updateTime = DateParser.parse(time).getTime();
+			long updateTime = DateParser.parseTime(time);
 			
 			int inboxstart = updateElement.indexOf("inboxnew");
 			int inboxend = updateElement.indexOf("\"", inboxstart + 10);

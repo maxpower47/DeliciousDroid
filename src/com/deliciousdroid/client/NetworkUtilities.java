@@ -116,7 +116,7 @@ public class NetworkUtilities {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(SCHEME);
         builder.authority(DELICIOUS_AUTHORITY);
-        builder.appendEncodedPath("v1/tags/get");
+        builder.appendEncodedPath("v1/posts/update");
         Uri uri = builder.build();
 
         HttpGet request = new HttpGet(String.valueOf(uri));

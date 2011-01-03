@@ -88,7 +88,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private String mUsername;
     private EditText mUsernameEdit;
     
-    private RadioButton mDeliciousAuth;
     private RadioButton mYahooAuth;
     
     private String oauthVerifier;
@@ -117,7 +116,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
         mMessage = (TextView) findViewById(R.id.message);
       
-        mDeliciousAuth = (RadioButton) findViewById(R.id.auth_type_delicious);
         mYahooAuth = (RadioButton) findViewById(R.id.auth_type_yahoo);
         mMessage.setText(R.string.login_activity_authtype_text);
     }

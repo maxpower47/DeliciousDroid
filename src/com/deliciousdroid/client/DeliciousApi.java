@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
@@ -52,6 +53,8 @@ import com.deliciousdroid.authenticator.AuthToken;
 import com.deliciousdroid.authenticator.OauthUtilities;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
+import com.deliciousdroid.xml.SaxBookmarkParser;
+import com.deliciousdroid.xml.SaxTagParser;
 
 public class DeliciousApi {
 	
@@ -90,11 +93,14 @@ public class DeliciousApi {
     	throws IOException, AuthenticationException {
 
     	String response = null;
+    	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	Update update = null;
     	String url = LAST_UPDATE_URI;
     	
-    	response = DeliciousApiCall(url, params, account, context);
+    	responseStream = DeliciousApiCall(url, params, account, context);
+        response = convertStreamToString(responseStream);
+        responseStream.close();
     	
         if (response.contains("<?xml")) {
         	update = Update.valueOf(response);
@@ -138,8 +144,11 @@ public class DeliciousApi {
 		
 		String uri = ADD_BOOKMARKS_URI;
 		String response = null;
+		InputStream responseStream = null;
 
-    	response = DeliciousApiCall(uri, params, account, context);
+    	responseStream = DeliciousApiCall(uri, params, account, context);
+        response = convertStreamToString(responseStream);
+        responseStream.close();
 
         if (response.contains("<result code=\"done\" />")) {
             return true;
@@ -172,11 +181,14 @@ public class DeliciousApi {
 
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String response = null;
+    	InputStream responseStream = null;
     	String url = DELETE_BOOKMARK_URI;
 
     	params.put("url", bookmark.getUrl());
 
-    	response = DeliciousApiCall(url, params, account, context);
+    	responseStream = DeliciousApiCall(url, params, account, context);
+        response = convertStreamToString(responseStream);
+        responseStream.close();
     	
         if (response.contains("<result code=\"done\"")) {
             return true;
@@ -204,7 +216,7 @@ public class DeliciousApi {
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String hashString = "";
-    	String response = null;
+    	InputStream responseStream = null;
     	String url = FETCH_BOOKMARK_URI;
 
     	for(String h : hashes){
@@ -216,14 +228,17 @@ public class DeliciousApi {
     	params.put("meta", "yes");
     	params.put("hashes", hashString);
 
-    	response = DeliciousApiCall(url, params, account, context);
-    	
-        if (response.contains("<?xml")) {
-            bookmarkList = Bookmark.valueOf(response);
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxBookmarkParser parser = new SaxBookmarkParser(responseStream);
+
+        try {
+        	bookmarkList = parser.parse();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
         }
+
+        responseStream.close();
         return bookmarkList;
     }
     
@@ -242,7 +257,7 @@ public class DeliciousApi {
     	throws IOException, AuthenticationException {
     	
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
-    	String response = null;
+    	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String url = FETCH_BOOKMARKS_URI;
 
@@ -252,16 +267,17 @@ public class DeliciousApi {
     	
     	params.put("meta", "yes");
 
-    	response = DeliciousApiCall(url, params, account, context);
-    	
-        if (response.contains("<?xml")) {
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxBookmarkParser parser = new SaxBookmarkParser(responseStream);
 
-        	bookmarkList = Bookmark.valueOf(response);
-         
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
+        try {
+        	bookmarkList = parser.parse();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
         }
+
+        responseStream.close();
         return bookmarkList;
     }
     
@@ -279,22 +295,23 @@ public class DeliciousApi {
     	throws IOException, AuthenticationException {
     	
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
-    	String response = null;
+    	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String url = FETCH_CHANGED_BOOKMARKS_URI;
 
     	params.put("hashes", "yes");
 
-    	response = DeliciousApiCall(url, params, account, context);
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxBookmarkParser parser = new SaxBookmarkParser(responseStream);
 
-        if (response.contains("<?xml")) {
-
-        	bookmarkList = Bookmark.valueOf(response);
-         
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
+        try {
+        	bookmarkList = parser.parse();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
         }
+
+        responseStream.close();
         return bookmarkList;
     }
     
@@ -312,21 +329,23 @@ public class DeliciousApi {
     	throws IOException, AuthenticationException {
     	
     	ArrayList<Tag> tagList = new ArrayList<Tag>();
-    	String response = null;
+    	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	params.put("url", suggestUrl);
     	
     	String url = FETCH_SUGGESTED_TAGS_URI;
     	  	
-    	response = DeliciousApiCall(url, params, account, context);
-    	Log.d("loadTagResponse", response);
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxTagParser parser = new SaxTagParser(responseStream);
     	
-        if (response.contains("<?xml")) {
-        	tagList = Tag.suggestValueOf(response);
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
+        try {
+        	tagList = parser.parseSuggested();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
         }
+
+        responseStream.close();
         return tagList;
     }
     
@@ -343,18 +362,21 @@ public class DeliciousApi {
     	throws IOException, AuthenticationException {
     	
     	ArrayList<Tag> tagList = new ArrayList<Tag>();
-    	String response = null;
+    	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String url = FETCH_TAGS_URI;
     	  	
-    	response = DeliciousApiCall(url, params, account, context);
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxTagParser parser = new SaxTagParser(responseStream);
     	
-        if (response.contains("<?xml")) {
-        	tagList = Tag.valueOf(response);
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
+        try {
+        	tagList = parser.parse();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
         }
+
+        responseStream.close();
         return tagList;
     }
     
@@ -369,7 +391,7 @@ public class DeliciousApi {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    private static String DeliciousApiCall(String url, TreeMap<String, String> params, 
+    private static InputStream DeliciousApiCall(String url, TreeMap<String, String> params, 
     		Account account, Context context) throws IOException, AuthenticationException{
 
     	final AccountManager am = AccountManager.get(context);
@@ -438,11 +460,7 @@ public class DeliciousApi {
     			instream = new GZIPInputStream(instream);
     		}
     		
-    		String response = convertStreamToString(instream);
-    		
-    		instream.close();
-    		
-    		return response;
+    		return instream;
     	} else if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
     		throw new AuthenticationException();
     	} else {
