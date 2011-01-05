@@ -24,6 +24,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory 
 		android:title="@string/pref_cat_general_title">
+		<Preference
+			android:title="@string/pref_forcesync_title"
+			android:summary="@string/pref_forcesync_summary"
+			android:key="@string/pref_forcesync_key" />
 		<CheckBoxPreference 
 			android:title="@string/pref_notification_title"
 			android:defaultValue="true"

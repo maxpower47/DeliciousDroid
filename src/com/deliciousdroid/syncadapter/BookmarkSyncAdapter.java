@@ -145,7 +145,6 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 						int metaColumn = c.getColumnIndex(Bookmark.Meta);
 						
 						BookmarkManager.SetLastUpdate(b, update.getLastUpdate(), username, mContext);
-						Log.d(b.getHash(), Long.toString(update.getLastUpdate()));
 						
 						do {							
 							if(c.getString(metaColumn) == null || !c.getString(metaColumn).equals(b.getMeta())) {
