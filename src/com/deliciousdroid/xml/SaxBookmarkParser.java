@@ -56,6 +56,7 @@ public class SaxBookmarkParser {
             	String tag = attributes.getValue("", "tag");
             	String hash = attributes.getValue("", "hash");
             	String meta = attributes.getValue("", "meta");
+            	String hashurl = attributes.getValue("", "url");
             	
             	if(url != null) {
             		currentBookmark.setUrl(url);
@@ -82,6 +83,9 @@ public class SaxBookmarkParser {
             	}
             	if(meta != null) {
             		currentBookmark.setMeta(meta);
+            	}
+            	if(hashurl != null) {
+            		currentBookmark.setHash(hashurl);
             	}
             	
             	bookmarks.add(currentBookmark.copy());
