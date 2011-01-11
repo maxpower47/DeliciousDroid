@@ -53,6 +53,7 @@ import com.deliciousdroid.activity.OauthLogin;
 import com.deliciousdroid.client.LoginResult;
 import com.deliciousdroid.client.NetworkUtilities;
 import com.deliciousdroid.providers.BookmarkContentProvider;
+import com.deliciousdroid.util.SyncUtils;
 
 /**
  * Activity which displays login screen to the user.
@@ -224,6 +225,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         final String token = settings.getString(Constants.OAUTH_TOKEN_PROPERTY, "");
         final String tokensecret = settings.getString(Constants.OAUTH_TOKEN_SECRET_PROPERTY, "");
         final String sessionhandle = settings.getString(Constants.OAUTH_SESSION_HANDLE_PROPERTY, "");
+        final int synctime = Integer.parseInt(settings.getString("pref_synctime", "0"));
         
         if(authToken != null && authToken != ""){
         	try {
@@ -245,6 +247,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	            // Set contacts sync for this account.
 	            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
 	            ContentResolver.setSyncAutomatically(account, BookmarkContentProvider.AUTHORITY, true);
+	            if(synctime != 0) {
+	            	SyncUtils.addPeriodicSync(BookmarkContentProvider.AUTHORITY, Bundle.EMPTY, synctime, this);
+	            }
 	        } else {
 	            mAccountManager.setPassword(account, mPassword);
 	        }
