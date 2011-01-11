@@ -80,6 +80,8 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	
 	private String tagname = null;
 	
+	private boolean loaded = false;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -148,6 +150,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
 				if(bookmarkList.isEmpty()) {
 					loadBookmarkList();
 				}
+				loaded = true;
 			} else if(username.equals("network")){
 				try{
 					setTitle("My Network's Recent Bookmarks");
@@ -216,6 +219,14 @@ public class BrowseBookmarks extends AppBaseListActivity {
 					}
 				}
 			});
+		}
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(loaded) {
+			refreshBookmarkList();
 		}
 	}
 	
@@ -337,6 +348,16 @@ public class BrowseBookmarks extends AppBaseListActivity {
 		
 		setListAdapter(new BookmarkListAdapter(this, R.layout.bookmark_view, bookmarkList));
 		((BookmarkListAdapter)getListAdapter()).notifyDataSetChanged();
+	}
+	
+	private void refreshBookmarkList() {
+		bookmarkList = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
+		BookmarkListAdapter adapter = (BookmarkListAdapter)getListAdapter();
+		
+		if(adapter != null) {
+			adapter.update(bookmarkList);
+			adapter.notifyDataSetChanged();
+		}
 	}
 	
 	private void openBookmarkInBrowser(Bookmark b) {
