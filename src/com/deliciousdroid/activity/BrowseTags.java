@@ -52,6 +52,8 @@ public class BrowseTags extends AppBaseListActivity {
 	
 	private ArrayList<Tag> tagList = new ArrayList<Tag>();
 	
+	private boolean loaded = false;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -94,9 +96,8 @@ public class BrowseTags extends AppBaseListActivity {
 						setTitle("Choose A Tag For The Folder");
 					}
 	
-					tagList = TagManager.GetTags(username, sortfield, this);
-	
-					setListAdapter(new TagListAdapter(this, R.layout.tag_view, tagList));	
+					loadTagList();
+					loaded = true;
 	
 				} catch(Exception e) {
 					
@@ -115,6 +116,7 @@ public class BrowseTags extends AppBaseListActivity {
 	
 			ListView lv = getListView();
 			lv.setTextFilterEnabled(true);
+			lv.setFastScrollEnabled(true);
 		
 			if(action != null && action.equals(Intent.ACTION_PICK)) {
 				
@@ -150,6 +152,15 @@ public class BrowseTags extends AppBaseListActivity {
 				    }
 				});
 			}
+		}
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		if(loaded) {
+			refreshTagList();
 		}
 	}
 	
@@ -205,5 +216,15 @@ public class BrowseTags extends AppBaseListActivity {
 		
 		setListAdapter(new TagListAdapter(this, R.layout.tag_view, tagList));	
 		((TagListAdapter)getListAdapter()).notifyDataSetChanged();
+	}
+	
+	private void refreshTagList() {
+		tagList = TagManager.GetTags(username, sortfield, this);
+		TagListAdapter adapter = (TagListAdapter)getListAdapter();
+		
+		if(adapter != null) {
+			adapter.update(tagList);
+			adapter.notifyDataSetChanged();
+		}
 	}
 }

@@ -55,6 +55,9 @@ public class ViewBookmark extends AppBaseActivity{
 	private TextView mUsername;
 	private Bookmark bookmark;
 	private Boolean myself;
+	
+	private String path;
+	private Uri data;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -73,13 +76,17 @@ public class ViewBookmark extends AppBaseActivity{
 		mTags.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		Log.d("browse bookmarks", getIntent().getDataString());
-		Uri data = getIntent().getData();
-		String path = data.getPath();
+		data = getIntent().getData();
+		path = data.getPath();
 		Log.d("path", path);
 		
 		String username = data.getUserInfo();
 		
 		myself = mAccount.name.equals(username);
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
 	
 		if(path.contains("/bookmarks") && myself){
 			

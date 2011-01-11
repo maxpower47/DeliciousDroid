@@ -41,6 +41,7 @@ import com.deliciousdroid.ui.TagSpan;
 import com.deliciousdroid.util.StringUtils;
 
 import android.accounts.Account;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -56,6 +57,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,11 +65,15 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 
 	private EditText mEditUrl;
 	private EditText mEditDescription;
+	private ProgressBar mDescriptionProgress;
 	private EditText mEditNotes;
 	private EditText mEditTags;
 	private TextView mRecommendedTags;
+	private ProgressBar mRecommendedProgress;
 	private TextView mPopularTags;
+	private ProgressBar mPopularProgress;
 	private TextView mNetworkTags;
+	private ProgressBar mNetworkProgress;
 	private CheckBox mPrivate;
 	private Button mButtonSave;
 	private Button mButtonCancel;
@@ -75,6 +81,8 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 	Thread background;
 	private Boolean update = false;
 	private Resources res;
+	
+	private Bookmark oldBookmark;
 	
 	private long updateTime = 0;
 
@@ -85,11 +93,15 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 		setContentView(R.layout.add_bookmark);
 		mEditUrl = (EditText) findViewById(R.id.add_edit_url);
 		mEditDescription = (EditText) findViewById(R.id.add_edit_description);
+		mDescriptionProgress = (ProgressBar) findViewById(R.id.add_description_progress);
 		mEditNotes = (EditText) findViewById(R.id.add_edit_notes);
 		mEditTags = (EditText) findViewById(R.id.add_edit_tags);
 		mRecommendedTags = (TextView) findViewById(R.id.add_recommended_tags);
+		mRecommendedProgress = (ProgressBar) findViewById(R.id.add_recommended_tags_progress);
 		mPopularTags = (TextView) findViewById(R.id.add_popular_tags);
+		mPopularProgress = (ProgressBar) findViewById(R.id.add_popular_tags_progress);
 		mNetworkTags = (TextView) findViewById(R.id.add_network_tags);
+		mNetworkProgress = (ProgressBar) findViewById(R.id.add_network_tags_progress);
 		mPrivate = (CheckBox) findViewById(R.id.add_edit_private);
 		mButtonSave = (Button) findViewById(R.id.add_button_save);
 		mButtonCancel = (Button) findViewById(R.id.add_button_cancel);
@@ -115,6 +127,7 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 				int id = Integer.parseInt(intent.getData().getLastPathSegment());
 				try {
 					Bookmark b = BookmarkManager.GetById(id, mContext);
+					oldBookmark = b.copy();
 					
 					mEditUrl.setText(b.getUrl());
 					mEditDescription.setText(b.getDescription());
@@ -209,6 +222,7 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     	private Context context;
     	private Bookmark bookmark;
     	private Account account;
+    	private ProgressDialog progress;
     	
     	@Override
     	protected Boolean doInBackground(BookmarkTaskArgs... args) {
@@ -231,11 +245,28 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     			return false;
     		}
     	}
+    	
+        protected void onPreExecute() {
+	        progress = new ProgressDialog(mContext);
+	        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        progress.setMessage("Working...");
+	        progress.setCancelable(true);
+	        progress.show();
+        }
 
         protected void onPostExecute(Boolean result) {
+        	progress.dismiss();
+        	
     		if(result){
     			for(Tag t : bookmark.getTags()){   				
     				TagManager.UpsertTag(t, account.name, context);
+    			}
+    			
+    			if(update) {
+    				for(Tag t : oldBookmark.getTags()) {
+    					if(!bookmark.getTags().contains(t))
+    						TagManager.UpleteTag(t, account.name, context);
+    				}
     			}
     			
     			String msg = null;
@@ -266,8 +297,13 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     		
     	}
     	
+    	protected void onPreExecute(){
+    		mDescriptionProgress.setVisibility(View.VISIBLE);
+    	}
+    	
         protected void onPostExecute(String result) {
         	mEditDescription.setText(result);
+        	mDescriptionProgress.setVisibility(View.GONE);
         }
     }
     
@@ -289,6 +325,16 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 			}
 			return null;
     	}
+    	
+    	protected void onPreExecute() {
+    		mRecommendedTags.setVisibility(View.GONE);
+    		mPopularTags.setVisibility(View.GONE);
+    		mNetworkTags.setVisibility(View.GONE);
+    		mRecommendedProgress.setVisibility(View.VISIBLE);
+    		mPopularProgress.setVisibility(View.VISIBLE);
+    		mNetworkProgress.setVisibility(View.VISIBLE);
+    	}
+
     	
         protected void onPostExecute(ArrayList<Tag> result) {
         	        	
@@ -312,6 +358,14 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
         		mRecommendedTags.setText(recommendedBuilder);
         		mPopularTags.setText(popularBuilder);
         		mNetworkTags.setText(networkBuilder);
+        		
+        		mRecommendedTags.setVisibility(View.VISIBLE);
+        		mPopularTags.setVisibility(View.VISIBLE);
+        		mNetworkTags.setVisibility(View.VISIBLE);
+        		mRecommendedProgress.setVisibility(View.GONE);
+        		mPopularProgress.setVisibility(View.GONE);
+        		mNetworkProgress.setVisibility(View.GONE);
+
         	} 	
         }
 

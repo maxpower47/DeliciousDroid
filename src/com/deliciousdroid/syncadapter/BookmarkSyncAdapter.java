@@ -105,7 +105,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			nm.notify(1, n);
 		}
-    	
+
     	if(update.getLastUpdate() > lastUpdate) {
 	
 			ArrayList<Bookmark> addBookmarkList = new ArrayList<Bookmark>();

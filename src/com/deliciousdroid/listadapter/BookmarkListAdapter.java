@@ -43,6 +43,25 @@ public class BookmarkListAdapter extends ArrayAdapter<Bookmark> {
         this.bookmarks = bookmarks;
     }
     
+    public void update(ArrayList<Bookmark> b) {
+    	bookmarks = b;
+    }
+    
+    @Override
+    public int getCount() {
+    	return bookmarks.size();
+    }
+    
+    @Override
+    public Bookmark getItem(int position) {
+		return bookmarks.get(position);   	
+    }
+    
+    @Override
+    public void remove(Bookmark b) {
+    	bookmarks.remove(b);
+    }
+    
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
     	BookmarkListViewHolder holder;
@@ -60,11 +79,16 @@ public class BookmarkListAdapter extends ArrayAdapter<Bookmark> {
         	holder = (BookmarkListViewHolder) convertView.getTag();
         }
         
-        Bookmark o = bookmarks.get(position);
-        if (o != null) {
-            holder.description.setText(o.getDescription());                            
-            holder.tags.setText(o.getTagString());                            
+        if(bookmarks.size() > position && holder != null) {
+	        Bookmark o = bookmarks.get(position);
+	        if (o != null) {
+	            holder.description.setText(o.getDescription());                            
+	            holder.tags.setText(o.getTagString());                            
+	        }
+        } else {
+        	return new View(this.getContext());
         }
+
         return convertView;
     }
 }

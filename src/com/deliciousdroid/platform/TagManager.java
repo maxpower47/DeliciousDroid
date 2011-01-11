@@ -57,6 +57,8 @@ public class TagManager {
 			} while(c.moveToNext());	
 		}
 		
+		c.close();
+		
 		return tagList;
 	}
 	
@@ -87,6 +89,7 @@ public class TagManager {
 			tag.setCount(count + 1);
 			UpdateTag(tag, account, context);
 		} else {
+			tag.setCount(1);
 			AddTag(tag, account, context);
 		}
 		c.close();

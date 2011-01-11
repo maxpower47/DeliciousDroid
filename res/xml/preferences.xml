@@ -24,10 +24,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory 
 		android:title="@string/pref_cat_general_title">
-		<Preference
-			android:title="@string/pref_forcesync_title"
-			android:summary="@string/pref_forcesync_summary"
-			android:key="@string/pref_forcesync_key" />
 		<CheckBoxPreference 
 			android:title="@string/pref_notification_title"
 			android:defaultValue="true"
@@ -52,6 +48,20 @@
 			android:defaultValue="true"
 			android:summary="@string/pref_searchicons_summary"
 			android:key="@string/pref_searchicons_key" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_searchicons_key">
+		<Preference
+			android:title="@string/pref_forcesync_title"
+			android:summary="@string/pref_forcesync_summary"
+			android:key="@string/pref_forcesync_key" />
+		<ListPreference
+			android:title="@string/pref_synctime_title"
+			android:summary="@string/pref_synctime_summary"
+			android:key="@string/pref_synctime_key"
+			android:entries="@array/pref_synctime_entries"
+			android:entryValues="@array/pref_synctime_values"
+			android:defaultValue="0" />
 	</PreferenceCategory>
 	<PreferenceCategory 
 		android:title="@string/pref_cat_help_title">
