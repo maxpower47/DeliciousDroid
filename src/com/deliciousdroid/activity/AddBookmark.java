@@ -41,6 +41,7 @@ import com.deliciousdroid.ui.TagSpan;
 import com.deliciousdroid.util.StringUtils;
 
 import android.accounts.Account;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -212,6 +213,7 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     	private Context context;
     	private Bookmark bookmark;
     	private Account account;
+    	private ProgressDialog progress;
     	
     	@Override
     	protected Boolean doInBackground(BookmarkTaskArgs... args) {
@@ -234,8 +236,18 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     			return false;
     		}
     	}
+    	
+        protected void onPreExecute() {
+	        progress = new ProgressDialog(mContext);
+	        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        progress.setMessage("Working...");
+	        progress.setCancelable(true);
+	        progress.show();
+        }
 
         protected void onPostExecute(Boolean result) {
+        	progress.dismiss();
+        	
     		if(result){
     			for(Tag t : bookmark.getTags()){   				
     				TagManager.UpsertTag(t, account.name, context);
