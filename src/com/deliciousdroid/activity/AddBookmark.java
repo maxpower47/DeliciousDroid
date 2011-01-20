@@ -169,6 +169,10 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 
 		String url = mEditUrl.getText().toString();
 		
+		if(mEditDescription.getText().toString().equals("")) {
+			mEditDescription.setText(url);
+		}
+		
 		if(!url.startsWith("http")){
 			url = "http://" + url;
 		}
