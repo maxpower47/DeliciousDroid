@@ -41,11 +41,9 @@ import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -63,9 +61,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class BrowseBookmarks extends AppBaseListActivity {
 	
 	private ListView lv;
-	
-	private String bookmarkLimit;
-	private String defaultAction;
 	
 	private final int sortDateAsc = 9999991;
 	private final int sortDateDesc = 9999992;
@@ -97,10 +92,6 @@ public class BrowseBookmarks extends AppBaseListActivity {
 			}
 			
 			Intent intent = getIntent();
-			
-	    	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-	    	bookmarkLimit = settings.getString("pref_contact_bookmark_results", "50");
-	    	defaultAction = settings.getString("pref_view_bookmark_default_action", "browser");
 	
 			Uri data = intent.getData();
 			String path = null;

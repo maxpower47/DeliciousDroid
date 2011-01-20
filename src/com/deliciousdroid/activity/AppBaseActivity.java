@@ -51,6 +51,11 @@ public class AppBaseActivity extends Activity {
 	protected Account mAccount;
 	protected Context mContext;
 	protected String username = null;
+	protected SharedPreferences settings;
+	
+	protected long lastUpdate;
+	protected String bookmarkLimit;
+	protected String defaultAction;
 	
 	Bundle savedState;
 	
@@ -61,9 +66,8 @@ public class AppBaseActivity extends Activity {
 		
 		mContext = this;
 		mAccountManager = AccountManager.get(this);
-
-    	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
-    	long lastUpdate = settings.getLong(Constants.PREFS_LAST_SYNC, 0);
+		
+		loadSettings();
 		
 		if(mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE).length < 1) {		
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -118,6 +122,20 @@ public class AppBaseActivity extends Activity {
 		TagManager.TruncateOldTags(accounts, this);
 		
 		username = mAccount.name;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		loadSettings();
+	}
+	
+	private void loadSettings(){
+		settings = PreferenceManager.getDefaultSharedPreferences(this);
+		lastUpdate = settings.getLong(Constants.PREFS_LAST_SYNC, 0);
+		bookmarkLimit = settings.getString("pref_contact_bookmark_results", "50");
+    	defaultAction = settings.getString("pref_view_bookmark_default_action", "browser");
+		
 	}
 
 	@Override
