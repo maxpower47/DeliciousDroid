@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
+import com.deliciousdroid.authenticator.AuthenticatorActivity;
 import com.deliciousdroid.platform.BookmarkManager;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
@@ -57,6 +58,8 @@ public class AppBaseListActivity extends ListActivity {
 	protected String bookmarkLimit;
 	protected String defaultAction;
 	
+	private boolean first = true;
+	
 	Bundle savedState;
 	
 	@Override
@@ -67,28 +70,14 @@ public class AppBaseListActivity extends ListActivity {
 		mContext = this;
 		mAccountManager = AccountManager.get(this);
 		
+		loadSettings();
+		init();
+	}
+	private void init(){
+		
 		if(mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE).length < 1) {		
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.dialog_no_account_text)
-			       .setCancelable(true)
-			       .setTitle(R.string.dialog_no_account_title)
-			       .setPositiveButton("Go", new DialogInterface.OnClickListener() {
-			    	   public void onClick(DialogInterface dialog, int id) {
-			    		   Intent i = new Intent(android.provider.Settings.ACTION_SYNC_SETTINGS);
-			    		   startActivity(i);
-			    		   finish();
-			           }
-			       })
-			       .setOnCancelListener( new DialogInterface.OnCancelListener() {
-						public void onCancel(DialogInterface dialog) {
-							finish();
-							
-						}
-				});
-			
-			AlertDialog alert = builder.create();
-			alert.setIcon(android.R.drawable.ic_dialog_alert);
-			alert.show();
+			Intent i = new Intent(this, AuthenticatorActivity.class);
+			startActivity(i);
 			
 			return;
 		} else if(lastUpdate == 0) {
@@ -96,19 +85,18 @@ public class AppBaseListActivity extends ListActivity {
 			Toast.makeText(this, "Syncing...", Toast.LENGTH_LONG).show();
 			
 			if(mAccount == null || username == null)
-				init();
+				loadAccounts();
 			
 			ContentResolver.requestSync(mAccount, BookmarkContentProvider.AUTHORITY, Bundle.EMPTY);
 		} else {
-			init();
+			loadAccounts();
 		}
 	}
 	
-	private void init(){
+	private void loadAccounts(){
 		if(mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE).length > 0) {	
 			mAccount = mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE)[0];
 		}
-		
 		
 		ArrayList<String> accounts = new ArrayList<String>();
 		
@@ -125,7 +113,13 @@ public class AppBaseListActivity extends ListActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		loadSettings();
+		
+		if(!first){
+			loadSettings();
+			init();
+		}
+		
+		first = false;
 	}
 	
 	private void loadSettings(){
