@@ -47,6 +47,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -140,6 +141,8 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} else {
+				mEditUrl.requestFocus();				
 			}
 		}
 		
@@ -165,6 +168,10 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     public void save() {
 
 		String url = mEditUrl.getText().toString();
+		
+		if(mEditDescription.getText().toString().equals("")) {
+			mEditDescription.setText(url);
+		}
 		
 		if(!url.startsWith("http")){
 			url = "http://" + url;
@@ -302,7 +309,7 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
     	}
     	
         protected void onPostExecute(String result) {
-        	mEditDescription.setText(result);
+        	mEditDescription.setText(Html.fromHtml(result));
         	mDescriptionProgress.setVisibility(View.GONE);
         }
     }
