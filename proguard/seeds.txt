@@ -1,0 +1,24 @@
+com.deliciousdroid.authenticator.AuthenticatorActivity
+com.deliciousdroid.authenticator.AuthenticatorActivity: void handleLogin(android.view.View)
+com.deliciousdroid.authenticator.AuthenticatorActivity: void handleAuthtype(android.view.View)
+com.deliciousdroid.providers.BookmarkContentProvider
+com.deliciousdroid.activity.TagLiveFolder
+com.deliciousdroid.activity.AppBaseActivity
+com.deliciousdroid.activity.ViewBookmark
+com.deliciousdroid.activity.AddBookmark
+com.deliciousdroid.activity.OauthLogin
+com.deliciousdroid.activity.BookmarkLiveFolder
+com.deliciousdroid.activity.Profile
+com.deliciousdroid.activity.AppBaseListActivity
+com.deliciousdroid.activity.BrowseBookmarks
+com.deliciousdroid.activity.MainSearchResults
+com.deliciousdroid.activity.Main
+com.deliciousdroid.activity.BrowseTags
+com.deliciousdroid.activity.Preferences
+com.deliciousdroid.authenticator.AuthenticatorActivity
+com.deliciousdroid.authenticator.AuthenticationService
+com.deliciousdroid.syncadapter.ContactSyncService
+com.deliciousdroid.syncadapter.BookmarkSyncService
+com.deliciousdroid.syncadapter.PeriodicSyncReceiver
+com.deliciousdroid.widget.SearchWidgetProvider
+com.deliciousdroid.providers.BookmarkContentProvider
