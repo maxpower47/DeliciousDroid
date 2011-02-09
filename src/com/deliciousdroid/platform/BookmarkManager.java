@@ -147,6 +147,41 @@ public class BookmarkManager {
 		context.getContentResolver().insert(Bookmark.CONTENT_URI, values);
 	}
 	
+	public static void BulkInsert(ArrayList<Bookmark> list, String account, Context context){
+		int bookmarksize = list.size();
+		ContentValues[] bcv = new ContentValues[bookmarksize];
+		
+		for(int i = 0; i < bookmarksize; i++){
+			Bookmark b = list.get(i);
+			
+			String url = b.getUrl();
+
+			if(url.lastIndexOf("/") <= 7){
+				url = url + "/";
+			}
+			
+			String hash = "";
+			if(b.getHash() == null || b.getHash() == ""){
+				hash = Md5Hash.md5(url);
+				Log.d(url, hash);
+			} else hash = b.getHash();
+			
+			ContentValues values = new ContentValues();
+			values.put(Bookmark.Description, b.getDescription());
+			values.put(Bookmark.Url, url);
+			values.put(Bookmark.Notes, b.getNotes());
+			values.put(Bookmark.Tags, b.getTagString());
+			values.put(Bookmark.Hash, hash);
+			values.put(Bookmark.Meta, b.getMeta());
+			values.put(Bookmark.Time, b.getTime());
+			values.put(Bookmark.Account, account);
+			
+			bcv[i] = values;
+		}
+		
+		context.getContentResolver().bulkInsert(Bookmark.CONTENT_URI, bcv);
+	}
+	
 	public static void UpdateBookmark(Bookmark bookmark, String account, Context context){
 		String url = bookmark.getUrl();
 

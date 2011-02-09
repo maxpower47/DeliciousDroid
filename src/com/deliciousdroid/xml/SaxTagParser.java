@@ -34,6 +34,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.deliciousdroid.providers.TagContent.Tag;
+import com.deliciousdroid.util.IntUtils;
 
 public class SaxTagParser {
 
@@ -54,7 +55,7 @@ public class SaxTagParser {
             	String tag = attributes.getValue("", "tag");
             	
             	if(count != null) {
-            		currentTag.setCount(Integer.parseInt(count));
+            		currentTag.setCount(IntUtils.parseUInt(count));
             	}
             	if(tag != null) {
             		currentTag.setTagName(tag);
