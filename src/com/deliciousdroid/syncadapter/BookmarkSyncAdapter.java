@@ -180,14 +180,13 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			}
 			
 			TagManager.TruncateTags(username, mContext);
-			for(Tag b : tagList){
-				TagManager.AddTag(b, username, mContext);
+			
+			if(!tagList.isEmpty()){
+				TagManager.BulkInsert(tagList, username, mContext);
 			}
 
-			if(!addBookmarkList.isEmpty()){				
-				for(Bookmark b : addBookmarkList){
-					BookmarkManager.AddBookmark(b, username, mContext);
-				}
+			if(!addBookmarkList.isEmpty()){
+				BookmarkManager.BulkInsert(addBookmarkList, username, mContext);
 			}
 			
 			if(!updateBookmarkList.isEmpty()){		
