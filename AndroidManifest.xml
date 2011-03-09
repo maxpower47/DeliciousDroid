@@ -71,6 +71,13 @@
         	</intent-filter>
 			<meta-data android:name="android.app.searchable" android:resource="@xml/tag_searchable"/>
         </activity>
+        <activity android:name=".activity.BrowseBundles">
+        	<intent-filter>
+        		<action android:name="android.intent.action.VIEW" />
+        		<category android:name="android.intent.category.DEFAULT" />
+        		<data android:scheme="content" android:host="com.deliciousdroid.providers.BookmarkContentProvider" android:path="/bundles"/>
+			</intent-filter>
+        </activity>
         <activity android:name=".activity.TagLiveFolder"
         	android:label="Delicious Tags"
         	android:icon="@drawable/ic_tag_folder">

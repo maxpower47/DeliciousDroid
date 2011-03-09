@@ -27,6 +27,7 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
 import com.deliciousdroid.authenticator.AuthenticatorActivity;
 import com.deliciousdroid.platform.BookmarkManager;
+import com.deliciousdroid.platform.BundleManager;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 
@@ -104,6 +105,7 @@ public class AppBaseListActivity extends ListActivity {
 		
 		BookmarkManager.TruncateBookmarks(accounts, this, true);
 		TagManager.TruncateOldTags(accounts, this);
+		BundleManager.TruncateOldBundles(accounts, this);
 		
 		username = mAccount.name;
 	}

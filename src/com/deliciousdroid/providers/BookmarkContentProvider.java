@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
+import com.deliciousdroid.providers.BundleContent.Bundle;
 import com.deliciousdroid.providers.TagContent.Tag;
 
 import android.accounts.Account;
@@ -62,9 +63,10 @@ public class BookmarkContentProvider extends ContentProvider {
 	private SQLiteDatabase db;
 	private DatabaseHelper dbHelper;
 	private static final String DATABASE_NAME = "DeliciousBookmarks.db";
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 20;
 	private static final String BOOKMARK_TABLE_NAME = "bookmark";
 	private static final String TAG_TABLE_NAME = "tag";
+	private static final String BUNDLE_TABLE_NAME = "bundle";
 	
 	private static final int Bookmarks = 1;
 	private static final int SearchSuggest = 2;
@@ -73,6 +75,7 @@ public class BookmarkContentProvider extends ContentProvider {
 	private static final int BookmarkSearchSuggest = 5;
 	private static final int TagLiveFolder = 6;
 	private static final int BookmarkLiveFolder = 7;
+	private static final int Bundles = 8;
 	
 	private static final String SuggestionLimit = "10";
 	
@@ -126,6 +129,12 @@ public class BookmarkContentProvider extends ContentProvider {
 					"_ACCOUNT ON " + TAG_TABLE_NAME + " " +
 					"(ACCOUNT)");
 			
+			sqlDb.execSQL("Create table " + BUNDLE_TABLE_NAME + 
+					" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					"ACCOUNT TEXT, " +
+					"NAME TEXT, " +
+					"TAGS TEXT);");
+			
 		}
 
 		@Override
@@ -136,6 +145,7 @@ public class BookmarkContentProvider extends ContentProvider {
 			sqlDb.execSQL("DROP INDEX IF EXISTS " + TAG_TABLE_NAME + "_ACCOUNT");
 			sqlDb.execSQL("DROP TABLE IF EXISTS " + BOOKMARK_TABLE_NAME);
 			sqlDb.execSQL("DROP TABLE IF EXISTS " + TAG_TABLE_NAME);
+			sqlDb.execSQL("DROP TABLE IF EXISTS " + BUNDLE_TABLE_NAME);
 			
 			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
     		SharedPreferences.Editor editor = settings.edit();
@@ -157,6 +167,9 @@ public class BookmarkContentProvider extends ContentProvider {
 			case Tags:
 				count = db.delete(TAG_TABLE_NAME, where, whereArgs);
 				break;
+			case Bundles:
+				count = db.delete(BUNDLE_TABLE_NAME, where, whereArgs);
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -174,6 +187,8 @@ public class BookmarkContentProvider extends ContentProvider {
 				return SearchManager.SUGGEST_MIME_TYPE;
 			case Tags:
 				return Tag.CONTENT_TYPE;
+			case Bundles:
+				return Bundle.CONTENT_TYPE;
 			default:
 				throw new IllegalArgumentException("Unknown URL " + uri);
 		}
@@ -187,6 +202,8 @@ public class BookmarkContentProvider extends ContentProvider {
 				return insertBookmark(uri, values);
 			case Tags:
 				return insertTag(uri, values);
+			case Bundles:
+				return insertBundle(uri, values);
 			default:
 				throw new IllegalArgumentException("Unknown Uri: " + uri);
 		}
@@ -214,6 +231,17 @@ public class BookmarkContentProvider extends ContentProvider {
 		throw new SQLException("Failed to insert row into " + uri);
 	}
 	
+	private Uri insertBundle(Uri uri, ContentValues values){
+		db = dbHelper.getWritableDatabase();
+		long rowId = db.insert(BUNDLE_TABLE_NAME, "", values);
+		if(rowId > 0) {
+			Uri rowUri = ContentUris.appendId(BundleContent.Bundle.CONTENT_URI.buildUpon(), rowId).build();
+			getContext().getContentResolver().notifyChange(rowUri, null);
+			return rowUri;
+		}
+		throw new SQLException("Failed to insert row into " + uri);
+	}
+	
 	@Override
 	public boolean onCreate() {
 
@@ -232,6 +260,8 @@ public class BookmarkContentProvider extends ContentProvider {
 				return getSearchSuggestions(query);
 			case Tags:
 				return getTags(uri, projection, selection, selectionArgs, sortOrder);
+			case Bundles:
+				return getBundles(uri, projection, selection, selectionArgs, sortOrder);
 			case TagSearchSuggest:
 				String tagQuery = uri.getLastPathSegment().toLowerCase();
 				return getSearchCursor(getTagSearchSuggestions(tagQuery));
@@ -268,6 +298,19 @@ public class BookmarkContentProvider extends ContentProvider {
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		SQLiteDatabase rdb = dbHelper.getReadableDatabase();
 		qb.setTables(TAG_TABLE_NAME);
+		Cursor c = qb.query(rdb, projection, selection, selectionArgs, null, null, sortOrder, limit);
+		c.setNotificationUri(getContext().getContentResolver(), uri);
+		return c;
+	}
+	
+	private Cursor getBundles(Uri uri, String[] projection, String selection,	String[] selectionArgs, String sortOrder) {
+		return getBundles(uri, projection, selection, selectionArgs, sortOrder, null);
+	}
+	
+	private Cursor getBundles(Uri uri, String[] projection, String selection,	String[] selectionArgs, String sortOrder, String limit) {
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		SQLiteDatabase rdb = dbHelper.getReadableDatabase();
+		qb.setTables(BUNDLE_TABLE_NAME);
 		Cursor c = qb.query(rdb, projection, selection, selectionArgs, null, null, sortOrder, limit);
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
@@ -500,6 +543,9 @@ public class BookmarkContentProvider extends ContentProvider {
 			case Tags:
 				count = db.update(TAG_TABLE_NAME, values, selection, selectionArgs);
 				break;
+			case Bundles:
+				count = db.update(BUNDLE_TABLE_NAME, values, selection, selectionArgs);
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -575,6 +621,8 @@ public class BookmarkContentProvider extends ContentProvider {
 				return bulkLoad(BOOKMARK_TABLE_NAME, values);
 			case Tags:
 				return bulkLoad(TAG_TABLE_NAME, values);
+			case Bundles:
+				return bulkLoad(BUNDLE_TABLE_NAME, values);
 			default:
 				throw new IllegalArgumentException("Unknown Uri: " + uri);
 		}
@@ -608,6 +656,7 @@ public class BookmarkContentProvider extends ContentProvider {
         UriMatcher matcher =  new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, "bookmark", Bookmarks);
         matcher.addURI(AUTHORITY, "tag", Tags);
+        matcher.addURI(AUTHORITY, "bundle", Bundles);
         matcher.addURI(AUTHORITY, "main/" + SearchManager.SUGGEST_URI_PATH_QUERY, SearchSuggest);
         matcher.addURI(AUTHORITY, "main/" + SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SearchSuggest);
         matcher.addURI(AUTHORITY, "tag/" + SearchManager.SUGGEST_URI_PATH_QUERY, TagSearchSuggest);

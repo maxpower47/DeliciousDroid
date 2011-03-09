@@ -72,6 +72,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	private String sortfield = Bookmark.Time + " DESC";
 	
 	private String tagname = null;
+	private String bundlename = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -91,6 +92,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
 				
 				path = data.getPath();
 				tagname = data.getQueryParameter("tagname");
+				bundlename = data.getQueryParameter("bundlename");
 			}
 			
 	    	if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -124,7 +126,9 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	    	} else if(path.equals("/bookmarks") && isMyself()) {
 	    		
 				if(tagname != null && tagname != "") {
-					setTitle("My Bookmarks Tagged With " + tagname);
+					if(bundlename != null && bundlename != "")
+						setTitle("My Bookmarks In " + bundlename);
+					else setTitle("My Bookmarks Tagged With " + tagname);
 				} else {
 					setTitle("My Bookmarks");
 				}

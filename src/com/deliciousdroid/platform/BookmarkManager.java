@@ -45,23 +45,36 @@ public class BookmarkManager {
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
-		String[] selectionargs = new String[]{"% " + tagname + " %", 
-				"% " + tagname, tagname + " %", tagname, username};
+		ArrayList<String> selectionList = new ArrayList<String>();
+		final ArrayList<String> queryList = new ArrayList<String>();
+		
 		
 		if(tagname != null && tagname != "") {
-			selection = "(" + Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " = ?) AND " +
+			String[] tagList = tagname.split(",");
+			
+			for(String s : tagList) {
+				queryList.add("(" + Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " = ?)");
+					
+				selectionList.add("% " + s + " %");
+				selectionList.add("% " + s);
+				selectionList.add(s + " %");
+				selectionList.add(s);
+			}
+			selection = TextUtils.join(" OR ", queryList) + " AND " +
 				Bookmark.Account + "=?";
+			
+			selectionList.add(username);
 		} else {
-			selectionargs = new String[]{username};
+			selectionList.add(username);
 			selection = Bookmark.Account + "=?";
 		}
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		return context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionList.toArray(new String[]{}), sortorder);
 	}
 	
 	public static Bookmark GetById(int id, Context context) throws ContentNotFoundException {		
@@ -291,7 +304,6 @@ public class BookmarkManager {
 		return context.getContentResolver().query(bookmarks, projection, selection, selectionlist.toArray(new String[]{}), sortorder);
 	}
 	
-
 	public static Bookmark CursorToBookmark(Cursor c) {
 		Bookmark b = new Bookmark();
 		b.setId(c.getInt(c.getColumnIndex(Bookmark._ID)));
