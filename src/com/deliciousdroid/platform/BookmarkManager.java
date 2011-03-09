@@ -45,15 +45,17 @@ public class BookmarkManager {
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
-		String[] selectionargs = new String[]{username};
+		String[] selectionargs = new String[]{"% " + tagname + " %", 
+				"% " + tagname, tagname + " %", tagname, username};
 		
 		if(tagname != null && tagname != "") {
-			selection = "(" + Bookmark.Tags + " LIKE '% " + tagname + " %' OR " +
-				Bookmark.Tags + " LIKE '% " + tagname + "' OR " +
-				Bookmark.Tags + " LIKE '" + tagname + " %' OR " +
-				Bookmark.Tags + " = '" + tagname + "') AND " +
+			selection = "(" + Bookmark.Tags + " LIKE ? OR " +
+				Bookmark.Tags + " LIKE ? OR " +
+				Bookmark.Tags + " LIKE ? OR " +
+				Bookmark.Tags + " = ?) AND " +
 				Bookmark.Account + "=?";
 		} else {
+			selectionargs = new String[]{username};
 			selection = Bookmark.Account + "=?";
 		}
 		
@@ -236,26 +238,33 @@ public class BookmarkManager {
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
-		String[] selectionargs = new String[]{username};
 		String sortorder = null;
 		
 		String[] queryBookmarks = query.split(" ");
 		
-		ArrayList<String> queryList = new ArrayList<String>();
+		final ArrayList<String> queryList = new ArrayList<String>();
+		final ArrayList<String> selectionlist = new ArrayList<String>();
 		
 		if(query != null && query != "" && (tagname == null || tagname == "")) {
 			for(String s : queryBookmarks) {
-				queryList.add("(" + Bookmark.Tags + " LIKE '%" + s + "%' OR " +
-						Bookmark.Description + " LIKE '%" + s + "%' OR " +
-						Bookmark.Notes + " LIKE '%" + s + "%')");
+				queryList.add("(" + Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Description + " LIKE ? OR " +
+					Bookmark.Notes + " LIKE ?)");
+				selectionlist.add("%" + s + "%");
+				selectionlist.add("%" + s + "%");
+				selectionlist.add("%" + s + "%");
 			}
+			selectionlist.add(username);
 			
 			selection = TextUtils.join(" AND ", queryList) + " AND " +
 				Bookmark.Account + "=?";
 		} else if(query != null && query != ""){
 			for(String s : queryBookmarks) {
-				queryList.add("(" + Bookmark.Description + " LIKE '%" + s + "%' OR " +
-						Bookmark.Notes + " LIKE '%" + s + "%')");
+				queryList.add("(" + Bookmark.Description + " LIKE ? OR " +
+						Bookmark.Notes + " LIKE ?)");
+				
+				selectionlist.add("%" + s + "%");
+			 	selectionlist.add("%" + s + "%");
 			}
 
 			selection = TextUtils.join(" AND ", queryList) +
@@ -264,7 +273,14 @@ public class BookmarkManager {
 				Bookmark.Tags + " LIKE '% " + tagname + "' OR " +
 				Bookmark.Tags + " LIKE '" + tagname + " %' OR " +
 				Bookmark.Tags + " = '" + tagname + "')";
+			
+			selectionlist.add(username);
+		 	selectionlist.add("% " + tagname + " %");
+		 	selectionlist.add("% " + tagname);
+		 	selectionlist.add(tagname + " %");
+		 	selectionlist.add(tagname);
 		} else {
+			selectionlist.add(username);
 			selection = Bookmark.Account + "=?";
 		}
 		
@@ -272,7 +288,7 @@ public class BookmarkManager {
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		return context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionlist.toArray(new String[]{}), sortorder);
 	}
 	
 
