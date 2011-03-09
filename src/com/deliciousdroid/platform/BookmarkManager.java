@@ -37,12 +37,11 @@ import android.util.Log;
 
 public class BookmarkManager {
 	
-	public static ArrayList<Bookmark> GetBookmarks(String username, String tagname, Context context){
+	public static Cursor GetBookmarks(String username, String tagname, Context context){
 		return GetBookmarks(username, tagname, Bookmark.Time + " DESC", context);
 	}
 	
-	public static ArrayList<Bookmark> GetBookmarks(String username, String tagname, String sortorder, Context context){
-		ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+	public static Cursor GetBookmarks(String username, String tagname, String sortorder, Context context){
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
@@ -60,28 +59,7 @@ public class BookmarkManager {
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		Cursor c = context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			int idColumn = c.getColumnIndex(Bookmark._ID);
-			int urlColumn = c.getColumnIndex(Bookmark.Url);
-			int descriptionColumn = c.getColumnIndex(Bookmark.Description);
-			int tagsColumn = c.getColumnIndex(Bookmark.Tags);
-			int metaColumn = c.getColumnIndex(Bookmark.Meta);
-			
-			do {
-				
-				Bookmark b = new Bookmark(c.getInt(idColumn), "", c.getString(urlColumn), 
-						c.getString(descriptionColumn), "", c.getString(tagsColumn), "", 
-						c.getString(metaColumn), 0);
-				
-				bookmarkList.add(b);
-				
-			} while(c.moveToNext());
-				
-		}
-		c.close();
-		return bookmarkList;
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);
 	}
 	
 	public static Bookmark GetById(int id, Context context) throws ContentNotFoundException {		
@@ -254,8 +232,7 @@ public class BookmarkManager {
 		context.getContentResolver().delete(Bookmark.CONTENT_URI, selection, selectionargs);
 	}
 	
-	public static ArrayList<Bookmark> SearchBookmarks(String query, String tagname, String username, Context context) {
-		ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+	public static Cursor SearchBookmarks(String query, String tagname, String username, Context context) {
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
@@ -295,27 +272,27 @@ public class BookmarkManager {
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		Cursor c = context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			int idColumn = c.getColumnIndex(Bookmark._ID);
-			int urlColumn = c.getColumnIndex(Bookmark.Url);
-			int descriptionColumn = c.getColumnIndex(Bookmark.Description);
-			int tagsColumn = c.getColumnIndex(Bookmark.Tags);
-			int metaColumn = c.getColumnIndex(Bookmark.Meta);
-			
-			do {
-				
-				Bookmark b = new Bookmark(c.getInt(idColumn), "", c.getString(urlColumn), 
-						c.getString(descriptionColumn), "", c.getString(tagsColumn), "", 
-						c.getString(metaColumn), 0);
-				
-				bookmarkList.add(b);
-				
-			} while(c.moveToNext());
-				
-		}
-		c.close();
-		return bookmarkList;
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);
+	}
+	
+
+	public static Bookmark CursorToBookmark(Cursor c) {
+		Bookmark b = new Bookmark();
+		b.setId(c.getInt(c.getColumnIndex(Bookmark._ID)));
+		b.setDescription(c.getString(c.getColumnIndex(Bookmark.Description)));
+		b.setUrl(c.getString(c.getColumnIndex(Bookmark.Url)));
+		b.setMeta(c.getString(c.getColumnIndex(Bookmark.Meta)));
+		b.setTagString(c.getString(c.getColumnIndex(Bookmark.Tags)));
+
+		if(c.getColumnIndex(Bookmark.Account) != -1)
+			b.setAccount(c.getString(c.getColumnIndex(Bookmark.Account)));
+
+		if(c.getColumnIndex(Bookmark.Notes) != -1)
+			b.setNotes(c.getString(c.getColumnIndex(Bookmark.Notes)));
+
+		if(c.getColumnIndex(Bookmark.Time) != -1)
+			b.setTime(c.getLong(c.getColumnIndex(Bookmark.Time)));
+
+		return b;
 	}
 }

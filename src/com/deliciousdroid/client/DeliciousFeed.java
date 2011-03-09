@@ -39,6 +39,8 @@ import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
 
 import android.accounts.Account;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.util.Log;
 
 public class DeliciousFeed {
@@ -141,12 +143,13 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Tag> fetchFriendTags(String username) 
+    public static Cursor fetchFriendTags(String username) 
     	throws JSONException, IOException, AuthenticationException {
     	
         final HttpGet post = new HttpGet(FETCH_TAGS_URI + username + "?count=100");
         
-        final ArrayList<Tag> tagList = new ArrayList<Tag>();
+        final MatrixCursor tagCursor = new MatrixCursor(new String[] {Tag._ID, Tag.Name, 
+    	        Tag.Count});
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
         final String response = EntityUtils.toString(resp.getEntity());
@@ -157,8 +160,8 @@ public class DeliciousFeed {
             Iterator<?> i = tags.keys();
             while(i.hasNext()){
             	Object e = i.next();
-            	Log.d("tag", e.toString());
-            	tagList.add(new Tag(e.toString(), tags.getInt(e.toString())));
+            	
+            	tagCursor.addRow(new Object[]{0, e.toString(), tags.getInt(e.toString())});
             }
             
             Log.d(TAG, response);
@@ -172,7 +175,7 @@ public class DeliciousFeed {
                 throw new IOException();
             }
         }
-        return tagList;
+        return tagCursor;
     }
     
     /**
@@ -187,7 +190,7 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Bookmark> fetchFriendBookmarks(String username, String tagName, int limit)
+    public static Cursor fetchFriendBookmarks(String username, String tagName, int limit)
     	throws JSONException, IOException, AuthenticationException {
     	
     	String url = FETCH_FRIEND_BOOKMARKS_URI + username;
@@ -198,7 +201,9 @@ public class DeliciousFeed {
     	
         final HttpGet post = new HttpGet(url);
         
-        final ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
+    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
+            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
         final String response = EntityUtils.toString(resp.getEntity());
@@ -206,10 +211,12 @@ public class DeliciousFeed {
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 
             final JSONArray bookmarks = new JSONArray(response);
-            Log.d(TAG, response);
             
             for (int i = 0; i < bookmarks.length(); i++) {
-                bookmarkList.add(Bookmark.valueOf(bookmarks.getJSONObject(i)));
+            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
+            	
+                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
+                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
             }
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
@@ -220,7 +227,7 @@ public class DeliciousFeed {
                 throw new IOException();
             }
         }
-        return bookmarkList;
+        return bookmarkCursor;
     }
     
     /**
@@ -234,12 +241,14 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Bookmark> fetchNetworkRecent(String userName, int limit)
+    public static Cursor fetchNetworkRecent(String userName, int limit)
     	throws JSONException, IOException, AuthenticationException {
 
         final HttpGet post = new HttpGet(FETCH_NETWORK_RECENT_BOOKMARKS_URI + userName + "?count=" + limit);
         
-        final ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
+	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
+        	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
         final String response = EntityUtils.toString(resp.getEntity());
@@ -247,10 +256,12 @@ public class DeliciousFeed {
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 
             final JSONArray bookmarks = new JSONArray(response);
-            Log.d(TAG, response);
             
             for (int i = 0; i < bookmarks.length(); i++) {
-                bookmarkList.add(Bookmark.valueOf(bookmarks.getJSONObject(i)));
+            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
+            	
+                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
+                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
             }
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
@@ -262,7 +273,7 @@ public class DeliciousFeed {
             }
         }
 
-        return bookmarkList;
+        return bookmarkCursor;
     }
     
     /**
@@ -275,12 +286,14 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Bookmark> fetchHotlist(int limit)
+    public static Cursor fetchHotlist(int limit)
     	throws JSONException, IOException, AuthenticationException {
 
         final HttpGet post = new HttpGet(FETCH_HOTLIST_BOOKMARKS_URI + "?count=" + limit);
         
-        final ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
+    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
+            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
         final String response = EntityUtils.toString(resp.getEntity());
@@ -291,7 +304,10 @@ public class DeliciousFeed {
             Log.d(TAG, response);
             
             for (int i = 0; i < bookmarks.length(); i++) {
-                bookmarkList.add(Bookmark.valueOf(bookmarks.getJSONObject(i)));
+            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
+            	
+                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
+                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
             }
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
@@ -303,7 +319,7 @@ public class DeliciousFeed {
             }
         }
 
-        return bookmarkList;
+        return bookmarkCursor;
     }
     
     /**
@@ -316,12 +332,14 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Bookmark> fetchPopular(int limit)
+    public static Cursor fetchPopular(int limit)
     	throws JSONException, IOException, AuthenticationException {
 
         final HttpGet post = new HttpGet(FETCH_POPULAR_BOOKMARKS_URI + "?count=" + limit);
         
-        final ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
+    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
+            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
         final String response = EntityUtils.toString(resp.getEntity());
@@ -332,7 +350,10 @@ public class DeliciousFeed {
             Log.d(TAG, response);
             
             for (int i = 0; i < bookmarks.length(); i++) {
-                bookmarkList.add(Bookmark.valueOf(bookmarks.getJSONObject(i)));
+            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
+            	
+                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
+                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
             }
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
@@ -344,6 +365,6 @@ public class DeliciousFeed {
             }
         }
 
-        return bookmarkList;
+        return bookmarkCursor;
     }
 }

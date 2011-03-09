@@ -22,7 +22,6 @@
 package com.deliciousdroid.activity;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.http.ParseException;
 import org.apache.http.auth.AuthenticationException;
@@ -33,7 +32,6 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.action.BookmarkTaskArgs;
 import com.deliciousdroid.action.DeleteBookmarkTask;
 import com.deliciousdroid.client.DeliciousFeed;
-import com.deliciousdroid.listadapter.BookmarkListAdapter;
 import com.deliciousdroid.platform.BookmarkManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
@@ -41,6 +39,7 @@ import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,6 +56,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleCursorAdapter;
 
 public class BrowseBookmarks extends AppBaseListActivity {
 	
@@ -71,26 +71,14 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	
 	private String sortfield = Bookmark.Time + " DESC";
 	
-	private ArrayList<Bookmark> bookmarkList;
-	
 	private String tagname = null;
-	
-	private boolean loaded = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browse_bookmarks);
 		
-		if(mAccount != null) {
-			
-			bookmarkList = new ArrayList<Bookmark>();
-			
-			final ArrayList<Bookmark> prevData = (ArrayList<Bookmark>) getLastNonConfigurationInstance();
-			if(prevData != null) {
-				bookmarkList = prevData;
-			}
-			
+		if(mAccount != null) {		
 			Intent intent = getIntent();
 	
 			Uri data = intent.getData();
@@ -118,11 +106,14 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	    		setTitle("Bookmark Search Results For \"" + query + "\"");
 	    		
 	    		if(isMyself()) {
-	    			if(bookmarkList.isEmpty()) {
-	    				bookmarkList = BookmarkManager.SearchBookmarks(query, tagname, username, this);
-	    			}
+	    			Cursor c = BookmarkManager.SearchBookmarks(query, tagname, username, this);
+	    			startManagingCursor(c);
+
+	    			SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
+	    				new String[]{Bookmark.Description, Bookmark.Tags}, 
+	    				new int[]{R.id.bookmark_description, R.id.bookmark_tags});
 	    		
-	    			setListAdapter(new BookmarkListAdapter(this, R.layout.bookmark_view, bookmarkList));
+	    			setListAdapter(a);
 	    		}
 	    		
 	    	} else if(!data.getScheme().equals("content")) {
@@ -138,10 +129,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
 					setTitle("My Bookmarks");
 				}
 				
-				if(bookmarkList.isEmpty()) {
-					loadBookmarkList();
-				}
-				loaded = true;
+				loadBookmarkList();
 			} else if(username.equals("network")){
 				try{
 					setTitle("My Network's Recent Bookmarks");
@@ -185,7 +173,8 @@ public class BrowseBookmarks extends AppBaseListActivity {
 		
 			lv.setOnItemClickListener(new OnItemClickListener() {
 			    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			    	Bookmark b = (Bookmark)lv.getItemAtPosition(position);
+					final Cursor c = (Cursor)lv.getItemAtPosition(position);
+					Bookmark b = BookmarkManager.CursorToBookmark(c);
 	
 			    	if(defaultAction.equals("view")) {
 			    		viewBookmark(b);
@@ -213,19 +202,12 @@ public class BrowseBookmarks extends AppBaseListActivity {
 			});
 		}
 	}
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		if(loaded) {
-			refreshBookmarkList();
-		}
-	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem aItem) {
 		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) aItem.getMenuInfo();
-		final Bookmark b = (Bookmark)lv.getItemAtPosition(menuInfo.position);
+		final Cursor c = (Cursor)lv.getItemAtPosition(menuInfo.position);
+		Bookmark b = BookmarkManager.CursorToBookmark(c);
 		
 		switch (aItem.getItemId()) {
 			case 0:
@@ -251,10 +233,6 @@ public class BrowseBookmarks extends AppBaseListActivity {
 			case 3:
 				BookmarkTaskArgs args = new BookmarkTaskArgs(b, mAccount, mContext);	
 				new DeleteBookmarkTask().execute(args);
-				
-				BookmarkListAdapter bla = (BookmarkListAdapter) lv.getAdapter();
-				bla.remove(b);
-				bla.notifyDataSetChanged();
 				return true;
 				
 			case 4:				
@@ -337,20 +315,14 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	}
 	
 	private void loadBookmarkList() {
-		bookmarkList = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
+		Cursor c = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
+		startManagingCursor(c);
 		
-		setListAdapter(new BookmarkListAdapter(this, R.layout.bookmark_view, bookmarkList));
-		((BookmarkListAdapter)getListAdapter()).notifyDataSetChanged();
-	}
-	
-	private void refreshBookmarkList() {
-		bookmarkList = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
-		BookmarkListAdapter adapter = (BookmarkListAdapter)getListAdapter();
+		SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
+				new String[]{Bookmark.Description, Bookmark.Tags}, 
+				new int[]{R.id.bookmark_description, R.id.bookmark_tags});
 		
-		if(adapter != null) {
-			adapter.update(bookmarkList);
-			adapter.notifyDataSetChanged();
-		}
+		setListAdapter(a);
 	}
 	
 	private void openBookmarkInBrowser(Bookmark b) {
@@ -392,15 +364,11 @@ public class BrowseBookmarks extends AppBaseListActivity {
 		startActivity(viewBookmark);
 	}
 	
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return bookmarkList;
-	}
-	
     public class LoadBookmarkFeedTask extends AsyncTask<String, Integer, Boolean>{
     	private String user;
     	private String tag = null;
     	private ProgressDialog progress;
+    	private Cursor c;
     	
     	protected void onPreExecute() {
     		progress = new ProgressDialog(mContext);
@@ -420,16 +388,14 @@ public class BrowseBookmarks extends AppBaseListActivity {
     		boolean result = false;
     		
 			try {
-				if(bookmarkList.isEmpty()) {
-					if(user.equals("network")) {
-						bookmarkList = DeliciousFeed.fetchNetworkRecent(mAccount.name, Integer.parseInt(bookmarkLimit));
-					} else if(user.equals("hotlist")) {
-						bookmarkList = DeliciousFeed.fetchHotlist(Integer.parseInt(bookmarkLimit));
-					} else if(user.equals("popular")) {
-						bookmarkList = DeliciousFeed.fetchPopular(Integer.parseInt(bookmarkLimit));
-					}  else {
-						bookmarkList = DeliciousFeed.fetchFriendBookmarks(user, tag, Integer.parseInt(bookmarkLimit));
-					}
+				if(user.equals("network")) {
+					c = DeliciousFeed.fetchNetworkRecent(mAccount.name, Integer.parseInt(bookmarkLimit));
+				} else if(user.equals("hotlist")) {
+					c = DeliciousFeed.fetchHotlist(Integer.parseInt(bookmarkLimit));
+				} else if(user.equals("popular")) {
+					c = DeliciousFeed.fetchPopular(Integer.parseInt(bookmarkLimit));
+				}  else {
+					c = DeliciousFeed.fetchFriendBookmarks(user, tag, Integer.parseInt(bookmarkLimit));
 				}
 				result = true;
 			} catch (AuthenticationException e) {
@@ -449,7 +415,13 @@ public class BrowseBookmarks extends AppBaseListActivity {
         	progress.dismiss();
         	
         	if(result) {
-        		setListAdapter(new BookmarkListAdapter(mContext, R.layout.bookmark_view, bookmarkList));
+        		startManagingCursor(c);
+        		
+        		SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
+	        		new String[]{Bookmark.Description, Bookmark.Tags}, 
+	        		new int[]{R.id.bookmark_description, R.id.bookmark_tags});
+        		
+        		setListAdapter(a);
         	}
         }
     }
