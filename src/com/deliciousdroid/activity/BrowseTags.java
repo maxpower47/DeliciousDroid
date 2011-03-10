@@ -44,11 +44,6 @@ public class BrowseTags extends AppBaseListActivity {
 		
 	private String sortfield = Tag.Name + " ASC";
 	
-	private final int sortNameAsc = 99999991;
-	private final int sortNameDesc = 99999992;
-	private final int sortCountAsc = 99999993;
-	private final int sortCountDesc = 99999994;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -156,12 +151,7 @@ public class BrowseTags extends AppBaseListActivity {
 		boolean result = super.onCreateOptionsMenu(menu);
 		
 		if(result && isMyself()) {
-		    SubMenu sortmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, 1, R.string.menu_sort_title);
-		    sortmenu.setIcon(R.drawable.ic_menu_sort_alphabetically);
-		    sortmenu.add(Menu.NONE, sortNameAsc, 0, "Name (A-Z)");
-		    sortmenu.add(Menu.NONE, sortNameDesc, 1, "Name (Z-A)");
-		    sortmenu.add(Menu.NONE, sortCountAsc, 2, "Count (Least First)");
-		    sortmenu.add(Menu.NONE, sortCountDesc, 3, "Count (Most First)");
+		    getMenuInflater().inflate(R.menu.browse_tag_menu, menu);
 		}
 		
 	    return result;
@@ -173,19 +163,19 @@ public class BrowseTags extends AppBaseListActivity {
 		boolean result = false;
 		
 	    switch (item.getItemId()) {
-		    case sortNameAsc:
+		    case R.id.menu_tag_sort_name_asc:
 		    	sortfield = Tag.Name + " ASC";
 				result = true;
 				break;
-		    case sortNameDesc:			
+		    case R.id.menu_tag_sort_name_desc:			
 		    	sortfield = Tag.Name + " DESC";
 		    	result = true;
 		    	break;
-		    case sortCountAsc:			
+		    case R.id.menu_tag_sort_count_asc:			
 		    	sortfield = Tag.Count + " ASC";
 		    	result = true;
 		    	break;
-		    case sortCountDesc:			
+		    case R.id.menu_tag_sort_count_desc:			
 		    	sortfield = Tag.Count + " DESC";
 		    	result = true;
 		    	break;

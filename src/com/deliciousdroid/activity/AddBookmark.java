@@ -52,7 +52,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
@@ -201,11 +200,6 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
         	finish();
         }
     }
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    return true;
-	}
     
     TagSpan.OnTagClickListener tagOnClickListener = new TagSpan.OnTagClickListener() {
         public void onTagClick(String tag) {

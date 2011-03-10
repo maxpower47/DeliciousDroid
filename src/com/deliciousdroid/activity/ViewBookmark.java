@@ -41,7 +41,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -163,8 +162,8 @@ public class ViewBookmark extends AppBaseActivity{
     
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.view_menu, menu);
+		super.onCreateOptionsMenu(menu);
+	    getMenuInflater().inflate(R.menu.view_menu, menu);
 	    return true;
 	}
 	
@@ -204,10 +203,6 @@ public class ViewBookmark extends AppBaseActivity{
 				BookmarkTaskArgs args = new BookmarkTaskArgs(bookmark, mAccount, this);	
 				new DeleteBookmarkTask().execute(args);
 				return true;	
-		    case R.id.menu_view_settings:
-				Intent prefs = new Intent(this, Preferences.class);
-				startActivity(prefs);
-		        return true;
 		    default:
 		        return super.onOptionsItemSelected(item);
 	    }

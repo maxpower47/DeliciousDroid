@@ -83,9 +83,21 @@
     <string name="menu_sort_title">Sort</string>
     <string name="menu_search_title">Search</string>
     <string name="menu_settings_title">Settings</string>
-    <string name="menu_view_openbookmark_title">Open in browser</string>
-    <string name="menu_view_editbookmark_title">Edit</string>
-    <string name="menu_view_deletebookmark_title">Delete</string>
+    
+    <string name="bookmark_context_open">Open in browser</string>
+    <string name="bookmark_context_view">View Details</string>
+    <string name="bookmark_context_read">Read</string>
+    <string name="bookmark_context_edit">Edit</string>
+    <string name="bookmark_context_delete">Delete</string>
+    <string name="bookmark_context_share">Share</string>
+    <string name="bookmark_context_add">Add</string>
+    
+    <string name="bookmark_sort_date_asc">Date (Oldest First)</string>
+    <string name="bookmark_sort_date_desc">Date (Newest First)</string>
+    <string name="bookmark_sort_description_asc">Description (A-Z)</string>
+    <string name="bookmark_sort_description_desc">Description (Z-A)</string>
+    <string name="bookmark_sort_url_asc">Url (A-Z)</string>
+    <string name="bookmark_sort_url_desc">Url (Z-A)</string>
     
     <string name="add_button_save">Save</string>
     <string name="add_button_cancel">Cancel</string>
@@ -104,6 +116,11 @@
     <string name="tag_search_label">Delicious Tags</string>
     <string name="tag_search_hint">Tags</string>
     
+    <string name="tag_sort_name_asc">Name (A-Z)</string>
+    <string name="tag_sort_name_desc">Name (Z-A)</string>
+    <string name="tag_sort_count_asc">Count (Least First)</string>
+    <string name="tag_sort_count_desc">Count (Most First)</string>
+    
     <string name="bookmark_search_label">Delicious Bookmarks</string>
     <string name="bookmark_search_hint">Tags, Titles, Notes</string>
     
@@ -117,6 +134,12 @@
     <string name="view_bookmark_tags_title">Tags</string>
     <string name="view_bookmark_time_title">Saved on</string>
     <string name="view_bookmark_account_title">By</string>
+    
+    <string name="menu_view_read_title">Read</string>
+    <string name="menu_view_openbookmark_title">Open in browser</string>
+    <string name="menu_view_editbookmark_title">Edit</string>
+    <string name="menu_view_deletebookmark_title">Delete</string>
+    <string name="menu_view_sendbookmark_title">Share</string>
     
     <string name="pref_cat_general_title">General Settings</string>
     <string name="pref_cat_sync_title">Sync Settings</string>
