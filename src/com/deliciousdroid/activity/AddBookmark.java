@@ -54,6 +54,9 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
@@ -63,7 +66,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddBookmark extends AppBaseActivity implements View.OnClickListener{
+public class AddBookmark extends AppBaseActivity{
 
 	private EditText mEditUrl;
 	private EditText mEditDescription;
@@ -77,8 +80,6 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 	private TextView mNetworkTags;
 	private ProgressBar mNetworkProgress;
 	private CheckBox mPrivate;
-	private Button mButtonSave;
-	private Button mButtonCancel;
 	private Bookmark bookmark;
 	Thread background;
 	private Boolean update = false;
@@ -105,8 +106,6 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 		mNetworkTags = (TextView) findViewById(R.id.add_network_tags);
 		mNetworkProgress = (ProgressBar) findViewById(R.id.add_network_tags_progress);
 		mPrivate = (CheckBox) findViewById(R.id.add_edit_private);
-		mButtonSave = (Button) findViewById(R.id.add_button_save);
-		mButtonCancel = (Button) findViewById(R.id.add_button_cancel);
 		
 		mRecommendedTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mPopularTags.setMovementMethod(LinkMovementMethod.getInstance());
@@ -200,9 +199,14 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 				}
 			}
 		});
+	}
+	
+	public void saveHandler(View v) {
+		save();
+	}
 
-		mButtonSave.setOnClickListener(this);
-		mButtonCancel.setOnClickListener(this);
+	public void cancelHandler(View v) {
+    	finish();
 	}
 	
     public void save() {
@@ -231,16 +235,32 @@ public class AddBookmark extends AppBaseActivity implements View.OnClickListener
 		new AddBookmarkTask().execute(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void onClick(View v) {
-        if (v == mButtonSave) {
-            save();
-        } else if(v == mButtonCancel) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean result = super.onCreateOptionsMenu(menu);
+	    MenuInflater inflater = getMenuInflater();
+
+		if(result && isMyself()) {
+			inflater.inflate(R.menu.add_bookmark_menu, menu);
+		}
+
+	    return result;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.menu_addbookmark_save:
+	    	save();
+			return true;
+	    case R.id.menu_addbookmark_cancel:       	
         	finish();
-        }
-    }
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
     
     TagSpan.OnTagClickListener tagOnClickListener = new TagSpan.OnTagClickListener() {
         public void onTagClick(String tag) {

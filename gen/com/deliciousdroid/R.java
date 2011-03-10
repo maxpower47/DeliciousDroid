@@ -334,6 +334,9 @@ public final class R {
         public static final int view_profile=0x7f070017;
     }
     public static final class style {
+        public static final int ActionBar=0x7f08000e;
+        public static final int ActionBar_Light=0x7f08000f;
+        public static final int ActionBar_Light_Title=0x7f080010;
         public static final int AddBookmarkButton=0x7f080005;
         public static final int AddBookmarkButtonBar=0x7f080006;
         public static final int AddBookmarkFieldEdit=0x7f080004;
@@ -343,6 +346,7 @@ public final class R {
         public static final int LoginButtonFrame=0x7f080009;
         public static final int LoginFrame=0x7f080007;
         public static final int LoginMessage=0x7f080008;
+        public static final int ThemeSelector=0x7f08000d;
         public static final int ViewBookmarkFieldContent=0x7f080002;
         public static final int ViewBookmarkFieldTitle=0x7f080001;
         public static final int WidgetButton=0x7f08000b;
