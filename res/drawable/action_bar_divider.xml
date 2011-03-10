@@ -21,9 +21,7 @@
  * USA
  */
  -->
-<searchable	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:label="@string/bookmark_search_label"
-	android:hint="@string/bookmark_search_hint"
-	android:searchSuggestAuthority="com.deliciousdroid.providers.BookmarkContentProvider"
-	android:searchSuggestIntentAction="android.intent.action.VIEW"
-	android:searchSuggestPath="bookmark" />
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="rectangle">
+	<solid android:color="#FDDD" />
+</shape>

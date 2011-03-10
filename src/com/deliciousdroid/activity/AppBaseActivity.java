@@ -43,6 +43,8 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AppBaseActivity extends Activity {
@@ -110,6 +112,10 @@ public class AppBaseActivity extends Activity {
 		username = mAccount.name;
 	}
 	
+	public void searchHandler(View v) {
+		onSearchRequested();
+	}
+	
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -166,5 +172,13 @@ public class AppBaseActivity extends Activity {
 		if(mAccount != null && username != null)
 			return mAccount.name.equals(username);
 		else return false;
+	}
+	
+	@Override
+	public void setTitle(CharSequence title){
+		super.setTitle(title);
+		if(this.findViewById(R.id.action_bar_title) != null) {
+			((TextView)this.findViewById(R.id.action_bar_title)).setText(title);
+		}
 	}
 }

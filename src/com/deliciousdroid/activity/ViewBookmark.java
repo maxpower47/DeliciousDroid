@@ -34,10 +34,12 @@ import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.ContentNotFoundException;
 import com.deliciousdroid.ui.TagSpan;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +55,6 @@ public class ViewBookmark extends AppBaseActivity{
 	private TextView mTime;
 	private TextView mUsername;
 	private Bookmark bookmark;
-	private Boolean myself;
 	
 	private String path;
 	private Uri data;
@@ -74,20 +75,63 @@ public class ViewBookmark extends AppBaseActivity{
 		
 		mTags.setMovementMethod(LinkMovementMethod.getInstance());
 		
-		Log.d("browse bookmarks", getIntent().getDataString());
-		data = getIntent().getData();
-		path = data.getPath();
-		Log.d("path", path);
+		Intent intent = getIntent();
 		
-		String username = data.getUserInfo();
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+			if(intent.hasExtra(SearchManager.QUERY)){
+				Intent i = new Intent(mContext, MainSearchResults.class);
+				i.putExtras(intent.getExtras());
+				startActivity(i);
+				finish();
+			} else {
+				onSearchRequested();
+			}
+		} else if(Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri data = intent.getData();
+			String path = null;
+			String tagname = null;
+
+			if(data != null) {
+				path = data.getPath();
+				tagname = data.getQueryParameter("tagname");
+			}
+
+			if(data.getScheme() == null || !data.getScheme().equals("content")){
+				Intent i = new Intent(Intent.ACTION_VIEW, data);
+
+				startActivity(i);
+				finish();        
+			} else if(path.contains("bookmarks") && TextUtils.isDigitsOnly(data.getLastPathSegment())) {
+				Intent viewBookmark = new Intent(this, ViewBookmark.class);
+				viewBookmark.setData(data);
+
+				Log.d("View Bookmark Uri", data.toString());
+				startActivity(viewBookmark);
+				finish();
+			} else if(tagname != null) {
+				Intent viewTags = new Intent(this, BrowseBookmarks.class);
+				viewTags.setData(data);
+
+				Log.d("View Tags Uri", data.toString());
+				startActivity(viewTags);
+				finish();
+			}
+		} 
 		
-		myself = mAccount.name.equals(username);
+		if(intent.getData() != null){
+			data = intent.getData();
+			path = data.getPath();
+
+			username = data.getUserInfo();
+		}
+		
+
 	}
 	@Override
 	public void onResume() {
 		super.onResume();
 	
-		if(path.contains("/bookmarks") && myself){
+		if(path.contains("/bookmarks") && isMyself()){
 			
 			try{		
 				int id = Integer.parseInt(data.getLastPathSegment());
@@ -111,7 +155,7 @@ public class ViewBookmark extends AppBaseActivity{
         		mTags.setText(tagBuilder);
 			}
 			catch(ContentNotFoundException e){}
-		} else if(path.contains("/bookmarks") && !myself) {
+		} else if(path.contains("/bookmarks") && !isMyself()) {
 			Date d = new Date(Long.parseLong(data.getQueryParameter("time")));
 			
 			mTitle.setText(data.getQueryParameter("title"));
@@ -169,7 +213,7 @@ public class ViewBookmark extends AppBaseActivity{
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if(!myself) {
+		if(!isMyself()) {
 			menu.removeItem(R.id.menu_view_editbookmark);
 			menu.removeItem(R.id.menu_view_deletebookmark);
 		}

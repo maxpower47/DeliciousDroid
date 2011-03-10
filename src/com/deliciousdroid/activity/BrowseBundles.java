@@ -37,6 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.*;
 
 public class BrowseBundles extends AppBaseListActivity {
@@ -49,7 +50,7 @@ public class BrowseBundles extends AppBaseListActivity {
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.browse_tags);
+		setContentView(R.layout.browse_bundles);
 		
 		if(mAccount != null) {
 			
@@ -71,17 +72,46 @@ public class BrowseBundles extends AppBaseListActivity {
 				finish();			
 				
 			} else if(Intent.ACTION_SEARCH.equals(action)) {
-	  		
-	    		String query = intent.getStringExtra(SearchManager.QUERY);
-	    		
-	    		setTitle("Bundle Search Results For \"" + query + "\"");
-	    		
-	    		Cursor c = BundleManager.SearchBundles(query, username, this);
-	    		startManagingCursor(c);
-	    		
-	    		setListAdapter(new SimpleCursorAdapter(this, R.layout.bundle_view, c, new String[] {Bundle.Name}, new int[] {R.id.bundle_name}));
-	    		
-	    	} else if(mAccount.name.equals(username)){
+				if(intent.hasExtra(SearchManager.QUERY)){
+					Intent i = new Intent(mContext, MainSearchResults.class);
+					i.putExtras(intent.getExtras());
+					startActivity(i);
+					finish();
+				} else {
+					onSearchRequested();
+				}
+	    	}  else if(Intent.ACTION_VIEW.equals(action)) {
+				String path = null;
+				String tagname = null;
+
+				if(data != null) {
+					path = data.getPath();
+					tagname = data.getQueryParameter("tagname");
+				}
+
+				if(data.getScheme() == null || !data.getScheme().equals("content")){
+					Intent i = new Intent(Intent.ACTION_VIEW, data);
+
+					startActivity(i);
+					finish();        
+				} else if(path.contains("bookmarks") && TextUtils.isDigitsOnly(data.getLastPathSegment())) {
+					Intent viewBookmark = new Intent(this, ViewBookmark.class);
+					viewBookmark.setData(data);
+
+					Log.d("View Bookmark Uri", data.toString());
+					startActivity(viewBookmark);
+					finish();
+				} else if(tagname != null) {
+					Intent viewTags = new Intent(this, BrowseBookmarks.class);
+					viewTags.setData(data);
+
+					Log.d("View Tags Uri", data.toString());
+					startActivity(viewTags);
+					finish();
+				}
+			} 
+
+			if(mAccount.name.equals(username)){
 				try{
 					if(Intent.ACTION_VIEW.equals(action)) {
 						setTitle("My Bundles");

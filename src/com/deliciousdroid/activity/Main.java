@@ -45,6 +45,8 @@ public class Main extends AppBaseListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedState);
+		setContentView(R.layout.main);
+		
 		init();
 	}
 	

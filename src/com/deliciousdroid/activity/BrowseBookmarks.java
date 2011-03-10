@@ -247,7 +247,10 @@ public class BrowseBookmarks extends AppBaseListActivity {
 			contextData.putString("username", username);
 			startSearch(null, false, contextData, false);
 			return true;
-		} else return false;
+		} else {
+			startSearch(null, false, Bundle.EMPTY, false);
+			return true;
+		}
 	}
 	
 	@Override
