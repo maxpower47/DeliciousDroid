@@ -26,7 +26,6 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.platform.BundleManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.BundleContent.Bundle;
-import com.deliciousdroid.providers.TagContent.Tag;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -43,9 +42,6 @@ import android.view.*;
 public class BrowseBundles extends AppBaseListActivity {
 		
 	private String sortfield = Bundle.Name + " ASC";
-	
-	private final int sortNameAsc = 99999991;
-	private final int sortNameDesc = 99999992;
 	
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState){
@@ -170,10 +166,7 @@ public class BrowseBundles extends AppBaseListActivity {
 		boolean result = super.onCreateOptionsMenu(menu);
 		
 		if(result && isMyself()) {
-		    SubMenu sortmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, 1, R.string.menu_sort_title);
-		    sortmenu.setIcon(R.drawable.ic_menu_sort_alphabetically);
-		    sortmenu.add(Menu.NONE, sortNameAsc, 0, "Name (A-Z)");
-		    sortmenu.add(Menu.NONE, sortNameDesc, 1, "Name (Z-A)");
+		    getMenuInflater().inflate(R.menu.browse_bundle_menu, menu);
 		}
 		
 	    return result;
@@ -185,18 +178,24 @@ public class BrowseBundles extends AppBaseListActivity {
 		boolean result = false;
 		
 	    switch (item.getItemId()) {
-		    case sortNameAsc:
-		    	sortfield = Tag.Name + " ASC";
+		    case R.id.menu_createbundle:
+		    	
+		        Intent tagIntent = new Intent();
+		        tagIntent.setAction(Intent.ACTION_PICK);
+		        tagIntent.addCategory(Intent.CATEGORY_DEFAULT);
+				Uri.Builder data = new Uri.Builder();
+				data.scheme(Constants.CONTENT_SCHEME);
+				data.encodedAuthority(mAccount.name + "@" + BookmarkContentProvider.AUTHORITY);
+				data.appendEncodedPath("tags");
+				data.appendQueryParameter("bundle", "1");
+				tagIntent.setData(data.build());
+				startActivity(tagIntent);
+		    	
 				result = true;
 				break;
-		    case sortNameDesc:			
-		    	sortfield = Tag.Name + " DESC";
-		    	result = true;
-		    	break;
 	    }
 	    
 	    if(result) {
-	    	loadBundleList();
 	    } else result = super.onOptionsItemSelected(item);
 	    
 	    return result;

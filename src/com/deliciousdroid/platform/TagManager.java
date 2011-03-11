@@ -23,6 +23,7 @@ package com.deliciousdroid.platform;
 
 import java.util.ArrayList;
 
+import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
 
 import android.content.ContentResolver;
@@ -188,5 +189,11 @@ public class TagManager {
 		Uri tags = Tag.CONTENT_URI;
 		
 		return context.getContentResolver().query(tags, projection, selection, selectionlist.toArray(new String[]{}), sortorder);				
+	}
+	
+	public static Tag CursorToTag(Cursor c) {
+		Tag t = new Tag();
+		t.setTagName(c.getString(c.getColumnIndex(Tag.Name)));
+		return t;
 	}
 }

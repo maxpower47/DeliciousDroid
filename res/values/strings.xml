@@ -124,6 +124,9 @@
     <string name="bookmark_search_label">Delicious Bookmarks</string>
     <string name="bookmark_search_hint">Tags, Titles, Notes</string>
     
+    <string name="menu_create_bundle_title">Create Bundle</string>
+    <string name="menu_save_bundle_title">Save</string>
+    
     <string name="tag_search_text">Search Delicious</string>
     
     <string name="add_bookmark_success_msg">Bookmark Added Successfully</string>

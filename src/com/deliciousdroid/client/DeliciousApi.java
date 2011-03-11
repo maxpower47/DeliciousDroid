@@ -74,6 +74,7 @@ public class DeliciousApi {
     public static final String LAST_UPDATE_URI = "posts/update";
     public static final String DELETE_BOOKMARK_URI = "posts/delete";
     public static final String ADD_BOOKMARKS_URI = "posts/add";
+    public static final String CREATE_BUNDLE_URI = "tags/bundles/set";
   
     private static final String SCHEME = "https";
     private static final String SCHEME_HTTP = "http";
@@ -412,6 +413,51 @@ public class DeliciousApi {
 
         responseStream.close();
         return bundleList;
+    }
+    
+    /**
+     * Sends a request to Delicious's Create Bundle api.
+     * 
+     * @param name The bundle to add.
+     * @param account The account being synced.
+     * @param context The current application context.
+     * @return A boolean indicating whether or not the api call was successful.
+     * @throws IOException If a server error was encountered.
+     * @throws AuthenticationException If an authentication error was encountered.
+     * @throws TokenRejectedException If the oauth token is reported to be expired.
+     * @throws Exception If an unknown error is encountered.
+     */
+    public static Boolean createBundle(Bundle bundle, Account account, Context context) 
+    	throws Exception {
+    	
+    	TreeMap<String, String> params = new TreeMap<String, String>();
+    	  	
+		params.put("bundle", bundle.getName());
+		params.put("tags", bundle.getTagString());
+
+		
+		String uri = CREATE_BUNDLE_URI;
+		String response = null;
+		InputStream responseStream = null;
+
+    	responseStream = DeliciousApiCall(uri, params, account, context);
+        response = convertStreamToString(responseStream);
+        responseStream.close();
+
+        if (response.contains("<result>ok</result>")) {
+            return true;
+        } else {
+        	if(response.contains("<result code=\"something went wrong\" />")){
+                Log.e(TAG, "Server error in adding bookmark");
+                throw new IOException();
+            } else if(response.contains("token_expired")){
+            	Log.d(TAG, "Token Expired");
+            	throw new TokenRejectedException();
+            } else{
+            	Log.e(TAG, "Unknown error in adding bookmark");
+            	throw new Exception();
+            }
+        }
     }
     
     /**

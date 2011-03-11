@@ -108,7 +108,7 @@ public final class R {
         public static final int divider_btn_search=0x7f0a0002;
         public static final int include_action_bar=0x7f0a0003;
         public static final int main_menu_description=0x7f0a0026;
-        public static final int menu_addbookmark=0x7f0a004e;
+        public static final int menu_addbookmark=0x7f0a0050;
         public static final int menu_addbookmark_cancel=0x7f0a003c;
         public static final int menu_addbookmark_save=0x7f0a003b;
         public static final int menu_bookmark_context_add=0x7f0a003d;
@@ -122,17 +122,19 @@ public final class R {
         public static final int menu_bookmark_sort_description_desc=0x7f0a0046;
         public static final int menu_bookmark_sort_url_asc=0x7f0a0047;
         public static final int menu_bookmark_sort_url_desc=0x7f0a0048;
-        public static final int menu_search=0x7f0a0050;
-        public static final int menu_settings=0x7f0a004f;
+        public static final int menu_createbundle=0x7f0a0049;
+        public static final int menu_savebundle=0x7f0a004a;
+        public static final int menu_search=0x7f0a0052;
+        public static final int menu_settings=0x7f0a0051;
         public static final int menu_sortbookmark=0x7f0a0042;
-        public static final int menu_sorttag=0x7f0a0049;
-        public static final int menu_tag_sort_count_asc=0x7f0a004c;
-        public static final int menu_tag_sort_count_desc=0x7f0a004d;
-        public static final int menu_tag_sort_name_asc=0x7f0a004a;
-        public static final int menu_tag_sort_name_desc=0x7f0a004b;
-        public static final int menu_view_deletebookmark=0x7f0a0053;
-        public static final int menu_view_editbookmark=0x7f0a0052;
-        public static final int menu_view_openbookmark=0x7f0a0051;
+        public static final int menu_sorttag=0x7f0a004b;
+        public static final int menu_tag_sort_count_asc=0x7f0a004e;
+        public static final int menu_tag_sort_count_desc=0x7f0a004f;
+        public static final int menu_tag_sort_name_asc=0x7f0a004c;
+        public static final int menu_tag_sort_name_desc=0x7f0a004d;
+        public static final int menu_view_deletebookmark=0x7f0a0055;
+        public static final int menu_view_editbookmark=0x7f0a0054;
+        public static final int menu_view_openbookmark=0x7f0a0053;
         public static final int message=0x7f0a001d;
         public static final int message_bottom=0x7f0a0021;
         public static final int oauth_webview=0x7f0a0027;
@@ -184,13 +186,15 @@ public final class R {
         public static final int browse_bookmark_context_menu_other=0x7f090001;
         public static final int browse_bookmark_context_menu_self=0x7f090002;
         public static final int browse_bookmark_menu=0x7f090003;
-        public static final int browse_tag_menu=0x7f090004;
-        public static final int main_menu=0x7f090005;
-        public static final int view_menu=0x7f090006;
+        public static final int browse_bundle_menu=0x7f090004;
+        public static final int browse_tag_createbundle_menu=0x7f090005;
+        public static final int browse_tag_menu=0x7f090006;
+        public static final int main_menu=0x7f090007;
+        public static final int view_menu=0x7f090008;
     }
     public static final class string {
-        public static final int add_bookmark_error_msg=0x7f070041;
-        public static final int add_bookmark_success_msg=0x7f07003f;
+        public static final int add_bookmark_error_msg=0x7f070043;
+        public static final int add_bookmark_success_msg=0x7f070041;
         public static final int add_button_cancel=0x7f07002b;
         public static final int add_button_save=0x7f07002a;
         public static final int add_title_description=0x7f07002d;
@@ -221,11 +225,11 @@ public final class R {
         /**  Button to cancel the current operation 
          */
         public static final int cancel_button_label=0x7f070015;
-        public static final int dialog_no_account_text=0x7f07006a;
-        public static final int dialog_no_account_title=0x7f070069;
-        public static final int dialog_yahoo_not_linked_text=0x7f07006c;
-        public static final int dialog_yahoo_not_linked_title=0x7f07006b;
-        public static final int edit_bookmark_success_msg=0x7f070040;
+        public static final int dialog_no_account_text=0x7f07006c;
+        public static final int dialog_no_account_title=0x7f07006b;
+        public static final int dialog_yahoo_not_linked_text=0x7f07006e;
+        public static final int dialog_yahoo_not_linked_title=0x7f07006d;
+        public static final int edit_bookmark_success_msg=0x7f070042;
         /**  Label for this package 
          */
         public static final int label=0x7f070000;
@@ -258,14 +262,16 @@ public final class R {
         public static final int main_search_hint=0x7f070034;
         public static final int main_search_label=0x7f070033;
         public static final int menu_addbookmark_title=0x7f070019;
+        public static final int menu_create_bundle_title=0x7f07003e;
+        public static final int menu_save_bundle_title=0x7f07003f;
         public static final int menu_search_title=0x7f07001b;
         public static final int menu_settings_title=0x7f07001c;
         public static final int menu_sort_title=0x7f07001a;
-        public static final int menu_view_deletebookmark_title=0x7f070049;
-        public static final int menu_view_editbookmark_title=0x7f070048;
-        public static final int menu_view_openbookmark_title=0x7f070047;
-        public static final int menu_view_read_title=0x7f070046;
-        public static final int menu_view_sendbookmark_title=0x7f07004a;
+        public static final int menu_view_deletebookmark_title=0x7f07004b;
+        public static final int menu_view_editbookmark_title=0x7f07004a;
+        public static final int menu_view_openbookmark_title=0x7f070049;
+        public static final int menu_view_read_title=0x7f070048;
+        public static final int menu_view_sendbookmark_title=0x7f07004c;
         public static final int notification_login_error=0x7f070005;
         /**  Permission description 
          */
@@ -279,43 +285,43 @@ public final class R {
         /**  Permission label 
          */
         public static final int permlab_samplesyncadapterAuthPassword=0x7f070001;
-        public static final int pref_cat_general_title=0x7f07004b;
-        public static final int pref_cat_help_title=0x7f07004d;
-        public static final int pref_cat_sync_title=0x7f07004c;
-        public static final int pref_contact_bookamrk_results_summary=0x7f070059;
-        public static final int pref_contact_bookmark_results_key=0x7f070058;
-        public static final int pref_contact_bookmark_results_title=0x7f070057;
-        public static final int pref_donate_key=0x7f070067;
-        public static final int pref_donate_summary=0x7f070068;
-        public static final int pref_donate_title=0x7f070066;
-        public static final int pref_forcesync_key=0x7f07005e;
-        public static final int pref_forcesync_summary=0x7f07005f;
-        public static final int pref_forcesync_title=0x7f07005d;
-        public static final int pref_help_key=0x7f070064;
-        public static final int pref_help_summary=0x7f070065;
-        public static final int pref_help_title=0x7f070063;
-        public static final int pref_license_key=0x7f070061;
-        public static final int pref_license_summary=0x7f070062;
-        public static final int pref_license_title=0x7f070060;
-        public static final int pref_notification_key=0x7f070052;
-        public static final int pref_notification_summary=0x7f070053;
-        public static final int pref_notification_title=0x7f070051;
-        public static final int pref_searchicons_key=0x7f07005b;
-        public static final int pref_searchicons_summary=0x7f07005c;
-        public static final int pref_searchicons_title=0x7f07005a;
-        public static final int pref_synctime_key=0x7f07004f;
-        public static final int pref_synctime_summary=0x7f070050;
-        public static final int pref_synctime_title=0x7f07004e;
-        public static final int pref_view_bookmark_default_action_key=0x7f070055;
-        public static final int pref_view_bookmark_default_action_summary=0x7f070056;
-        public static final int pref_view_bookmark_default_action_title=0x7f070054;
+        public static final int pref_cat_general_title=0x7f07004d;
+        public static final int pref_cat_help_title=0x7f07004f;
+        public static final int pref_cat_sync_title=0x7f07004e;
+        public static final int pref_contact_bookamrk_results_summary=0x7f07005b;
+        public static final int pref_contact_bookmark_results_key=0x7f07005a;
+        public static final int pref_contact_bookmark_results_title=0x7f070059;
+        public static final int pref_donate_key=0x7f070069;
+        public static final int pref_donate_summary=0x7f07006a;
+        public static final int pref_donate_title=0x7f070068;
+        public static final int pref_forcesync_key=0x7f070060;
+        public static final int pref_forcesync_summary=0x7f070061;
+        public static final int pref_forcesync_title=0x7f07005f;
+        public static final int pref_help_key=0x7f070066;
+        public static final int pref_help_summary=0x7f070067;
+        public static final int pref_help_title=0x7f070065;
+        public static final int pref_license_key=0x7f070063;
+        public static final int pref_license_summary=0x7f070064;
+        public static final int pref_license_title=0x7f070062;
+        public static final int pref_notification_key=0x7f070054;
+        public static final int pref_notification_summary=0x7f070055;
+        public static final int pref_notification_title=0x7f070053;
+        public static final int pref_searchicons_key=0x7f07005d;
+        public static final int pref_searchicons_summary=0x7f07005e;
+        public static final int pref_searchicons_title=0x7f07005c;
+        public static final int pref_synctime_key=0x7f070051;
+        public static final int pref_synctime_summary=0x7f070052;
+        public static final int pref_synctime_title=0x7f070050;
+        public static final int pref_view_bookmark_default_action_key=0x7f070057;
+        public static final int pref_view_bookmark_default_action_summary=0x7f070058;
+        public static final int pref_view_bookmark_default_action_title=0x7f070056;
         public static final int profile_action=0x7f070016;
         /**  Button that takes the user to the "sign in" screen 
          */
         public static final int sign_in_button_label=0x7f070013;
         public static final int tag_search_hint=0x7f070037;
         public static final int tag_search_label=0x7f070036;
-        public static final int tag_search_text=0x7f07003e;
+        public static final int tag_search_text=0x7f070040;
         public static final int tag_sort_count_asc=0x7f07003a;
         public static final int tag_sort_count_desc=0x7f07003b;
         public static final int tag_sort_name_asc=0x7f070038;
@@ -327,10 +333,10 @@ public final class R {
         /**  Title string for Login activity
          */
         public static final int ui_activity_title=0x7f070006;
-        public static final int view_bookmark_account_title=0x7f070045;
-        public static final int view_bookmark_notes_title=0x7f070042;
-        public static final int view_bookmark_tags_title=0x7f070043;
-        public static final int view_bookmark_time_title=0x7f070044;
+        public static final int view_bookmark_account_title=0x7f070047;
+        public static final int view_bookmark_notes_title=0x7f070044;
+        public static final int view_bookmark_tags_title=0x7f070045;
+        public static final int view_bookmark_time_title=0x7f070046;
         public static final int view_profile=0x7f070017;
     }
     public static final class style {

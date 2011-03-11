@@ -58,6 +58,7 @@ public class BookmarkLiveFolder extends Activity {
 		data.scheme(Constants.CONTENT_SCHEME);
 		data.encodedAuthority(mAccount.name + "@" + BookmarkContentProvider.AUTHORITY);
 		data.appendEncodedPath("tags");
+		data.appendQueryParameter("livefolder", "1");
 		tagIntent.setData(data.build());
 
         startActivityForResult(tagIntent, 1);

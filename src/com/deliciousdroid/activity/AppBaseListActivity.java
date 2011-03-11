@@ -141,10 +141,6 @@ public class AppBaseListActivity extends ListActivity {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.main_menu, menu);
 	    
-	    if(!isMyself()) {
-	    	menu.findItem(R.id.menu_search).setEnabled(false);
-	    }
-	    
 	    return true;
 	}
 	
