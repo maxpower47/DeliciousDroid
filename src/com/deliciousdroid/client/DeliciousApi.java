@@ -52,8 +52,10 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.authenticator.AuthToken;
 import com.deliciousdroid.authenticator.OauthUtilities;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
+import com.deliciousdroid.providers.BundleContent.Bundle;
 import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.xml.SaxBookmarkParser;
+import com.deliciousdroid.xml.SaxBundleParser;
 import com.deliciousdroid.xml.SaxTagParser;
 
 public class DeliciousApi {
@@ -64,6 +66,7 @@ public class DeliciousApi {
     public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
 
     public static final String FETCH_TAGS_URI = "tags/get";
+    public static final String FETCH_BUNDLES_URI = "tags/bundles/all";
     public static final String FETCH_SUGGESTED_TAGS_URI = "posts/suggest";
     public static final String FETCH_BOOKMARKS_URI = "posts/all";
     public static final String FETCH_CHANGED_BOOKMARKS_URI = "posts/all";
@@ -378,6 +381,37 @@ public class DeliciousApi {
 
         responseStream.close();
         return tagList;
+    }
+    
+    /**
+     * Retrieves a list of all tag bundles for a user from Delicious.
+     * 
+     * @param account The account being synced.
+     * @param context The current application context.
+     * @return A list of the users bundles.
+     * @throws IOException If a server error was encountered.
+     * @throws AuthenticationException If an authentication error was encountered.
+     */
+    public static ArrayList<Bundle> getBundles(Account account, Context context) 
+    	throws IOException, AuthenticationException {
+    	
+    	ArrayList<Bundle> bundleList = new ArrayList<Bundle>();
+    	InputStream responseStream = null;
+    	TreeMap<String, String> params = new TreeMap<String, String>();
+    	String url = FETCH_BUNDLES_URI;
+    	  	
+    	responseStream = DeliciousApiCall(url, params, account, context);
+    	SaxBundleParser parser = new SaxBundleParser(responseStream);
+    	
+        try {
+        	bundleList = parser.parse();
+        } catch (ParseException e) {
+        	Log.e(TAG, "Server error in fetching bookmark list");
+        	throw new IOException();
+        }
+
+        responseStream.close();
+        return bundleList;
     }
     
     /**

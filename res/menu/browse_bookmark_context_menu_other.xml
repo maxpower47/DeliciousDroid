@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
  * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
  *
@@ -18,20 +20,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
-
-package com.deliciousdroid.listadapter;
-
-import android.widget.TextView;
-
-public class ViewHolder {
-
-	static class BookmarkListViewHolder {
-		TextView description;
-		TextView tags;
-	}
-	
-	static class TagListViewHolder {
-		TextView name;
-		TextView count;
-	}
-}
+ -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:id="@+id/menu_bookmark_context_add" 
+		android:title="@string/bookmark_context_add" />
+	<item 
+		android:id="@+id/menu_bookmark_context_open" 
+		android:title="@string/bookmark_context_open" />
+	<item 
+		android:id="@+id/menu_bookmark_context_view" 
+		android:title="@string/bookmark_context_view" />
+</menu>

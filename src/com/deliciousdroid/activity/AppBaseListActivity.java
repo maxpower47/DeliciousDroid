@@ -27,6 +27,7 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
 import com.deliciousdroid.authenticator.AuthenticatorActivity;
 import com.deliciousdroid.platform.BookmarkManager;
+import com.deliciousdroid.platform.BundleManager;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 
@@ -42,6 +43,8 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AppBaseListActivity extends ListActivity {
@@ -104,8 +107,13 @@ public class AppBaseListActivity extends ListActivity {
 		
 		BookmarkManager.TruncateBookmarks(accounts, this, true);
 		TagManager.TruncateOldTags(accounts, this);
+		BundleManager.TruncateOldBundles(accounts, this);
 		
 		username = mAccount.name;
+	}
+	
+	public void searchHandler(View v) {
+		onSearchRequested();
 	}
 	
 	@Override
@@ -164,5 +172,13 @@ public class AppBaseListActivity extends ListActivity {
 		if(mAccount != null && username != null)
 			return mAccount.name.equals(username);
 		else return false;
+	}
+	
+	@Override
+	public void setTitle(CharSequence title){
+		super.setTitle(title);
+		if(this.findViewById(R.id.action_bar_title) != null) {
+			((TextView)this.findViewById(R.id.action_bar_title)).setText(title);
+		}
 	}
 }

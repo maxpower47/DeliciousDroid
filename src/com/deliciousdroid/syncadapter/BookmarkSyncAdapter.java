@@ -33,7 +33,6 @@ import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -43,8 +42,10 @@ import com.deliciousdroid.activity.Main;
 import com.deliciousdroid.client.DeliciousApi;
 import com.deliciousdroid.client.Update;
 import com.deliciousdroid.platform.BookmarkManager;
+import com.deliciousdroid.platform.BundleManager;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
+import com.deliciousdroid.providers.BundleContent.Bundle;
 import com.deliciousdroid.providers.TagContent.Tag;
 
 import org.apache.http.ParseException;
@@ -68,7 +69,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle extras, String authority,
+    public void onPerformSync(Account account, android.os.Bundle extras, String authority,
         ContentProviderClient provider, SyncResult syncResult) {
 
          try {
@@ -114,10 +115,12 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			ArrayList<Bookmark> addList = new ArrayList<Bookmark>();
 			ArrayList<Bookmark> updateList = new ArrayList<Bookmark>();
 			ArrayList<Tag> tagList = new ArrayList<Tag>();
+			ArrayList<Bundle> bundleList = new ArrayList<Bundle>();
 
 			if(lastUpdate == 0){
 				Log.d("BookmarkSync", "In Bookmark Load");
 				tagList = DeliciousApi.getTags(account, mContext);
+				bundleList = DeliciousApi.getBundles(account, mContext);
 				ArrayList<String> accounts = new ArrayList<String>();
 				accounts.add(account.name);
 				BookmarkManager.TruncateBookmarks(accounts, mContext, false);
@@ -125,6 +128,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			} else {
 				Log.d("BookmarkSync", "In Bookmark Update");
 				tagList = DeliciousApi.getTags(account, mContext);
+				bundleList = DeliciousApi.getBundles(account, mContext);
 				changeList = DeliciousApi.getChangedBookmarks(account, mContext);
 				
 				for(Bookmark b : changeList){
@@ -183,6 +187,12 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			if(!tagList.isEmpty()){
 				TagManager.BulkInsert(tagList, username, mContext);
+			}
+			
+			BundleManager.TruncateBundles(username, mContext);
+			
+			if(!bundleList.isEmpty()){
+				BundleManager.BulkInsert(bundleList, username, mContext);
 			}
 
 			if(!addBookmarkList.isEmpty()){

@@ -68,6 +68,10 @@ public class BookmarkContent {
         	return mId;
         }
         
+        public void setId(int id){
+        	mId = id;
+        }
+        
         public String getUrl() {
             return mUrl;
         }
@@ -143,6 +147,10 @@ public class BookmarkContent {
         
         public String getAccount(){
         	return mAccount;
+        }
+        
+        public void setAccount(String account){
+        	mAccount = account;
         }
         
         public Bookmark() {

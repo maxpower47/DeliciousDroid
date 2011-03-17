@@ -21,38 +21,28 @@
 
 package com.deliciousdroid.activity;
 
-import java.util.ArrayList;
-
 import com.deliciousdroid.R;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.client.DeliciousFeed;
-import com.deliciousdroid.listadapter.TagListAdapter;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.TagContent.Tag;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.view.*;
 
 public class BrowseTags extends AppBaseListActivity {
 		
 	private String sortfield = Tag.Name + " ASC";
-	
-	private final int sortNameAsc = 99999991;
-	private final int sortNameDesc = 99999992;
-	private final int sortCountAsc = 99999993;
-	private final int sortCountDesc = 99999994;
-	
-	private ArrayList<Tag> tagList = new ArrayList<Tag>();
-	
-	private boolean loaded = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -84,9 +74,10 @@ public class BrowseTags extends AppBaseListActivity {
 	    		
 	    		setTitle("Tag Search Results For \"" + query + "\"");
 	    		
+	    		Cursor c = TagManager.SearchTags(query, username, this);
+	    		startManagingCursor(c);
 	    		
-	    		
-	    		setListAdapter(new TagListAdapter(this, R.layout.tag_view, tagList));	
+	    		setListAdapter(new SimpleCursorAdapter(this, R.layout.tag_view, c, new String[] {Tag.Name, Tag.Count}, new int[] {R.id.tag_name, R.id.tag_count}));
 	    		
 	    	} else if(mAccount.name.equals(username)){
 				try{
@@ -97,7 +88,6 @@ public class BrowseTags extends AppBaseListActivity {
 					}
 	
 					loadTagList();
-					loaded = true;
 	
 				} catch(Exception e) {
 					
@@ -107,9 +97,10 @@ public class BrowseTags extends AppBaseListActivity {
 				try{
 					setTitle("Tags For " + username);
 					
-					tagList = DeliciousFeed.fetchFriendTags(username);
+					Cursor c = DeliciousFeed.fetchFriendTags(username);
+					startManagingCursor(c);
 					
-					setListAdapter(new TagListAdapter(this, R.layout.tag_view, tagList));	
+					setListAdapter(new SimpleCursorAdapter(this, R.layout.tag_view, c, new String[] {Tag.Name, Tag.Count}, new int[] {R.id.tag_name, R.id.tag_count}));
 				}
 				catch(Exception e){}
 			}
@@ -156,25 +147,11 @@ public class BrowseTags extends AppBaseListActivity {
 	}
 	
 	@Override
-	public void onResume(){
-		super.onResume();
-		
-		if(loaded) {
-			refreshTagList();
-		}
-	}
-	
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
 		
 		if(result && isMyself()) {
-		    SubMenu sortmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, 1, R.string.menu_sort_title);
-		    sortmenu.setIcon(R.drawable.ic_menu_sort_alphabetically);
-		    sortmenu.add(Menu.NONE, sortNameAsc, 0, "Name (A-Z)");
-		    sortmenu.add(Menu.NONE, sortNameDesc, 1, "Name (Z-A)");
-		    sortmenu.add(Menu.NONE, sortCountAsc, 2, "Count (Least First)");
-		    sortmenu.add(Menu.NONE, sortCountDesc, 3, "Count (Most First)");
+		    getMenuInflater().inflate(R.menu.browse_tag_menu, menu);
 		}
 		
 	    return result;
@@ -186,19 +163,19 @@ public class BrowseTags extends AppBaseListActivity {
 		boolean result = false;
 		
 	    switch (item.getItemId()) {
-		    case sortNameAsc:
+		    case R.id.menu_tag_sort_name_asc:
 		    	sortfield = Tag.Name + " ASC";
 				result = true;
 				break;
-		    case sortNameDesc:			
+		    case R.id.menu_tag_sort_name_desc:			
 		    	sortfield = Tag.Name + " DESC";
 		    	result = true;
 		    	break;
-		    case sortCountAsc:			
+		    case R.id.menu_tag_sort_count_asc:			
 		    	sortfield = Tag.Count + " ASC";
 		    	result = true;
 		    	break;
-		    case sortCountDesc:			
+		    case R.id.menu_tag_sort_count_desc:			
 		    	sortfield = Tag.Count + " DESC";
 		    	result = true;
 		    	break;
@@ -212,19 +189,8 @@ public class BrowseTags extends AppBaseListActivity {
 	}
 	
 	private void loadTagList() {
-		tagList = TagManager.GetTags(username, sortfield, this);
-		
-		setListAdapter(new TagListAdapter(this, R.layout.tag_view, tagList));	
-		((TagListAdapter)getListAdapter()).notifyDataSetChanged();
-	}
-	
-	private void refreshTagList() {
-		tagList = TagManager.GetTags(username, sortfield, this);
-		TagListAdapter adapter = (TagListAdapter)getListAdapter();
-		
-		if(adapter != null) {
-			adapter.update(tagList);
-			adapter.notifyDataSetChanged();
-		}
+		Cursor c = TagManager.GetTags(username, sortfield, this);
+		startManagingCursor(c);
+		setListAdapter(new SimpleCursorAdapter(this, R.layout.tag_view, c, new String[] {Tag.Name, Tag.Count}, new int[] {R.id.tag_name, R.id.tag_count}));
 	}
 }

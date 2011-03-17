@@ -24,9 +24,9 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.deliciousdroid"
-    android:versionCode="20"
-    android:versionName="1.1.6">
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="8" />
+    android:versionCode="21"
+    android:versionName="1.2.0">
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="11" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -42,7 +42,8 @@
     
     <application
         android:icon="@drawable/ic_main"
-        android:label="@string/label">
+        android:label="@string/label"
+        android:theme="@style/ThemeSelector">
         <activity
         	android:name=".activity.Main"
         	android:label="@string/titleMain">
@@ -70,6 +71,17 @@
             	<action android:name="android.intent.action.SEARCH" />
         	</intent-filter>
 			<meta-data android:name="android.app.searchable" android:resource="@xml/tag_searchable"/>
+        </activity>
+        <activity android:name=".activity.BrowseBundles">
+        	<intent-filter>
+        		<action android:name="android.intent.action.VIEW" />
+        		<category android:name="android.intent.category.DEFAULT" />
+        		<data android:scheme="content" android:host="com.deliciousdroid.providers.BookmarkContentProvider" android:path="/bundles"/>
+			</intent-filter>
+			<intent-filter>
+            	<action android:name="android.intent.action.SEARCH" />
+        	</intent-filter>
+        	<meta-data android:name="android.app.searchable" android:resource="@xml/main_searchable"/>
         </activity>
         <activity android:name=".activity.TagLiveFolder"
         	android:label="Delicious Tags"
@@ -109,14 +121,27 @@
         		<category android:name="android.intent.category.DEFAULT" />
         		<data android:scheme="content" android:host="com.deliciousdroid.providers.BookmarkContentProvider" android:pathPattern="/bookmarks/.*"/>
         	</intent-filter>
+        	<intent-filter>
+            	<action android:name="android.intent.action.SEARCH" />
+        	</intent-filter>
+        	<meta-data android:name="android.app.searchable" android:resource="@xml/main_searchable"/>
         </activity>
-        <activity android:name=".activity.MainSearchResults" />
+        <activity android:name=".activity.MainSearchResults">
+            <intent-filter>
+            	<action android:name="android.intent.action.SEARCH" />
+        	</intent-filter>
+        	<meta-data android:name="android.app.searchable" android:resource="@xml/main_searchable"/>
+        </activity>
         <activity android:name=".activity.AddBookmark">
         	<intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable" android:resource="@xml/main_searchable"/>
         </activity>
         <activity android:name=".activity.OauthLogin" />
         <activity android:name=".activity.Preferences" />

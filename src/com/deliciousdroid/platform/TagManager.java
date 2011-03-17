@@ -34,32 +34,12 @@ import android.text.TextUtils;
 
 public class TagManager {
 	
-	public static ArrayList<Tag> GetTags(String account, String sortorder, Context context) {
-		ArrayList<Tag> tagList = new ArrayList<Tag>();
-		
-		String[] projection = new String[] {Tag.Name, Tag.Count};
+	public static Cursor GetTags(String account, String sortorder, Context context) {	
+		String[] projection = new String[] {Tag._ID, Tag.Name, Tag.Count};
 		String selection = Tag.Account + "=?";
 		String[] selectionargs = new String[]{account};
-		
-		Uri tags = Tag.CONTENT_URI;
-		
-		Cursor c = context.getContentResolver().query(tags, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			
-			int nameColumn = c.getColumnIndex(Tag.Name);
-			int countColumn = c.getColumnIndex(Tag.Count);
 
-			do {	
-				Tag t = new Tag(c.getString(nameColumn), c.getInt(countColumn));
-
-				tagList.add(t);
-			} while(c.moveToNext());	
-		}
-		
-		c.close();
-		
-		return tagList;
+		return context.getContentResolver().query(Tag.CONTENT_URI, projection, selection, selectionargs, sortorder);				
 	}
 	
 	public static void AddTag(Tag tag, String account, Context context){
@@ -180,20 +160,21 @@ public class TagManager {
 		context.getContentResolver().delete(Tag.CONTENT_URI, selection, null);
 	}
 	
-	public static ArrayList<Tag> SearchTags(String query, String username, Context context) {
-		ArrayList<Tag> tagList = new ArrayList<Tag>();
+	public static Cursor SearchTags(String query, String username, Context context) {
 		String[] projection = new String[] { Tag._ID, Tag.Name, Tag.Count };
 		String selection = null;
-		String[] selectionargs = new String[]{ username };
 		String sortorder = null;
 		
 		String[] queryTags = query.split(" ");
 		
 		ArrayList<String> queryList = new ArrayList<String>();
+		final ArrayList<String> selectionlist = new ArrayList<String>();
 		
 		for(String s : queryTags) {
-			queryList.add(Tag.Name + " LIKE '%" + s + "%'");
+			queryList.add(Tag.Name + " LIKE ?");
+		 	selectionlist.add("%" + s + "%");
 		}
+		selectionlist.add(username);
 		
 		if(query != null && query != "") {
 			selection = "(" + TextUtils.join(" OR ", queryList) + ")" + 
@@ -206,19 +187,6 @@ public class TagManager {
 		
 		Uri tags = Tag.CONTENT_URI;
 		
-		Cursor c = context.getContentResolver().query(tags, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			int nameColumn = c.getColumnIndex(Tag.Name);
-			int countColumn = c.getColumnIndex(Tag.Count);
-			
-			do {
-				Tag t = new Tag(c.getString(nameColumn), c.getInt(countColumn));
-				
-				tagList.add(t);
-			} while(c.moveToNext());	
-		}
-		c.close();
-		return tagList;
+		return context.getContentResolver().query(tags, projection, selection, selectionlist.toArray(new String[]{}), sortorder);				
 	}
 }

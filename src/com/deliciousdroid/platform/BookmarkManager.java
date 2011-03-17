@@ -37,51 +37,44 @@ import android.util.Log;
 
 public class BookmarkManager {
 	
-	public static ArrayList<Bookmark> GetBookmarks(String username, String tagname, Context context){
+	public static Cursor GetBookmarks(String username, String tagname, Context context){
 		return GetBookmarks(username, tagname, Bookmark.Time + " DESC", context);
 	}
 	
-	public static ArrayList<Bookmark> GetBookmarks(String username, String tagname, String sortorder, Context context){
-		ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+	public static Cursor GetBookmarks(String username, String tagname, String sortorder, Context context){
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
-		String[] selectionargs = new String[]{username};
+		ArrayList<String> selectionList = new ArrayList<String>();
+		final ArrayList<String> queryList = new ArrayList<String>();
+		
 		
 		if(tagname != null && tagname != "") {
-			selection = "(" + Bookmark.Tags + " LIKE '% " + tagname + " %' OR " +
-				Bookmark.Tags + " LIKE '% " + tagname + "' OR " +
-				Bookmark.Tags + " LIKE '" + tagname + " %' OR " +
-				Bookmark.Tags + " = '" + tagname + "') AND " +
+			String[] tagList = tagname.split(",");
+			
+			for(String s : tagList) {
+				queryList.add("(" + Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " = ?)");
+					
+				selectionList.add("% " + s + " %");
+				selectionList.add("% " + s);
+				selectionList.add(s + " %");
+				selectionList.add(s);
+			}
+			selection = TextUtils.join(" OR ", queryList) + " AND " +
 				Bookmark.Account + "=?";
+			
+			selectionList.add(username);
 		} else {
+			selectionList.add(username);
 			selection = Bookmark.Account + "=?";
 		}
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		Cursor c = context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			int idColumn = c.getColumnIndex(Bookmark._ID);
-			int urlColumn = c.getColumnIndex(Bookmark.Url);
-			int descriptionColumn = c.getColumnIndex(Bookmark.Description);
-			int tagsColumn = c.getColumnIndex(Bookmark.Tags);
-			int metaColumn = c.getColumnIndex(Bookmark.Meta);
-			
-			do {
-				
-				Bookmark b = new Bookmark(c.getInt(idColumn), "", c.getString(urlColumn), 
-						c.getString(descriptionColumn), "", c.getString(tagsColumn), "", 
-						c.getString(metaColumn), 0);
-				
-				bookmarkList.add(b);
-				
-			} while(c.moveToNext());
-				
-		}
-		c.close();
-		return bookmarkList;
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionList.toArray(new String[]{}), sortorder);
 	}
 	
 	public static Bookmark GetById(int id, Context context) throws ContentNotFoundException {		
@@ -254,31 +247,37 @@ public class BookmarkManager {
 		context.getContentResolver().delete(Bookmark.CONTENT_URI, selection, selectionargs);
 	}
 	
-	public static ArrayList<Bookmark> SearchBookmarks(String query, String tagname, String username, Context context) {
-		ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+	public static Cursor SearchBookmarks(String query, String tagname, String username, Context context) {
 		String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags};
 		String selection = null;
-		String[] selectionargs = new String[]{username};
 		String sortorder = null;
 		
 		String[] queryBookmarks = query.split(" ");
 		
-		ArrayList<String> queryList = new ArrayList<String>();
+		final ArrayList<String> queryList = new ArrayList<String>();
+		final ArrayList<String> selectionlist = new ArrayList<String>();
 		
 		if(query != null && query != "" && (tagname == null || tagname == "")) {
 			for(String s : queryBookmarks) {
-				queryList.add("(" + Bookmark.Tags + " LIKE '%" + s + "%' OR " +
-						Bookmark.Description + " LIKE '%" + s + "%' OR " +
-						Bookmark.Notes + " LIKE '%" + s + "%')");
+				queryList.add("(" + Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Description + " LIKE ? OR " +
+					Bookmark.Notes + " LIKE ?)");
+				selectionlist.add("%" + s + "%");
+				selectionlist.add("%" + s + "%");
+				selectionlist.add("%" + s + "%");
 			}
+			selectionlist.add(username);
 			
 			selection = TextUtils.join(" AND ", queryList) + " AND " +
 				Bookmark.Account + "=?";
 		} else if(query != null && query != ""){
 			for(String s : queryBookmarks) {
-				queryList.add("(" + Bookmark.Description + " LIKE '%" + s + "%' OR " +
-						Bookmark.Notes + " LIKE '%" + s + "%')");
+				queryList.add("(" + Bookmark.Description + " LIKE ? OR " +
+						Bookmark.Notes + " LIKE ?)");
+				
+				selectionlist.add("%" + s + "%");
+			 	selectionlist.add("%" + s + "%");
 			}
 
 			selection = TextUtils.join(" AND ", queryList) +
@@ -287,7 +286,14 @@ public class BookmarkManager {
 				Bookmark.Tags + " LIKE '% " + tagname + "' OR " +
 				Bookmark.Tags + " LIKE '" + tagname + " %' OR " +
 				Bookmark.Tags + " = '" + tagname + "')";
+			
+			selectionlist.add(username);
+		 	selectionlist.add("% " + tagname + " %");
+		 	selectionlist.add("% " + tagname);
+		 	selectionlist.add(tagname + " %");
+		 	selectionlist.add(tagname);
 		} else {
+			selectionlist.add(username);
 			selection = Bookmark.Account + "=?";
 		}
 		
@@ -295,27 +301,26 @@ public class BookmarkManager {
 		
 		Uri bookmarks = Bookmark.CONTENT_URI;
 		
-		Cursor c = context.getContentResolver().query(bookmarks, projection, selection, selectionargs, sortorder);				
-		
-		if(c.moveToFirst()){
-			int idColumn = c.getColumnIndex(Bookmark._ID);
-			int urlColumn = c.getColumnIndex(Bookmark.Url);
-			int descriptionColumn = c.getColumnIndex(Bookmark.Description);
-			int tagsColumn = c.getColumnIndex(Bookmark.Tags);
-			int metaColumn = c.getColumnIndex(Bookmark.Meta);
-			
-			do {
-				
-				Bookmark b = new Bookmark(c.getInt(idColumn), "", c.getString(urlColumn), 
-						c.getString(descriptionColumn), "", c.getString(tagsColumn), "", 
-						c.getString(metaColumn), 0);
-				
-				bookmarkList.add(b);
-				
-			} while(c.moveToNext());
-				
-		}
-		c.close();
-		return bookmarkList;
+		return context.getContentResolver().query(bookmarks, projection, selection, selectionlist.toArray(new String[]{}), sortorder);
+	}
+	
+	public static Bookmark CursorToBookmark(Cursor c) {
+		Bookmark b = new Bookmark();
+		b.setId(c.getInt(c.getColumnIndex(Bookmark._ID)));
+		b.setDescription(c.getString(c.getColumnIndex(Bookmark.Description)));
+		b.setUrl(c.getString(c.getColumnIndex(Bookmark.Url)));
+		b.setMeta(c.getString(c.getColumnIndex(Bookmark.Meta)));
+		b.setTagString(c.getString(c.getColumnIndex(Bookmark.Tags)));
+
+		if(c.getColumnIndex(Bookmark.Account) != -1)
+			b.setAccount(c.getString(c.getColumnIndex(Bookmark.Account)));
+
+		if(c.getColumnIndex(Bookmark.Notes) != -1)
+			b.setNotes(c.getString(c.getColumnIndex(Bookmark.Notes)));
+
+		if(c.getColumnIndex(Bookmark.Time) != -1)
+			b.setTime(c.getLong(c.getColumnIndex(Bookmark.Time)));
+
+		return b;
 	}
 }

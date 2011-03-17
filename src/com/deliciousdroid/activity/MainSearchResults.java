@@ -23,13 +23,17 @@ package com.deliciousdroid.activity;
 
 import com.deliciousdroid.R;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 public class MainSearchResults extends AppBaseListActivity {
@@ -45,8 +49,49 @@ public class MainSearchResults extends AppBaseListActivity {
 		mContext = this;
 
 		final Intent intent = getIntent();
-		
+		setContentView(R.layout.main_search_results);
 		setTitle("Search Results");
+		
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+			if(intent.hasExtra(SearchManager.QUERY)){
+				Intent i = new Intent(mContext, MainSearchResults.class);
+				i.putExtras(intent.getExtras());
+				startActivity(i);
+				finish();
+			} else {
+				onSearchRequested();
+			}
+		} else if(Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri data = intent.getData();
+			String path = null;
+			String tagname = null;
+
+			if(data != null) {
+				path = data.getPath();
+				tagname = data.getQueryParameter("tagname");
+			}
+
+			if(data.getScheme() == null || !data.getScheme().equals("content")){
+				Intent i = new Intent(Intent.ACTION_VIEW, data);
+
+				startActivity(i);
+				finish();        
+			} else if(path.contains("bookmarks") && TextUtils.isDigitsOnly(data.getLastPathSegment())) {
+				Intent viewBookmark = new Intent(this, ViewBookmark.class);
+				viewBookmark.setData(data);
+
+				Log.d("View Bookmark Uri", data.toString());
+				startActivity(viewBookmark);
+				finish();
+			} else if(tagname != null) {
+				Intent viewTags = new Intent(this, BrowseBookmarks.class);
+				viewTags.setData(data);
+
+				Log.d("View Tags Uri", data.toString());
+				startActivity(viewTags);
+				finish();
+			}
+		} 
 		
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
