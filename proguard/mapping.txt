@@ -13,29 +13,27 @@ com.deliciousdroid.action.DeleteBookmarkTask -> com.deliciousdroid.f.b:
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
 com.deliciousdroid.activity.AddBookmark -> com.deliciousdroid.activity.AddBookmark:
-    android.widget.EditText mEditUrl -> d
-    android.widget.EditText mEditDescription -> e
-    android.widget.ProgressBar mDescriptionProgress -> f
-    android.widget.EditText mEditNotes -> g
-    android.widget.EditText mEditTags -> h
-    android.widget.TextView mRecommendedTags -> i
-    android.widget.ProgressBar mRecommendedProgress -> j
-    android.widget.TextView mPopularTags -> k
-    android.widget.ProgressBar mPopularProgress -> l
-    android.widget.TextView mNetworkTags -> m
-    android.widget.ProgressBar mNetworkProgress -> n
-    android.widget.CheckBox mPrivate -> o
-    android.widget.Button mButtonSave -> p
-    android.widget.Button mButtonCancel -> q
-    com.deliciousdroid.providers.BookmarkContent$Bookmark bookmark -> r
-    java.lang.Boolean update -> s
-    android.content.res.Resources res -> t
-    com.deliciousdroid.providers.BookmarkContent$Bookmark oldBookmark -> u
-    long updateTime -> v
-    com.deliciousdroid.ui.TagSpan$OnTagClickListener tagOnClickListener -> c
+    android.widget.EditText mEditUrl -> e
+    android.widget.EditText mEditDescription -> f
+    android.widget.ProgressBar mDescriptionProgress -> g
+    android.widget.EditText mEditNotes -> h
+    android.widget.EditText mEditTags -> i
+    android.widget.TextView mRecommendedTags -> j
+    android.widget.ProgressBar mRecommendedProgress -> k
+    android.widget.TextView mPopularTags -> l
+    android.widget.ProgressBar mPopularProgress -> m
+    android.widget.TextView mNetworkTags -> n
+    android.widget.ProgressBar mNetworkProgress -> o
+    android.widget.CheckBox mPrivate -> p
+    com.deliciousdroid.providers.BookmarkContent$Bookmark bookmark -> q
+    java.lang.Boolean update -> r
+    android.content.res.Resources res -> s
+    com.deliciousdroid.providers.BookmarkContent$Bookmark oldBookmark -> t
+    long updateTime -> u
+    com.deliciousdroid.ui.TagSpan$OnTagClickListener tagOnClickListener -> d
     void onCreate(android.os.Bundle) -> onCreate
-    void onClick(android.view.View) -> onClick
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     android.widget.EditText access$0(com.deliciousdroid.activity.AddBookmark) -> a
     java.lang.Boolean access$1(com.deliciousdroid.activity.AddBookmark) -> b
     com.deliciousdroid.providers.BookmarkContent$Bookmark access$2(com.deliciousdroid.activity.AddBookmark) -> c
@@ -80,10 +78,10 @@ com.deliciousdroid.activity.AddBookmark$GetWebpageTitleTask -> com.deliciousdroi
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
 com.deliciousdroid.activity.AppBaseActivity -> com.deliciousdroid.activity.AppBaseActivity:
-    android.accounts.AccountManager mAccountManager -> c
+    android.accounts.AccountManager mAccountManager -> d
     android.accounts.Account mAccount -> a
     android.content.Context mContext -> b
-    java.lang.String username -> d
+    java.lang.String username -> c
     android.content.SharedPreferences settings -> e
     long lastUpdate -> f
     java.lang.String bookmarkLimit -> g
@@ -91,12 +89,14 @@ com.deliciousdroid.activity.AppBaseActivity -> com.deliciousdroid.activity.AppBa
     boolean first -> i
     android.os.Bundle savedState -> j
     void onCreate(android.os.Bundle) -> onCreate
-    void init() -> a
-    void loadAccounts() -> b
+    void init() -> b
+    void loadAccounts() -> c
     void onResume() -> onResume
-    void loadSettings() -> c
+    void loadSettings() -> d
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    boolean isMyself() -> a
+    void setTitle(java.lang.CharSequence) -> setTitle
 com.deliciousdroid.activity.AppBaseListActivity -> com.deliciousdroid.activity.AppBaseListActivity:
     android.accounts.AccountManager mAccountManager -> g
     android.accounts.Account mAccount -> a
@@ -116,6 +116,7 @@ com.deliciousdroid.activity.AppBaseListActivity -> com.deliciousdroid.activity.A
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     boolean isMyself() -> a
+    void setTitle(java.lang.CharSequence) -> setTitle
 com.deliciousdroid.activity.BookmarkLiveFolder -> com.deliciousdroid.activity.BookmarkLiveFolder:
     android.accounts.AccountManager mAccountManager -> a
     android.accounts.Account mAccount -> b
@@ -124,18 +125,10 @@ com.deliciousdroid.activity.BookmarkLiveFolder -> com.deliciousdroid.activity.Bo
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
 com.deliciousdroid.activity.BrowseBookmarks -> com.deliciousdroid.activity.BrowseBookmarks:
     android.widget.ListView lv -> g
-    int sortDateAsc -> h
-    int sortDateDesc -> i
-    int sortDescAsc -> j
-    int sortDescDesc -> k
-    int sortUrlAsc -> l
-    int sortUrlDesc -> m
-    java.lang.String sortfield -> n
-    java.util.ArrayList bookmarkList -> o
-    java.lang.String tagname -> p
-    boolean loaded -> q
+    java.lang.String sortfield -> h
+    java.lang.String tagname -> i
+    java.lang.String bundlename -> j
     void onCreate(android.os.Bundle) -> onCreate
-    void onResume() -> onResume
     boolean onContextItemSelected(android.view.MenuItem) -> onContextItemSelected
     boolean onSearchRequested() -> onSearchRequested
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
@@ -143,12 +136,9 @@ com.deliciousdroid.activity.BrowseBookmarks -> com.deliciousdroid.activity.Brows
     void loadBookmarkList() -> b
     void openBookmarkInBrowser(com.deliciousdroid.providers.BookmarkContent$Bookmark) -> a
     void viewBookmark(com.deliciousdroid.providers.BookmarkContent$Bookmark) -> b
-    java.lang.Object onRetainNonConfigurationInstance() -> onRetainNonConfigurationInstance
-    java.util.ArrayList access$0(com.deliciousdroid.activity.BrowseBookmarks) -> a
-    void access$1(com.deliciousdroid.activity.BrowseBookmarks,java.util.ArrayList) -> a
-    android.widget.ListView access$2(com.deliciousdroid.activity.BrowseBookmarks) -> b
-    void access$3(com.deliciousdroid.activity.BrowseBookmarks,com.deliciousdroid.providers.BookmarkContent$Bookmark) -> a
-    void access$4(com.deliciousdroid.activity.BrowseBookmarks,com.deliciousdroid.providers.BookmarkContent$Bookmark) -> b
+    android.widget.ListView access$0(com.deliciousdroid.activity.BrowseBookmarks) -> a
+    void access$1(com.deliciousdroid.activity.BrowseBookmarks,com.deliciousdroid.providers.BookmarkContent$Bookmark) -> a
+    void access$2(com.deliciousdroid.activity.BrowseBookmarks,com.deliciousdroid.providers.BookmarkContent$Bookmark) -> b
 com.deliciousdroid.activity.BrowseBookmarks$1 -> com.deliciousdroid.activity.n:
     com.deliciousdroid.activity.BrowseBookmarks this$0 -> a
     void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
@@ -159,21 +149,27 @@ com.deliciousdroid.activity.BrowseBookmarks$LoadBookmarkFeedTask -> com.deliciou
     java.lang.String user -> a
     java.lang.String tag -> b
     android.app.ProgressDialog progress -> c
-    com.deliciousdroid.activity.BrowseBookmarks this$0 -> d
+    android.database.Cursor c -> d
+    com.deliciousdroid.activity.BrowseBookmarks this$0 -> e
     void onPreExecute() -> onPreExecute
     java.lang.Boolean doInBackground(java.lang.String[]) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.deliciousdroid.activity.BrowseTags -> com.deliciousdroid.activity.BrowseTags:
+com.deliciousdroid.activity.BrowseBundles -> com.deliciousdroid.activity.BrowseBundles:
     java.lang.String sortfield -> g
     int sortNameAsc -> h
     int sortNameDesc -> i
-    int sortCountAsc -> j
-    int sortCountDesc -> k
-    java.util.ArrayList tagList -> l
-    boolean loaded -> m
     void onCreate(android.os.Bundle) -> onCreate
-    void onResume() -> onResume
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void loadBundleList() -> b
+com.deliciousdroid.activity.BrowseBundles$1 -> com.deliciousdroid.activity.t:
+    com.deliciousdroid.activity.BrowseBundles this$0 -> a
+    android.widget.ListView val$lv -> b
+    void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.deliciousdroid.activity.BrowseTags -> com.deliciousdroid.activity.BrowseTags:
+    java.lang.String sortfield -> g
+    void onCreate(android.os.Bundle) -> onCreate
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void loadTagList() -> b
@@ -229,14 +225,13 @@ com.deliciousdroid.activity.TagLiveFolder -> com.deliciousdroid.activity.TagLive
     android.net.Uri CONTENT_URI -> a
     void onCreate(android.os.Bundle) -> onCreate
 com.deliciousdroid.activity.ViewBookmark -> com.deliciousdroid.activity.ViewBookmark:
-    android.widget.TextView mTitle -> c
-    android.widget.TextView mUrl -> d
-    android.widget.TextView mNotes -> e
-    android.widget.TextView mTags -> f
-    android.widget.TextView mTime -> g
-    android.widget.TextView mUsername -> h
-    com.deliciousdroid.providers.BookmarkContent$Bookmark bookmark -> i
-    java.lang.Boolean myself -> j
+    android.widget.TextView mTitle -> d
+    android.widget.TextView mUrl -> e
+    android.widget.TextView mNotes -> f
+    android.widget.TextView mTags -> g
+    android.widget.TextView mTime -> h
+    android.widget.TextView mUsername -> i
+    com.deliciousdroid.providers.BookmarkContent$Bookmark bookmark -> j
     java.lang.String path -> k
     android.net.Uri data -> l
     com.deliciousdroid.ui.TagSpan$OnTagClickListener tagOnClickListener -> m
@@ -303,7 +298,7 @@ com.deliciousdroid.authenticator.AuthenticatorActivity$2 -> com.deliciousdroid.a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.deliciousdroid.authenticator.OauthUtilities -> com.deliciousdroid.authenticator.c:
     org.apache.http.client.methods.HttpGet signRequest(org.apache.http.client.methods.HttpGet,java.util.TreeMap,java.lang.String,java.lang.String) -> a
-com.deliciousdroid.client.DeliciousApi -> com.deliciousdroid.e.b:
+com.deliciousdroid.client.DeliciousApi -> com.deliciousdroid.d.b:
     org.apache.http.auth.AuthScope SCOPE -> a
     com.deliciousdroid.client.Update lastUpdate(android.accounts.Account,android.content.Context) -> a
     java.lang.Boolean addBookmark(com.deliciousdroid.providers.BookmarkContent$Bookmark,android.accounts.Account,android.content.Context) -> a
@@ -313,17 +308,18 @@ com.deliciousdroid.client.DeliciousApi -> com.deliciousdroid.e.b:
     java.util.ArrayList getChangedBookmarks(android.accounts.Account,android.content.Context) -> c
     java.util.ArrayList getSuggestedTags(java.lang.String,android.accounts.Account,android.content.Context) -> a
     java.util.ArrayList getTags(android.accounts.Account,android.content.Context) -> d
+    java.util.ArrayList getBundles(android.accounts.Account,android.content.Context) -> e
     java.io.InputStream DeliciousApiCall(java.lang.String,java.util.TreeMap,android.accounts.Account,android.content.Context) -> a
     java.lang.String convertStreamToString(java.io.InputStream) -> a
-com.deliciousdroid.client.DeliciousFeed -> com.deliciousdroid.e.h:
+com.deliciousdroid.client.DeliciousFeed -> com.deliciousdroid.d.h:
     java.util.List fetchFriendStatuses(android.accounts.Account) -> a
-    java.util.ArrayList fetchFriendTags(java.lang.String) -> a
-    java.util.ArrayList fetchFriendBookmarks(java.lang.String,java.lang.String,int) -> a
-    java.util.ArrayList fetchHotlist(int) -> a
-    java.util.ArrayList fetchPopular(int) -> b
-com.deliciousdroid.client.HttpClientFactory -> com.deliciousdroid.e.g:
+    android.database.Cursor fetchFriendTags(java.lang.String) -> a
+    android.database.Cursor fetchFriendBookmarks(java.lang.String,java.lang.String,int) -> a
+    android.database.Cursor fetchHotlist(int) -> a
+    android.database.Cursor fetchPopular(int) -> b
+com.deliciousdroid.client.HttpClientFactory -> com.deliciousdroid.d.g:
     org.apache.http.impl.client.DefaultHttpClient getThreadSafeClient() -> a
-com.deliciousdroid.client.LoginResult -> com.deliciousdroid.e.c:
+com.deliciousdroid.client.LoginResult -> com.deliciousdroid.d.c:
     java.lang.Boolean result -> a
     java.lang.String oauth_token_secret -> b
     java.lang.String oauth_expires_in -> c
@@ -339,7 +335,7 @@ com.deliciousdroid.client.LoginResult -> com.deliciousdroid.e.c:
     java.lang.String getRequestUrl() -> c
     java.lang.String getToken() -> d
     java.lang.String getSessionHandle() -> e
-com.deliciousdroid.client.NetworkUtilities -> com.deliciousdroid.e.d:
+com.deliciousdroid.client.NetworkUtilities -> com.deliciousdroid.d.d:
     org.apache.http.auth.AuthScope SCOPE -> a
     boolean deliciousAuthenticate(java.lang.String,java.lang.String,android.os.Handler,android.content.Context) -> a
     boolean oauthAuthenticate(android.os.Handler,android.content.Context) -> a
@@ -349,32 +345,32 @@ com.deliciousdroid.client.NetworkUtilities -> com.deliciousdroid.e.d:
     java.lang.String getWebpageTitle(java.lang.String) -> a
     void sendResult(com.deliciousdroid.client.LoginResult,android.os.Handler,android.content.Context) -> a
     java.lang.Thread attemptAuth(java.lang.String,java.lang.String,int,android.os.Handler,android.content.Context) -> a
-com.deliciousdroid.client.NetworkUtilities$1 -> com.deliciousdroid.e.f:
+com.deliciousdroid.client.NetworkUtilities$1 -> com.deliciousdroid.d.f:
     java.lang.Runnable val$runnable -> a
     void run() -> run
-com.deliciousdroid.client.NetworkUtilities$2 -> com.deliciousdroid.e.k:
+com.deliciousdroid.client.NetworkUtilities$2 -> com.deliciousdroid.d.k:
     android.content.Context val$context -> a
     com.deliciousdroid.client.LoginResult val$result -> b
     void run() -> run
-com.deliciousdroid.client.NetworkUtilities$3 -> com.deliciousdroid.e.l:
+com.deliciousdroid.client.NetworkUtilities$3 -> com.deliciousdroid.d.l:
     int val$authType -> a
     java.lang.String val$username -> b
     java.lang.String val$password -> c
     android.os.Handler val$handler -> d
     android.content.Context val$context -> e
     void run() -> run
-com.deliciousdroid.client.TokenRejectedException -> com.deliciousdroid.e.i:
-com.deliciousdroid.client.Update -> com.deliciousdroid.e.e:
+com.deliciousdroid.client.TokenRejectedException -> com.deliciousdroid.d.i:
+com.deliciousdroid.client.Update -> com.deliciousdroid.d.e:
     long lastUpdate -> a
     int inboxNew -> b
     long getLastUpdate() -> a
     int getInboxNew() -> b
     com.deliciousdroid.client.Update valueOf(java.lang.String) -> a
-com.deliciousdroid.client.User -> com.deliciousdroid.e.a:
+com.deliciousdroid.client.User -> com.deliciousdroid.d.a:
     java.lang.String mUserName -> a
     java.lang.String getUserName() -> a
     com.deliciousdroid.client.User valueOf(org.json.JSONObject) -> a
-com.deliciousdroid.client.User$Status -> com.deliciousdroid.e.j:
+com.deliciousdroid.client.User$Status -> com.deliciousdroid.d.j:
     java.lang.String mUserName -> a
     java.lang.String mStatus -> b
     java.util.Date mTimestamp -> c
@@ -382,53 +378,35 @@ com.deliciousdroid.client.User$Status -> com.deliciousdroid.e.j:
     java.lang.String getStatus() -> b
     java.util.Date getTimeStamp() -> c
     com.deliciousdroid.client.User$Status valueOf(org.json.JSONObject) -> a
-com.deliciousdroid.listadapter.BookmarkListAdapter -> com.deliciousdroid.c.c:
-    java.util.ArrayList bookmarks -> a
-    void update(java.util.ArrayList) -> a
-    int getCount() -> getCount
-    void remove(com.deliciousdroid.providers.BookmarkContent$Bookmark) -> a
-    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-    java.lang.Object getItem(int) -> getItem
-    void remove(java.lang.Object) -> remove
-com.deliciousdroid.listadapter.TagListAdapter -> com.deliciousdroid.c.d:
-    java.util.ArrayList tags -> a
-    void update(java.util.ArrayList) -> a
-    int getCount() -> getCount
-    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-    java.lang.Object getItem(int) -> getItem
-com.deliciousdroid.listadapter.ViewHolder -> com.deliciousdroid.c.e:
-com.deliciousdroid.listadapter.ViewHolder$BookmarkListViewHolder -> com.deliciousdroid.c.a:
-    android.widget.TextView description -> a
-    android.widget.TextView tags -> b
-com.deliciousdroid.listadapter.ViewHolder$TagListViewHolder -> com.deliciousdroid.c.b:
-    android.widget.TextView name -> a
-    android.widget.TextView count -> b
-com.deliciousdroid.platform.BatchOperation -> com.deliciousdroid.d.f:
+com.deliciousdroid.platform.BatchOperation -> com.deliciousdroid.c.f:
     java.lang.String TAG -> b
     android.content.ContentResolver mResolver -> c
     java.util.ArrayList mOperations -> a
     void add(android.content.ContentProviderOperation) -> a
     void execute() -> a
-com.deliciousdroid.platform.BookmarkManager -> com.deliciousdroid.d.d:
-    java.util.ArrayList GetBookmarks(java.lang.String,java.lang.String,java.lang.String,android.content.Context) -> a
+com.deliciousdroid.platform.BookmarkManager -> com.deliciousdroid.c.d:
     com.deliciousdroid.providers.BookmarkContent$Bookmark GetById(int,android.content.Context) -> a
     void BulkInsert(java.util.ArrayList,java.lang.String,android.content.Context) -> a
     void UpdateBookmark(com.deliciousdroid.providers.BookmarkContent$Bookmark,java.lang.String,android.content.Context) -> a
     void TruncateBookmarks(java.util.ArrayList,android.content.Context,boolean) -> a
-    java.util.ArrayList SearchBookmarks(java.lang.String,java.lang.String,java.lang.String,android.content.Context) -> b
-com.deliciousdroid.platform.ContactManager -> com.deliciousdroid.d.b:
+    android.database.Cursor SearchBookmarks(java.lang.String,java.lang.String,java.lang.String,android.content.Context) -> a
+    com.deliciousdroid.providers.BookmarkContent$Bookmark CursorToBookmark(android.database.Cursor) -> a
+com.deliciousdroid.platform.BundleManager -> com.deliciousdroid.c.i:
+    void BulkInsert(java.util.ArrayList,java.lang.String,android.content.Context) -> a
+    void TruncateOldBundles(java.util.ArrayList,android.content.Context) -> a
+com.deliciousdroid.platform.ContactManager -> com.deliciousdroid.c.b:
     void syncContacts(android.content.Context,java.lang.String,java.util.List) -> a
     void insertStatuses(android.content.Context,java.lang.String,java.util.List) -> b
     long lookupRawContact(android.content.ContentResolver,java.lang.String) -> a
     long lookupProfile(android.content.ContentResolver,java.lang.String) -> b
     java.util.List lookupAllContacts(android.content.ContentResolver) -> a
-com.deliciousdroid.platform.ContactManager$AllUsersQuery -> com.deliciousdroid.d.c:
+com.deliciousdroid.platform.ContactManager$AllUsersQuery -> com.deliciousdroid.c.c:
     java.lang.String[] PROJECTION -> a
-com.deliciousdroid.platform.ContactManager$ProfileQuery -> com.deliciousdroid.d.e:
+com.deliciousdroid.platform.ContactManager$ProfileQuery -> com.deliciousdroid.c.e:
     java.lang.String[] PROJECTION -> a
-com.deliciousdroid.platform.ContactManager$UserIdQuery -> com.deliciousdroid.d.h:
+com.deliciousdroid.platform.ContactManager$UserIdQuery -> com.deliciousdroid.c.h:
     java.lang.String[] PROJECTION -> a
-com.deliciousdroid.platform.ContactOperations -> com.deliciousdroid.d.a:
+com.deliciousdroid.platform.ContactOperations -> com.deliciousdroid.c.a:
     android.content.ContentValues mValues -> a
     android.content.ContentProviderOperation$Builder mBuilder -> b
     com.deliciousdroid.platform.BatchOperation mBatchOperation -> c
@@ -443,14 +421,14 @@ com.deliciousdroid.platform.ContactOperations -> com.deliciousdroid.d.a:
     android.content.ContentProviderOperation$Builder newInsertCpo(android.net.Uri,boolean) -> a
     android.content.ContentProviderOperation$Builder newDeleteCpo$22108187(android.net.Uri) -> a
     android.net.Uri addCallerIsSyncAdapterParameter(android.net.Uri) -> b
-com.deliciousdroid.platform.TagManager -> com.deliciousdroid.d.g:
-    java.util.ArrayList GetTags(java.lang.String,java.lang.String,android.content.Context) -> a
+com.deliciousdroid.platform.TagManager -> com.deliciousdroid.c.g:
     void BulkInsert(java.util.ArrayList,java.lang.String,android.content.Context) -> a
     void UpdateTag(com.deliciousdroid.providers.TagContent$Tag,java.lang.String,android.content.Context) -> a
     void UpleteTag(com.deliciousdroid.providers.TagContent$Tag,java.lang.String,android.content.Context) -> b
     void TruncateOldTags(java.util.ArrayList,android.content.Context) -> a
-com.deliciousdroid.providers.BookmarkContent -> com.deliciousdroid.providers.a:
-com.deliciousdroid.providers.BookmarkContent$Bookmark -> com.deliciousdroid.providers.d:
+    android.database.Cursor SearchTags(java.lang.String,java.lang.String,android.content.Context) -> a
+com.deliciousdroid.providers.BookmarkContent -> com.deliciousdroid.providers.b:
+com.deliciousdroid.providers.BookmarkContent$Bookmark -> com.deliciousdroid.providers.e:
     android.net.Uri CONTENT_URI -> a
     int mId -> b
     java.lang.String mAccount -> c
@@ -464,6 +442,7 @@ com.deliciousdroid.providers.BookmarkContent$Bookmark -> com.deliciousdroid.prov
     long mTime -> k
     long mLastUpdate -> l
     int getId() -> a
+    void setId(int) -> a
     java.lang.String getUrl() -> b
     void setUrl(java.lang.String) -> a
     java.lang.String getDescription() -> c
@@ -481,6 +460,7 @@ com.deliciousdroid.providers.BookmarkContent$Bookmark -> com.deliciousdroid.prov
     void setTime(long) -> a
     boolean getPrivate() -> j
     java.lang.String getAccount() -> k
+    void setAccount(java.lang.String) -> g
     com.deliciousdroid.providers.BookmarkContent$Bookmark copy() -> l
     com.deliciousdroid.providers.BookmarkContent$Bookmark valueOf(org.json.JSONObject) -> a
 com.deliciousdroid.providers.BookmarkContentProvider -> com.deliciousdroid.providers.BookmarkContentProvider:
@@ -504,12 +484,27 @@ com.deliciousdroid.providers.BookmarkContentProvider -> com.deliciousdroid.provi
     android.database.Cursor getBookmarkLiveFolderResults(android.net.Uri) -> b
     int bulkInsert(android.net.Uri,android.content.ContentValues[]) -> bulkInsert
     int bulkLoad(java.lang.String,android.content.ContentValues[]) -> a
-com.deliciousdroid.providers.BookmarkContentProvider$DatabaseHelper -> com.deliciousdroid.providers.f:
+com.deliciousdroid.providers.BookmarkContentProvider$DatabaseHelper -> com.deliciousdroid.providers.g:
     android.content.Context mContext -> a
     void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
     void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
-com.deliciousdroid.providers.ContentNotFoundException -> com.deliciousdroid.providers.c:
-com.deliciousdroid.providers.SearchSuggestionContent -> com.deliciousdroid.providers.g:
+com.deliciousdroid.providers.BundleContent -> com.deliciousdroid.providers.h:
+com.deliciousdroid.providers.BundleContent$Bundle -> com.deliciousdroid.providers.a:
+    android.net.Uri CONTENT_URI -> a
+    java.lang.String mName -> b
+    int mId -> c
+    java.lang.String mTags -> d
+    java.lang.String mAccount -> e
+    void setId(int) -> a
+    java.lang.String getName() -> a
+    void setName(java.lang.String) -> a
+    java.lang.String getTagString() -> b
+    void setTagString(java.lang.String) -> b
+    java.util.ArrayList getTags() -> c
+    void setAccount(java.lang.String) -> c
+    com.deliciousdroid.providers.BundleContent$Bundle copy() -> d
+com.deliciousdroid.providers.ContentNotFoundException -> com.deliciousdroid.providers.d:
+com.deliciousdroid.providers.SearchSuggestionContent -> com.deliciousdroid.providers.i:
     java.lang.String text1 -> a
     java.lang.String text2 -> b
     int icon1 -> c
@@ -520,8 +515,8 @@ com.deliciousdroid.providers.SearchSuggestionContent -> com.deliciousdroid.provi
     int getIcon1() -> c
     int getIcon2() -> d
     java.lang.String getIntentData() -> e
-com.deliciousdroid.providers.TagContent -> com.deliciousdroid.providers.e:
-com.deliciousdroid.providers.TagContent$Tag -> com.deliciousdroid.providers.b:
+com.deliciousdroid.providers.TagContent -> com.deliciousdroid.providers.f:
+com.deliciousdroid.providers.TagContent$Tag -> com.deliciousdroid.providers.c:
     android.net.Uri CONTENT_URI -> a
     java.lang.String mTagName -> b
     int mCount -> c
@@ -586,34 +581,42 @@ com.deliciousdroid.util.SyncUtils -> com.deliciousdroid.a.d:
     void addPeriodicSync(java.lang.String,android.os.Bundle,long,android.content.Context) -> a
 com.deliciousdroid.widget.SearchWidgetProvider -> com.deliciousdroid.widget.SearchWidgetProvider:
     void onUpdate(android.content.Context,android.appwidget.AppWidgetManager,int[]) -> onUpdate
-com.deliciousdroid.xml.SaxBookmarkParser -> com.deliciousdroid.g.f:
+com.deliciousdroid.xml.SaxBookmarkParser -> com.deliciousdroid.e.h:
     java.io.InputStream is -> a
     java.util.ArrayList parse() -> a
-com.deliciousdroid.xml.SaxBookmarkParser$1 -> com.deliciousdroid.g.g:
+com.deliciousdroid.xml.SaxBookmarkParser$1 -> com.deliciousdroid.e.i:
     com.deliciousdroid.xml.SaxBookmarkParser this$0 -> a
     com.deliciousdroid.providers.BookmarkContent$Bookmark val$currentBookmark -> b
     java.util.ArrayList val$bookmarks -> c
     void start(org.xml.sax.Attributes) -> start
-com.deliciousdroid.xml.SaxTagParser -> com.deliciousdroid.g.a:
+com.deliciousdroid.xml.SaxBundleParser -> com.deliciousdroid.e.a:
+    java.io.InputStream is -> a
+    java.util.ArrayList parse() -> a
+com.deliciousdroid.xml.SaxBundleParser$1 -> com.deliciousdroid.e.g:
+    com.deliciousdroid.xml.SaxBundleParser this$0 -> a
+    com.deliciousdroid.providers.BundleContent$Bundle val$currentBundle -> b
+    java.util.ArrayList val$bundles -> c
+    void start(org.xml.sax.Attributes) -> start
+com.deliciousdroid.xml.SaxTagParser -> com.deliciousdroid.e.b:
     java.io.InputStream is -> a
     java.util.ArrayList parse() -> a
     java.util.ArrayList parseSuggested() -> b
-com.deliciousdroid.xml.SaxTagParser$1 -> com.deliciousdroid.g.c:
+com.deliciousdroid.xml.SaxTagParser$1 -> com.deliciousdroid.e.d:
     com.deliciousdroid.xml.SaxTagParser this$0 -> a
     com.deliciousdroid.providers.TagContent$Tag val$currentTag -> b
     java.util.ArrayList val$tags -> c
     void start(org.xml.sax.Attributes) -> start
-com.deliciousdroid.xml.SaxTagParser$2 -> com.deliciousdroid.g.b:
+com.deliciousdroid.xml.SaxTagParser$2 -> com.deliciousdroid.e.c:
     com.deliciousdroid.xml.SaxTagParser this$0 -> a
     com.deliciousdroid.providers.TagContent$Tag val$currentTag -> b
     java.util.ArrayList val$tags -> c
     void end(java.lang.String) -> end
-com.deliciousdroid.xml.SaxTagParser$3 -> com.deliciousdroid.g.e:
+com.deliciousdroid.xml.SaxTagParser$3 -> com.deliciousdroid.e.f:
     com.deliciousdroid.xml.SaxTagParser this$0 -> a
     com.deliciousdroid.providers.TagContent$Tag val$currentTag -> b
     java.util.ArrayList val$tags -> c
     void end(java.lang.String) -> end
-com.deliciousdroid.xml.SaxTagParser$4 -> com.deliciousdroid.g.d:
+com.deliciousdroid.xml.SaxTagParser$4 -> com.deliciousdroid.e.e:
     com.deliciousdroid.xml.SaxTagParser this$0 -> a
     com.deliciousdroid.providers.TagContent$Tag val$currentTag -> b
     java.util.ArrayList val$tags -> c

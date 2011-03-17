@@ -2,6 +2,7 @@ com.deliciousdroid.Constants
 com.deliciousdroid.R
 com.deliciousdroid.R$array
 com.deliciousdroid.R$attr
+com.deliciousdroid.R$color
 com.deliciousdroid.R$drawable
 com.deliciousdroid.R$id
 com.deliciousdroid.R$layout
@@ -11,6 +12,12 @@ com.deliciousdroid.R$style
 com.deliciousdroid.R$xml
 com.deliciousdroid.activity.AddBookmark:
     java.lang.Thread background
+    205:206:public void saveHandler(android.view.View)
+    209:210:public void cancelHandler(android.view.View)
+com.deliciousdroid.activity.AppBaseActivity:
+    116:117:public void searchHandler(android.view.View)
+com.deliciousdroid.activity.AppBaseListActivity:
+    116:117:public void searchHandler(android.view.View)
 com.deliciousdroid.activity.Profile:
     android.webkit.WebView mWebView
 com.deliciousdroid.authenticator.AuthToken:
@@ -35,6 +42,7 @@ com.deliciousdroid.client.DeliciousApi:
     public static final java.lang.String USER_AGENT
     public static final int REGISTRATION_TIMEOUT
     public static final java.lang.String FETCH_TAGS_URI
+    public static final java.lang.String FETCH_BUNDLES_URI
     public static final java.lang.String FETCH_SUGGESTED_TAGS_URI
     public static final java.lang.String FETCH_BOOKMARKS_URI
     public static final java.lang.String FETCH_CHANGED_BOOKMARKS_URI
@@ -87,7 +95,13 @@ com.deliciousdroid.client.NetworkUtilities:
 com.deliciousdroid.client.TokenRejectedException:
     private static final long serialVersionUID
 com.deliciousdroid.platform.BookmarkManager:
-    41:41:public static java.util.ArrayList GetBookmarks(java.lang.String,java.lang.String,android.content.Context)
+    41:41:public static android.database.Cursor GetBookmarks(java.lang.String,java.lang.String,android.content.Context)
+com.deliciousdroid.platform.BundleManager:
+    47:54:public static void AddBundle(com.deliciousdroid.providers.BundleContent$Bundle,java.lang.String,android.content.Context)
+    75:89:public static void UpsertBundle(com.deliciousdroid.providers.BundleContent$Bundle,java.lang.String,android.content.Context)
+    93:102:public static void UpdateBundle(com.deliciousdroid.providers.BundleContent$Bundle,java.lang.String,android.content.Context)
+    106:111:public static void DeleteBundle(com.deliciousdroid.providers.BundleContent$Bundle,java.lang.String,android.content.Context)
+    135:161:public static android.database.Cursor SearchBundles(java.lang.String,java.lang.String,android.content.Context)
 com.deliciousdroid.platform.ContactManager:
     public static final java.lang.String CUSTOM_IM_PROTOCOL
     private static final java.lang.String TAG
@@ -112,8 +126,6 @@ com.deliciousdroid.platform.ContactOperations:
     283:286:private void addUpdateOp(android.net.Uri)
     297:296:public static android.content.ContentProviderOperation$Builder newUpdateCpo(android.net.Uri,boolean)
 com.deliciousdroid.platform.ContactSyncAdapterColumns
-com.deliciousdroid.platform.TagManager:
-    184:222:public static java.util.ArrayList SearchTags(java.lang.String,java.lang.String,android.content.Context)
 com.deliciousdroid.providers.BookmarkContent$Bookmark:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String Account
@@ -125,12 +137,13 @@ com.deliciousdroid.providers.BookmarkContent$Bookmark:
     public static final java.lang.String Meta
     public static final java.lang.String Time
     public static final java.lang.String LastUpdate
-    137:137:public long getLastUpdate()
+    141:141:public long getLastUpdate()
 com.deliciousdroid.providers.BookmarkContentProvider:
     private static final java.lang.String DATABASE_NAME
     private static final int DATABASE_VERSION
     private static final java.lang.String BOOKMARK_TABLE_NAME
     private static final java.lang.String TAG_TABLE_NAME
+    private static final java.lang.String BUNDLE_TABLE_NAME
     private static final int Bookmarks
     private static final int SearchSuggest
     private static final int Tags
@@ -138,8 +151,18 @@ com.deliciousdroid.providers.BookmarkContentProvider:
     private static final int BookmarkSearchSuggest
     private static final int TagLiveFolder
     private static final int BookmarkLiveFolder
+    private static final int Bundles
     private static final java.lang.String SuggestionLimit
     public static final java.lang.String AUTHORITY
+com.deliciousdroid.providers.BundleContent$Bundle:
+    public static final java.lang.String CONTENT_TYPE
+    public static final java.lang.String Name
+    public static final java.lang.String Tags
+    public static final java.lang.String Account
+    47:47:public int getId()
+    80:80:public java.lang.String getAccount()
+    92:94:public BundleContent$Bundle(java.lang.String)
+    96:99:public BundleContent$Bundle(java.lang.String,java.lang.String)
 com.deliciousdroid.providers.ContentNotFoundException:
     private static final long serialVersionUID
 com.deliciousdroid.providers.SearchSuggestionContent:
@@ -151,6 +174,7 @@ com.deliciousdroid.providers.TagContent$Tag:
     public static final java.lang.String Count
     public static final java.lang.String Account
     45:45:public int getId()
+    80:83:public TagContent$Tag(java.lang.String,int)
 com.deliciousdroid.syncadapter.BookmarkSyncAdapter:
     private static final java.lang.String TAG
 com.deliciousdroid.syncadapter.ContactSyncAdapter:
