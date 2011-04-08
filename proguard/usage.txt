@@ -12,12 +12,6 @@ com.deliciousdroid.R$style
 com.deliciousdroid.R$xml
 com.deliciousdroid.activity.AddBookmark:
     java.lang.Thread background
-    205:206:public void saveHandler(android.view.View)
-    209:210:public void cancelHandler(android.view.View)
-com.deliciousdroid.activity.AppBaseActivity:
-    116:117:public void searchHandler(android.view.View)
-com.deliciousdroid.activity.AppBaseListActivity:
-    116:117:public void searchHandler(android.view.View)
 com.deliciousdroid.activity.Profile:
     android.webkit.WebView mWebView
 com.deliciousdroid.authenticator.AuthToken:

@@ -32,6 +32,9 @@ com.deliciousdroid.activity.AddBookmark -> com.deliciousdroid.activity.AddBookma
     long updateTime -> u
     com.deliciousdroid.ui.TagSpan$OnTagClickListener tagOnClickListener -> d
     void onCreate(android.os.Bundle) -> onCreate
+    void saveHandler(android.view.View) -> saveHandler
+    void cancelHandler(android.view.View) -> cancelHandler
+    void save() -> b
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     android.widget.EditText access$0(com.deliciousdroid.activity.AddBookmark) -> a
@@ -91,6 +94,7 @@ com.deliciousdroid.activity.AppBaseActivity -> com.deliciousdroid.activity.AppBa
     void onCreate(android.os.Bundle) -> onCreate
     void init() -> b
     void loadAccounts() -> c
+    void searchHandler(android.view.View) -> searchHandler
     void onResume() -> onResume
     void loadSettings() -> d
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
@@ -111,6 +115,7 @@ com.deliciousdroid.activity.AppBaseListActivity -> com.deliciousdroid.activity.A
     void onCreate(android.os.Bundle) -> onCreate
     void init() -> b
     void loadAccounts() -> c
+    void searchHandler(android.view.View) -> searchHandler
     void onResume() -> onResume
     void loadSettings() -> d
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
