@@ -308,12 +308,11 @@ public class BrowseBookmarks extends AppBaseListActivity {
 		super.onResume();
 		
 		Uri data = getIntent().getData();
-		
-		if(data != null) {
-			if(data.getUserInfo() != "") {
-				username = data.getUserInfo();
-			} else username = mAccount.name;
-		}
+		if(data != null && data.getUserInfo() != null && data.getUserInfo() != "") {
+			username = data.getUserInfo();
+		} else if(getIntent().hasExtra("username")){
+			username = getIntent().getStringExtra("username");
+		} else username = mAccount.name;
 	}
 	
 	private void loadBookmarkList() {
