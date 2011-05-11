@@ -27403,30 +27403,22 @@ _____________________________________________________________________
 
 Interfaces (count = 0):
 
-Constant Pool (count = 548):
+Constant Pool (count = 530):
   - Integer [2130837521]
   - Integer [2130837531]
   - String []
   - String [ ]
   - String [ %]
-  - String [ %' OR ]
-  - String [ = ']
   - String [ AND ]
-  - String [ LIKE ']
-  - String [ LIKE '% ]
   - String [ OR ]
   - String [ bookmark]
   - String [ bookmark(s)]
   - String [%]
   - String [% ]
-  - String [' OR ]
-  - String [') AND ]
   - String [(DESCRIPTION LIKE ? OR NOTES LIKE ?)]
-  - String [(TAGS LIKE '% ]
+  - String [(TAGS LIKE ? OR TAGS LIKE ? OR TAGS LIKE ? OR TAGS = ?) AND ACCOUNT=?]
   - String [10]
-  - String [=?]
   - String [@]
-  - String [ACCOUNT]
   - String [ACCOUNT=?]
   - String [COUNT]
   - String [DESCRIPTION]
@@ -27435,7 +27427,6 @@ Constant Pool (count = 548):
   - String [NAME]
   - String [NAME ASC]
   - String [NAME LIKE ?]
-  - String [TAGS]
   - String [URL]
   - String [Unknown URI ]
   - String [Unknown URL ]
@@ -27706,18 +27697,12 @@ Constant Pool (count = 548):
   + Utf8 []
   + Utf8 [ ]
   + Utf8 [ %]
-  + Utf8 [ %' OR ]
-  + Utf8 [ = ']
   + Utf8 [ AND ]
-  + Utf8 [ LIKE ']
-  + Utf8 [ LIKE '% ]
   + Utf8 [ OR ]
   + Utf8 [ bookmark]
   + Utf8 [ bookmark(s)]
   + Utf8 [%]
   + Utf8 [% ]
-  + Utf8 [' OR ]
-  + Utf8 [') AND ]
   + Utf8 [()I]
   + Utf8 [()Landroid/content/ContentResolver;]
   + Utf8 [()Landroid/content/Context;]
@@ -27780,7 +27765,7 @@ Constant Pool (count = 548):
   + Utf8 [(Ljava/lang/String;[Landroid/content/ContentValues;)I]
   + Utf8 [(Ljava/util/Map;)Landroid/database/Cursor;]
   + Utf8 [(Ljava/util/Map;)V]
-  + Utf8 [(TAGS LIKE '% ]
+  + Utf8 [(TAGS LIKE ? OR TAGS LIKE ? OR TAGS LIKE ? OR TAGS = ?) AND ACCOUNT=?]
   + Utf8 [(Z)Ljava/lang/Boolean;]
   + Utf8 [([Ljava/lang/Object;)V]
   + Utf8 [([Ljava/lang/Object;)[Ljava/lang/Object;]
@@ -27788,9 +27773,7 @@ Constant Pool (count = 548):
   + Utf8 [10]
   + Utf8 [<clinit>]
   + Utf8 [<init>]
-  + Utf8 [=?]
   + Utf8 [@]
-  + Utf8 [ACCOUNT]
   + Utf8 [ACCOUNT=?]
   + Utf8 [COUNT]
   + Utf8 [Code]
@@ -27807,7 +27790,6 @@ Constant Pool (count = 548):
   + Utf8 [NAME]
   + Utf8 [NAME ASC]
   + Utf8 [NAME LIKE ?]
-  + Utf8 [TAGS]
   + Utf8 [URL]
   + Utf8 [Unknown URI ]
   + Utf8 [Unknown URL ]
@@ -27975,103 +27957,103 @@ Methods (count = 17):
       = static void <clinit>()
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 116, locals = 1, stack = 4):
-      [0] new #81
+      [0] new #72
         - Class [android/content/UriMatcher]
       [3] dup
       [4] iconst_m1
-      [5] invokespecial #130
+      [5] invokespecial #121
         - Methodref [android/content/UriMatcher.<init> (I)V]
       [8] dup
       [9] astore_0 v0
-      [10] ldc #46
+      [10] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [12] ldc #38
+      [12] ldc #29
         - String [bookmark]
       [14] iconst_1
-      [15] invokevirtual #131
+      [15] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [18] aload_0 v0
-      [19] ldc #46
+      [19] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [21] ldc #64
+      [21] ldc #55
         - String [tag]
       [23] iconst_3
-      [24] invokevirtual #131
+      [24] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [27] aload_0 v0
-      [28] ldc #46
+      [28] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [30] ldc #44
+      [30] ldc #35
         - String [bundle]
       [32] bipush 8
-      [34] invokevirtual #131
+      [34] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [37] aload_0 v0
-      [38] ldc #46
+      [38] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [40] ldc #53
+      [40] ldc #44
         - String [main/search_suggest_query]
       [42] iconst_2
-      [43] invokevirtual #131
+      [43] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [46] aload_0 v0
-      [47] ldc #46
+      [47] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [49] ldc #54
+      [49] ldc #45
         - String [main/search_suggest_query/*]
       [51] iconst_2
-      [52] invokevirtual #131
+      [52] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [55] aload_0 v0
-      [56] ldc #46
+      [56] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [58] ldc #66
+      [58] ldc #57
         - String [tag/search_suggest_query]
       [60] iconst_4
-      [61] invokevirtual #131
+      [61] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [64] aload_0 v0
-      [65] ldc #46
+      [65] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [67] ldc #67
+      [67] ldc #58
         - String [tag/search_suggest_query/*]
       [69] iconst_4
-      [70] invokevirtual #131
+      [70] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [73] aload_0 v0
-      [74] ldc #46
+      [74] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [76] ldc #40
+      [76] ldc #31
         - String [bookmark/search_suggest_query]
       [78] iconst_5
-      [79] invokevirtual #131
+      [79] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [82] aload_0 v0
-      [83] ldc #46
+      [83] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [85] ldc #41
+      [85] ldc #32
         - String [bookmark/search_suggest_query/*]
       [87] iconst_5
-      [88] invokevirtual #131
+      [88] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [91] aload_0 v0
-      [92] ldc #46
+      [92] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [94] ldc #65
+      [94] ldc #56
         - String [tag/livefolder]
       [96] bipush 6
-      [98] invokevirtual #131
+      [98] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [101] aload_0 v0
-      [102] ldc #46
+      [102] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [104] ldc #39
+      [104] ldc #30
         - String [bookmark/livefolder]
       [106] bipush 7
-      [108] invokevirtual #131
+      [108] invokevirtual #122
         - Methodref [android/content/UriMatcher.addURI (Ljava/lang/String;Ljava/lang/String;I)V]
       [111] aload_0 v0
-      [112] putstatic #120
+      [112] putstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [115] return
       Code attribute exceptions (count = 0):
@@ -28082,15 +28064,15 @@ Methods (count = 17):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 15, locals = 1, stack = 2):
       [0] aload_0 v0
-      [1] invokespecial #126
+      [1] invokespecial #117
         - Methodref [android/content/ContentProvider.<init> ()V]
       [4] aload_0 v0
       [5] aconst_null
-      [6] putfield #116
+      [6] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [9] aload_0 v0
       [10] aconst_null
-      [11] putfield #117
+      [11] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
       [14] return
       Code attribute exceptions (count = 0):
@@ -28101,15 +28083,15 @@ Methods (count = 17):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 129, locals = 5, stack = 5):
       [0] aload_0 v0
-      [1] getfield #119
+      [1] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [4] invokevirtual #173
+      [4] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [7] astore v4
-      [9] getstatic #120
+      [9] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [12] aload_1 v1
-      [13] invokevirtual #132
+      [13] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [16] lookupswitch (3 offsets, default=75) (target=91)
         1: offset = 36, target = 52
@@ -28117,58 +28099,58 @@ Methods (count = 17):
         8: offset = 62, target = 78
         default: offset = 75, target = 91
       [52] aload v4
-      [54] ldc #38
+      [54] ldc #29
         - String [bookmark]
       [56] aload_2 v2
       [57] aload_3 v3
-      [58] invokevirtual #139
+      [58] invokevirtual #130
         - Methodref [android/database/sqlite/SQLiteDatabase.delete (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I]
       [61] istore_2 v2
       [62] goto +53 (target=115)
       [65] aload v4
-      [67] ldc #64
+      [67] ldc #55
         - String [tag]
       [69] aload_2 v2
       [70] aload_3 v3
-      [71] invokevirtual #139
+      [71] invokevirtual #130
         - Methodref [android/database/sqlite/SQLiteDatabase.delete (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I]
       [74] istore_2 v2
       [75] goto +40 (target=115)
       [78] aload v4
-      [80] ldc #44
+      [80] ldc #35
         - String [bundle]
       [82] aload_2 v2
       [83] aload_3 v3
-      [84] invokevirtual #139
+      [84] invokevirtual #130
         - Methodref [android/database/sqlite/SQLiteDatabase.delete (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I]
       [87] istore_2 v2
       [88] goto +27 (target=115)
-      [91] new #104
+      [91] new #95
         - Class [java/lang/IllegalArgumentException]
       [94] dup
-      [95] new #108
+      [95] new #99
         - Class [java/lang/StringBuilder]
       [98] dup
-      [99] ldc #34
+      [99] ldc #25
         - String [Unknown URI ]
-      [101] invokespecial #189
+      [101] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [104] aload_1 v1
-      [105] invokevirtual #190
+      [105] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [108] invokevirtual #192
+      [108] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [111] invokespecial #182
+      [111] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [114] athrow
       [115] aload_0 v0
-      [116] invokevirtual #170
+      [116] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [119] invokevirtual #129
+      [119] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [122] aload_1 v1
       [123] aconst_null
-      [124] invokevirtual #127
+      [124] invokevirtual #118
         - Methodref [android/content/ContentResolver.notifyChange (Landroid/net/Uri;Landroid/database/ContentObserver;)V]
       [127] iload_2 v2
       [128] ireturn
@@ -28179,10 +28161,10 @@ Methods (count = 17):
       = public java.lang.String getType(android.net.Uri)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 88, locals = 2, stack = 5):
-      [0] getstatic #120
+      [0] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [3] aload_1 v1
-      [4] invokevirtual #132
+      [4] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [7] tableswitch (8 offsets, default=57) (target=64)
         1: offset = 45, target = 52
@@ -28194,34 +28176,34 @@ Methods (count = 17):
         7: offset = 57, target = 64
         8: offset = 54, target = 61
         default: offset = 57, target = 64
-      [52] ldc #70
+      [52] ldc #61
         - String [vnd.android.cursor.dir/vnd.deliciousdroid.bookmarks]
       [54] areturn
-      [55] ldc #69
+      [55] ldc #60
         - String [vnd.android.cursor.dir/vnd.android.search.suggest]
       [57] areturn
-      [58] ldc #72
+      [58] ldc #63
         - String [vnd.android.cursor.dir/vnd.deliciousdroid.tags]
       [60] areturn
-      [61] ldc #71
+      [61] ldc #62
         - String [vnd.android.cursor.dir/vnd.deliciousdroid.bundles]
       [63] areturn
-      [64] new #104
+      [64] new #95
         - Class [java/lang/IllegalArgumentException]
       [67] dup
-      [68] new #108
+      [68] new #99
         - Class [java/lang/StringBuilder]
       [71] dup
-      [72] ldc #35
+      [72] ldc #26
         - String [Unknown URL ]
-      [74] invokespecial #189
+      [74] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [77] aload_1 v1
-      [78] invokevirtual #190
+      [78] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [81] invokevirtual #192
+      [81] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [84] invokespecial #182
+      [84] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [87] athrow
       Code attribute exceptions (count = 0):
@@ -28231,10 +28213,10 @@ Methods (count = 17):
       = public android.net.Uri insert(android.net.Uri,android.content.ContentValues)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 334, locals = 6, stack = 5):
-      [0] getstatic #120
+      [0] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [3] aload_1 v1
-      [4] invokevirtual #132
+      [4] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [7] lookupswitch (3 offsets, default=303) (target=310)
         1: offset = 33, target = 40
@@ -28249,64 +28231,64 @@ Methods (count = 17):
       [45] dup
       [46] dup
       [47] astore_1 v1
-      [48] getfield #119
+      [48] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [51] invokevirtual #173
+      [51] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
-      [54] putfield #118
+      [54] putfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
       [57] aload_1 v1
-      [58] getfield #118
+      [58] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [61] ldc #38
+      [61] ldc #29
         - String [bookmark]
       [63] ldc #3
         - String []
       [65] aload_3 v3
-      [66] invokevirtual #141
+      [66] invokevirtual #132
         - Methodref [android/database/sqlite/SQLiteDatabase.insert (Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J]
       [69] dup2
       [70] lstore v4
       [72] lconst_0
       [73] lcmp
       [74] ifle +32 (target=106)
-      [77] getstatic #123
+      [77] getstatic #114
         - Fieldref [com/deliciousdroid/providers/e.a Landroid/net/Uri;]
-      [80] invokevirtual #148
+      [80] invokevirtual #139
         - Methodref [android/net/Uri.buildUpon ()Landroid/net/Uri$Builder;]
       [83] lload v4
-      [85] invokestatic #128
+      [85] invokestatic #119
         - Methodref [android/content/ContentUris.appendId (Landroid/net/Uri$Builder;J)Landroid/net/Uri$Builder;]
-      [88] invokevirtual #156
+      [88] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
       [91] astore_2 v2
       [92] aload_1 v1
-      [93] invokevirtual #170
+      [93] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [96] invokevirtual #129
+      [96] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [99] aload_2 v2
       [100] aconst_null
-      [101] invokevirtual #127
+      [101] invokevirtual #118
         - Methodref [android/content/ContentResolver.notifyChange (Landroid/net/Uri;Landroid/database/ContentObserver;)V]
       [104] aload_2 v2
       [105] areturn
-      [106] new #86
+      [106] new #77
         - Class [android/database/SQLException]
       [109] dup
-      [110] new #108
+      [110] new #99
         - Class [java/lang/StringBuilder]
       [113] dup
-      [114] ldc #28
+      [114] ldc #20
         - String [Failed to insert row into ]
-      [116] invokespecial #189
+      [116] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [119] aload_2 v2
-      [120] invokevirtual #190
+      [120] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [123] invokevirtual #192
+      [123] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [126] invokespecial #137
+      [126] invokespecial #128
         - Methodref [android/database/SQLException.<init> (Ljava/lang/String;)V]
       [129] athrow
       [130] aload_0 v0
@@ -28317,64 +28299,64 @@ Methods (count = 17):
       [135] dup
       [136] dup
       [137] astore_1 v1
-      [138] getfield #119
+      [138] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [141] invokevirtual #173
+      [141] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
-      [144] putfield #118
+      [144] putfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
       [147] aload_1 v1
-      [148] getfield #118
+      [148] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [151] ldc #64
+      [151] ldc #55
         - String [tag]
       [153] ldc #3
         - String []
       [155] aload_3 v3
-      [156] invokevirtual #141
+      [156] invokevirtual #132
         - Methodref [android/database/sqlite/SQLiteDatabase.insert (Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J]
       [159] dup2
       [160] lstore v4
       [162] lconst_0
       [163] lcmp
       [164] ifle +32 (target=196)
-      [167] getstatic #122
+      [167] getstatic #113
         - Fieldref [com/deliciousdroid/providers/c.a Landroid/net/Uri;]
-      [170] invokevirtual #148
+      [170] invokevirtual #139
         - Methodref [android/net/Uri.buildUpon ()Landroid/net/Uri$Builder;]
       [173] lload v4
-      [175] invokestatic #128
+      [175] invokestatic #119
         - Methodref [android/content/ContentUris.appendId (Landroid/net/Uri$Builder;J)Landroid/net/Uri$Builder;]
-      [178] invokevirtual #156
+      [178] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
       [181] astore_2 v2
       [182] aload_1 v1
-      [183] invokevirtual #170
+      [183] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [186] invokevirtual #129
+      [186] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [189] aload_2 v2
       [190] aconst_null
-      [191] invokevirtual #127
+      [191] invokevirtual #118
         - Methodref [android/content/ContentResolver.notifyChange (Landroid/net/Uri;Landroid/database/ContentObserver;)V]
       [194] aload_2 v2
       [195] areturn
-      [196] new #86
+      [196] new #77
         - Class [android/database/SQLException]
       [199] dup
-      [200] new #108
+      [200] new #99
         - Class [java/lang/StringBuilder]
       [203] dup
-      [204] ldc #28
+      [204] ldc #20
         - String [Failed to insert row into ]
-      [206] invokespecial #189
+      [206] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [209] aload_2 v2
-      [210] invokevirtual #190
+      [210] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [213] invokevirtual #192
+      [213] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [216] invokespecial #137
+      [216] invokespecial #128
         - Methodref [android/database/SQLException.<init> (Ljava/lang/String;)V]
       [219] athrow
       [220] aload_0 v0
@@ -28385,82 +28367,82 @@ Methods (count = 17):
       [225] dup
       [226] dup
       [227] astore_1 v1
-      [228] getfield #119
+      [228] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [231] invokevirtual #173
+      [231] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
-      [234] putfield #118
+      [234] putfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
       [237] aload_1 v1
-      [238] getfield #118
+      [238] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [241] ldc #44
+      [241] ldc #35
         - String [bundle]
       [243] ldc #3
         - String []
       [245] aload_3 v3
-      [246] invokevirtual #141
+      [246] invokevirtual #132
         - Methodref [android/database/sqlite/SQLiteDatabase.insert (Ljava/lang/String;Ljava/lang/String;Landroid/content/ContentValues;)J]
       [249] dup2
       [250] lstore v4
       [252] lconst_0
       [253] lcmp
       [254] ifle +32 (target=286)
-      [257] getstatic #121
+      [257] getstatic #112
         - Fieldref [com/deliciousdroid/providers/a.a Landroid/net/Uri;]
-      [260] invokevirtual #148
+      [260] invokevirtual #139
         - Methodref [android/net/Uri.buildUpon ()Landroid/net/Uri$Builder;]
       [263] lload v4
-      [265] invokestatic #128
+      [265] invokestatic #119
         - Methodref [android/content/ContentUris.appendId (Landroid/net/Uri$Builder;J)Landroid/net/Uri$Builder;]
-      [268] invokevirtual #156
+      [268] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
       [271] astore_2 v2
       [272] aload_1 v1
-      [273] invokevirtual #170
+      [273] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [276] invokevirtual #129
+      [276] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [279] aload_2 v2
       [280] aconst_null
-      [281] invokevirtual #127
+      [281] invokevirtual #118
         - Methodref [android/content/ContentResolver.notifyChange (Landroid/net/Uri;Landroid/database/ContentObserver;)V]
       [284] aload_2 v2
       [285] areturn
-      [286] new #86
+      [286] new #77
         - Class [android/database/SQLException]
       [289] dup
-      [290] new #108
+      [290] new #99
         - Class [java/lang/StringBuilder]
       [293] dup
-      [294] ldc #28
+      [294] ldc #20
         - String [Failed to insert row into ]
-      [296] invokespecial #189
+      [296] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [299] aload_2 v2
-      [300] invokevirtual #190
+      [300] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [303] invokevirtual #192
+      [303] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [306] invokespecial #137
+      [306] invokespecial #128
         - Methodref [android/database/SQLException.<init> (Ljava/lang/String;)V]
       [309] athrow
-      [310] new #104
+      [310] new #95
         - Class [java/lang/IllegalArgumentException]
       [313] dup
-      [314] new #108
+      [314] new #99
         - Class [java/lang/StringBuilder]
       [317] dup
-      [318] ldc #36
+      [318] ldc #27
         - String [Unknown Uri: ]
-      [320] invokespecial #189
+      [320] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [323] aload_1 v1
-      [324] invokevirtual #190
+      [324] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [327] invokevirtual #192
+      [327] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [330] invokespecial #182
+      [330] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [333] athrow
       Code attribute exceptions (count = 0):
@@ -28471,18 +28453,18 @@ Methods (count = 17):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 26, locals = 1, stack = 4):
       [0] aload_0 v0
-      [1] new #100
+      [1] new #91
         - Class [com/deliciousdroid/providers/g]
       [4] dup
       [5] aload_0 v0
-      [6] invokevirtual #170
+      [6] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [9] invokespecial #171
+      [9] invokespecial #162
         - Methodref [com/deliciousdroid/providers/g.<init> (Landroid/content/Context;)V]
-      [12] putfield #119
+      [12] putfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
       [15] aload_0 v0
-      [16] getfield #119
+      [16] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
       [19] ifnonnull +5 (target=24)
       [22] iconst_0
@@ -28496,10 +28478,10 @@ Methods (count = 17):
       = public android.database.Cursor query(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 349, locals = 9, stack = 9):
-      [0] getstatic #120
+      [0] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [3] aload_1 v1
-      [4] invokevirtual #132
+      [4] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [7] tableswitch (8 offsets, default=318) (target=325)
         1: offset = 45, target = 52
@@ -28522,80 +28504,80 @@ Methods (count = 17):
       [63] astore v5
       [65] aload v6
       [67] aconst_null
-      [68] invokespecial #163
+      [68] invokespecial #154
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [71] areturn
       [72] aload_1 v1
-      [73] invokevirtual #149
+      [73] invokevirtual #140
         - Methodref [android/net/Uri.getLastPathSegment ()Ljava/lang/String;]
-      [76] invokevirtual #187
+      [76] invokevirtual #178
         - Methodref [java/lang/String.toLowerCase ()Ljava/lang/String;]
       [79] astore_1 v1
       [80] aload_0 v0
       [81] aload_1 v1
       [82] astore_2 v2
       [83] astore_1 v1
-      [84] ldc #50
+      [84] ldc #41
         - String [getSearchSuggestions]
       [86] aload_2 v2
-      [87] invokestatic #161
+      [87] invokestatic #152
         - Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
       [90] pop
       [91] aload_1 v1
       [92] aload_1 v1
-      [93] invokevirtual #170
+      [93] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [96] invokestatic #124
+      [96] invokestatic #115
         - Methodref [android/accounts/AccountManager.get (Landroid/content/Context;)Landroid/accounts/AccountManager;]
-      [99] putfield #116
+      [99] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [102] aload_1 v1
       [103] aload_1 v1
-      [104] getfield #116
+      [104] getfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
-      [107] ldc #45
+      [107] ldc #36
         - String [com.deliciousdroid]
-      [109] invokevirtual #125
+      [109] invokevirtual #116
         - Methodref [android/accounts/AccountManager.getAccountsByType (Ljava/lang/String;)[Landroid/accounts/Account;]
       [112] iconst_0
       [113] aaload
-      [114] putfield #117
+      [114] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [117] new #114
+      [117] new #105
         - Class [java/util/TreeMap]
-      [120] invokespecial #196
+      [120] invokespecial #187
         - Methodref [java/util/TreeMap.<init> ()V]
-      [123] new #114
+      [123] new #105
         - Class [java/util/TreeMap]
-      [126] invokespecial #196
+      [126] invokespecial #187
         - Methodref [java/util/TreeMap.<init> ()V]
       [129] aload_1 v1
       [130] aload_2 v2
-      [131] invokespecial #169
+      [131] invokespecial #160
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.b (Ljava/lang/String;)Ljava/util/Map;]
       [134] astore_3 v3
       [135] aload_1 v1
       [136] aload_2 v2
-      [137] invokespecial #164
+      [137] invokespecial #155
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/lang/String;)Ljava/util/Map;]
       [140] astore v4
-      [142] new #114
+      [142] new #105
         - Class [java/util/TreeMap]
       [145] dup
-      [146] invokespecial #196
+      [146] invokespecial #187
         - Methodref [java/util/TreeMap.<init> ()V]
       [149] dup
       [150] astore v5
       [152] aload_3 v3
-      [153] invokeinterface #211
+      [153] invokeinterface #202
         - InterfaceMethodref [java/util/SortedMap.putAll (Ljava/util/Map;)V]
       [158] aload v5
       [160] aload v4
-      [162] invokeinterface #211
+      [162] invokeinterface #202
         - InterfaceMethodref [java/util/SortedMap.putAll (Ljava/util/Map;)V]
       [167] aload_1 v1
       [168] aload v5
-      [170] invokespecial #166
+      [170] invokespecial #157
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/util/Map;)Landroid/database/Cursor;]
       [173] areturn
       [174] aload_0 v0
@@ -28609,7 +28591,7 @@ Methods (count = 17):
       [185] astore v5
       [187] aload v6
       [189] aconst_null
-      [190] invokespecial #168
+      [190] invokespecial #159
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.b (Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [193] areturn
       [194] aload_0 v0
@@ -28628,22 +28610,22 @@ Methods (count = 17):
       [215] astore_3 v3
       [216] astore_2 v2
       [217] astore_1 v1
-      [218] new #88
+      [218] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [221] dup
-      [222] invokespecial #144
+      [222] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
       [225] astore v7
       [227] aload_1 v1
-      [228] getfield #119
+      [228] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [231] invokevirtual #172
+      [231] invokevirtual #163
         - Methodref [com/deliciousdroid/providers/g.getReadableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [234] astore v8
       [236] aload v7
-      [238] ldc #44
+      [238] ldc #35
         - String [bundle]
-      [240] invokevirtual #147
+      [240] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
       [243] aload v7
       [245] aload v8
@@ -28654,74 +28636,74 @@ Methods (count = 17):
       [253] aconst_null
       [254] aload v6
       [256] aconst_null
-      [257] invokevirtual #146
+      [257] invokevirtual #137
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.query (Landroid/database/sqlite/SQLiteDatabase;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [260] dup
       [261] astore_3 v3
       [262] aload_1 v1
-      [263] invokevirtual #170
+      [263] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [266] invokevirtual #129
+      [266] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [269] aload_2 v2
-      [270] invokeinterface #205
+      [270] invokeinterface #196
         - InterfaceMethodref [android/database/Cursor.setNotificationUri (Landroid/content/ContentResolver;Landroid/net/Uri;)V]
       [275] aload_3 v3
       [276] areturn
       [277] aload_1 v1
-      [278] invokevirtual #149
+      [278] invokevirtual #140
         - Methodref [android/net/Uri.getLastPathSegment ()Ljava/lang/String;]
-      [281] invokevirtual #187
+      [281] invokevirtual #178
         - Methodref [java/lang/String.toLowerCase ()Ljava/lang/String;]
       [284] astore_1 v1
       [285] aload_0 v0
       [286] aload_0 v0
       [287] aload_1 v1
-      [288] invokespecial #169
+      [288] invokespecial #160
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.b (Ljava/lang/String;)Ljava/util/Map;]
-      [291] invokespecial #166
+      [291] invokespecial #157
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/util/Map;)Landroid/database/Cursor;]
       [294] areturn
       [295] aload_1 v1
-      [296] invokevirtual #149
+      [296] invokevirtual #140
         - Methodref [android/net/Uri.getLastPathSegment ()Ljava/lang/String;]
-      [299] invokevirtual #187
+      [299] invokevirtual #178
         - Methodref [java/lang/String.toLowerCase ()Ljava/lang/String;]
       [302] astore_1 v1
       [303] aload_0 v0
       [304] aload_0 v0
       [305] aload_1 v1
-      [306] invokespecial #164
+      [306] invokespecial #155
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/lang/String;)Ljava/util/Map;]
-      [309] invokespecial #166
+      [309] invokespecial #157
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/util/Map;)Landroid/database/Cursor;]
       [312] areturn
       [313] aload_0 v0
       [314] aload_1 v1
-      [315] invokespecial #162
+      [315] invokespecial #153
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Landroid/net/Uri;)Landroid/database/Cursor;]
       [318] areturn
       [319] aload_0 v0
       [320] aload_1 v1
-      [321] invokespecial #167
+      [321] invokespecial #158
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.b (Landroid/net/Uri;)Landroid/database/Cursor;]
       [324] areturn
-      [325] new #104
+      [325] new #95
         - Class [java/lang/IllegalArgumentException]
       [328] dup
-      [329] new #108
+      [329] new #99
         - Class [java/lang/StringBuilder]
       [332] dup
-      [333] ldc #36
+      [333] ldc #27
         - String [Unknown Uri: ]
-      [335] invokespecial #189
+      [335] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [338] aload_1 v1
-      [339] invokevirtual #190
+      [339] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [342] invokevirtual #192
+      [342] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [345] invokespecial #182
+      [345] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [348] athrow
       Code attribute exceptions (count = 0):
@@ -28731,22 +28713,22 @@ Methods (count = 17):
       = private android.database.Cursor a(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 59, locals = 9, stack = 9):
-      [0] new #88
+      [0] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [3] dup
-      [4] invokespecial #144
+      [4] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
       [7] astore v7
       [9] aload_0 v0
-      [10] getfield #119
+      [10] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [13] invokevirtual #172
+      [13] invokevirtual #163
         - Methodref [com/deliciousdroid/providers/g.getReadableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [16] astore v8
       [18] aload v7
-      [20] ldc #38
+      [20] ldc #29
         - String [bookmark]
-      [22] invokevirtual #147
+      [22] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
       [25] aload v7
       [27] aload v8
@@ -28757,17 +28739,17 @@ Methods (count = 17):
       [34] aconst_null
       [35] aload v5
       [37] aload v6
-      [39] invokevirtual #146
+      [39] invokevirtual #137
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.query (Landroid/database/sqlite/SQLiteDatabase;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [42] dup
       [43] astore_2 v2
       [44] aload_0 v0
-      [45] invokevirtual #170
+      [45] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [48] invokevirtual #129
+      [48] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [51] aload_1 v1
-      [52] invokeinterface #205
+      [52] invokeinterface #196
         - InterfaceMethodref [android/database/Cursor.setNotificationUri (Landroid/content/ContentResolver;Landroid/net/Uri;)V]
       [57] aload_2 v2
       [58] areturn
@@ -28778,22 +28760,22 @@ Methods (count = 17):
       = private android.database.Cursor b(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 59, locals = 9, stack = 9):
-      [0] new #88
+      [0] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [3] dup
-      [4] invokespecial #144
+      [4] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
       [7] astore v7
       [9] aload_0 v0
-      [10] getfield #119
+      [10] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [13] invokevirtual #172
+      [13] invokevirtual #163
         - Methodref [com/deliciousdroid/providers/g.getReadableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [16] astore v8
       [18] aload v7
-      [20] ldc #64
+      [20] ldc #55
         - String [tag]
-      [22] invokevirtual #147
+      [22] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
       [25] aload v7
       [27] aload v8
@@ -28804,17 +28786,17 @@ Methods (count = 17):
       [34] aconst_null
       [35] aload v5
       [37] aload v6
-      [39] invokevirtual #146
+      [39] invokevirtual #137
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.query (Landroid/database/sqlite/SQLiteDatabase;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [42] dup
       [43] astore_2 v2
       [44] aload_0 v0
-      [45] invokevirtual #170
+      [45] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [48] invokevirtual #129
+      [48] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [51] aload_1 v1
-      [52] invokeinterface #205
+      [52] invokeinterface #196
         - InterfaceMethodref [android/database/Cursor.setNotificationUri (Landroid/content/ContentResolver;Landroid/net/Uri;)V]
       [57] aload_2 v2
       [58] areturn
@@ -28825,63 +28807,63 @@ Methods (count = 17):
       = private java.util.Map a(java.lang.String)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 451, locals = 8, stack = 8):
-      [0] ldc #49
+      [0] ldc #40
         - String [getBookmarkSearchSuggestions]
       [2] aload_1 v1
-      [3] invokestatic #161
+      [3] invokestatic #152
         - Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
       [6] pop
       [7] aload_1 v1
       [8] ldc #4
         - String [ ]
-      [10] invokevirtual #186
+      [10] invokevirtual #177
         - Methodref [java/lang/String.split (Ljava/lang/String;)[Ljava/lang/String;]
       [13] astore_1 v1
       [14] aload_0 v0
       [15] aload_0 v0
-      [16] invokevirtual #170
+      [16] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [19] invokestatic #124
+      [19] invokestatic #115
         - Methodref [android/accounts/AccountManager.get (Landroid/content/Context;)Landroid/accounts/AccountManager;]
-      [22] putfield #116
+      [22] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [25] aload_0 v0
       [26] aload_0 v0
-      [27] getfield #116
+      [27] getfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
-      [30] ldc #45
+      [30] ldc #36
         - String [com.deliciousdroid]
-      [32] invokevirtual #125
+      [32] invokevirtual #116
         - Methodref [android/accounts/AccountManager.getAccountsByType (Ljava/lang/String;)[Landroid/accounts/Account;]
       [35] iconst_0
       [36] aaload
-      [37] putfield #117
+      [37] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [40] new #114
+      [40] new #105
         - Class [java/util/TreeMap]
       [43] dup
-      [44] invokespecial #196
+      [44] invokespecial #187
         - Methodref [java/util/TreeMap.<init> ()V]
       [47] astore_2 v2
-      [48] new #88
+      [48] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [51] dup
-      [52] invokespecial #144
+      [52] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
-      [55] ldc #38
+      [55] ldc #29
         - String [bookmark]
-      [57] invokevirtual #147
+      [57] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
-      [60] new #109
+      [60] new #100
         - Class [java/util/ArrayList]
       [63] dup
-      [64] invokespecial #193
+      [64] invokespecial #184
         - Methodref [java/util/ArrayList.<init> ()V]
       [67] astore_3 v3
-      [68] new #109
+      [68] new #100
         - Class [java/util/ArrayList]
       [71] dup
-      [72] invokespecial #193
+      [72] invokespecial #184
         - Methodref [java/util/ArrayList.<init> ()V]
       [75] astore v4
       [77] aload_1 v1
@@ -28897,234 +28879,234 @@ Methods (count = 17):
       [94] aaload
       [95] astore_1 v1
       [96] aload_3 v3
-      [97] ldc #18
+      [97] ldc #12
         - String [(DESCRIPTION LIKE ? OR NOTES LIKE ?)]
-      [99] invokevirtual #194
+      [99] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [102] pop
       [103] aload v4
-      [105] new #108
+      [105] new #99
         - Class [java/lang/StringBuilder]
       [108] dup
-      [109] ldc #14
+      [109] ldc #10
         - String [%]
-      [111] invokespecial #189
+      [111] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [114] aload_1 v1
-      [115] invokevirtual #191
+      [115] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [118] ldc #14
+      [118] ldc #10
         - String [%]
-      [120] invokevirtual #191
+      [120] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [123] invokevirtual #192
+      [123] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [126] invokevirtual #194
+      [126] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [129] pop
       [130] aload v4
-      [132] new #108
+      [132] new #99
         - Class [java/lang/StringBuilder]
       [135] dup
-      [136] ldc #14
+      [136] ldc #10
         - String [%]
-      [138] invokespecial #189
+      [138] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [141] aload_1 v1
-      [142] invokevirtual #191
+      [142] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [145] ldc #14
+      [145] ldc #10
         - String [%]
-      [147] invokevirtual #191
+      [147] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [150] invokevirtual #192
+      [150] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [153] invokevirtual #194
+      [153] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [156] pop
       [157] iinc v5, 1
       [160] iload v5
       [162] iload v6
       [164] ificmplt -74 (target=90)
-      [167] ldc #8
+      [167] ldc #6
         - String [ AND ]
       [169] aload_3 v3
-      [170] invokestatic #160
+      [170] invokestatic #151
         - Methodref [android/text/TextUtils.join (Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;]
       [173] astore_1 v1
       [174] iconst_3
-      [175] anewarray #107
+      [175] anewarray #98
         - Class [java/lang/String]
       [178] dup
       [179] iconst_0
-      [180] ldc #37
+      [180] ldc #28
         - String [_id]
       [182] aastore
       [183] dup
       [184] iconst_1
-      [185] ldc #26
+      [185] ldc #18
         - String [DESCRIPTION]
       [187] aastore
       [188] dup
       [189] iconst_2
-      [190] ldc #33
+      [190] ldc #24
         - String [URL]
       [192] aastore
       [193] astore v5
       [195] aload_0 v0
-      [196] getstatic #123
+      [196] getstatic #114
         - Fieldref [com/deliciousdroid/providers/e.a Landroid/net/Uri;]
       [199] aload v5
       [201] aload_1 v1
       [202] aload v4
       [204] iconst_0
-      [205] anewarray #107
+      [205] anewarray #98
         - Class [java/lang/String]
-      [208] invokevirtual #195
+      [208] invokevirtual #186
         - Methodref [java/util/ArrayList.toArray ([Ljava/lang/Object;)[Ljava/lang/Object;]
-      [211] checkcast #73
+      [211] checkcast #64
         - Class [[Ljava/lang/String;]
       [214] aconst_null
-      [215] ldc #20
+      [215] ldc #14
         - String [10]
-      [217] invokespecial #163
+      [217] invokespecial #154
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [220] dup
       [221] astore v6
-      [223] invokeinterface #203
+      [223] invokeinterface #194
         - InterfaceMethodref [android/database/Cursor.moveToFirst ()Z]
       [228] ifeq +214 (target=442)
       [231] aload v6
-      [233] ldc #26
+      [233] ldc #18
         - String [DESCRIPTION]
-      [235] invokeinterface #200
+      [235] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [240] istore v7
       [242] aload v6
-      [244] ldc #37
+      [244] ldc #28
         - String [_id]
-      [246] invokeinterface #200
+      [246] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [251] istore_1 v1
       [252] aload v6
-      [254] ldc #33
+      [254] ldc #24
         - String [URL]
-      [256] invokeinterface #200
+      [256] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [261] istore_3 v3
       [262] aload_0 v0
-      [263] invokevirtual #170
+      [263] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [266] invokestatic #159
+      [266] invokestatic #150
         - Methodref [android/preference/PreferenceManager.getDefaultSharedPreferences (Landroid/content/Context;)Landroid/content/SharedPreferences;]
-      [269] ldc #57
+      [269] ldc #48
         - String [pref_view_bookmark_default_action]
-      [271] ldc #43
+      [271] ldc #34
         - String [browser]
-      [273] invokeinterface #198
+      [273] invokeinterface #189
         - InterfaceMethodref [android/content/SharedPreferences.getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;]
       [278] astore v4
-      [280] new #90
+      [280] new #81
         - Class [android/net/Uri$Builder]
       [283] dup
-      [284] invokespecial #153
+      [284] invokespecial #144
         - Methodref [android/net/Uri$Builder.<init> ()V]
       [287] astore v5
       [289] aload v4
-      [291] ldc #43
+      [291] ldc #34
         - String [browser]
-      [293] invokevirtual #185
+      [293] invokevirtual #176
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [296] ifeq +19 (target=315)
       [299] aload v6
       [301] iload_3 v3
-      [302] invokeinterface #202
+      [302] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
-      [307] invokestatic #151
+      [307] invokestatic #142
         - Methodref [android/net/Uri.parse (Ljava/lang/String;)Landroid/net/Uri;]
       [310] astore v4
       [312] goto +76 (target=388)
       [315] aload v5
-      [317] ldc #47
+      [317] ldc #38
         - String [content]
-      [319] invokevirtual #158
+      [319] invokevirtual #149
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [322] pop
       [323] aload v5
-      [325] new #108
+      [325] new #99
         - Class [java/lang/StringBuilder]
       [328] dup
       [329] aload_0 v0
-      [330] getfield #117
+      [330] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [333] getfield #115
+      [333] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [336] invokestatic #188
+      [336] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [339] invokespecial #189
+      [339] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [342] ldc #22
+      [342] ldc #15
         - String [@]
-      [344] invokevirtual #191
+      [344] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [347] ldc #46
+      [347] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [349] invokevirtual #191
+      [349] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [352] invokevirtual #192
+      [352] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [355] invokevirtual #157
+      [355] invokevirtual #148
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [358] pop
       [359] aload v5
-      [361] ldc #42
+      [361] ldc #33
         - String [bookmarks]
-      [363] invokevirtual #154
+      [363] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [366] pop
       [367] aload v5
       [369] aload v6
       [371] iload_1 v1
-      [372] invokeinterface #202
+      [372] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
-      [377] invokevirtual #154
+      [377] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [380] pop
       [381] aload v5
-      [383] invokevirtual #156
+      [383] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
       [386] astore v4
       [388] aload v6
       [390] iload v7
-      [392] invokeinterface #202
+      [392] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
       [397] astore v5
       [399] aload_2 v2
       [400] aload v5
-      [402] new #102
+      [402] new #93
         - Class [com/deliciousdroid/providers/i]
       [405] dup
       [406] aload v5
       [408] aload v6
       [410] iload_3 v3
-      [411] invokeinterface #202
+      [411] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
       [416] ldc #1
         - Integer [2130837521]
       [418] aload v4
-      [420] invokevirtual #152
+      [420] invokevirtual #143
         - Methodref [android/net/Uri.toString ()Ljava/lang/String;]
-      [423] invokespecial #174
+      [423] invokespecial #165
         - Methodref [com/deliciousdroid/providers/i.<init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V]
-      [426] invokeinterface #209
+      [426] invokeinterface #200
         - InterfaceMethodref [java/util/Map.put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;]
       [431] pop
       [432] aload v6
-      [434] invokeinterface #204
+      [434] invokeinterface #195
         - InterfaceMethodref [android/database/Cursor.moveToNext ()Z]
       [439] ifne -177 (target=262)
       [442] aload v6
-      [444] invokeinterface #199
+      [444] invokeinterface #190
         - InterfaceMethodref [android/database/Cursor.close ()V]
       [449] aload_2 v2
       [450] areturn
@@ -29135,63 +29117,63 @@ Methods (count = 17):
       = private java.util.Map b(java.lang.String)
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 404, locals = 8, stack = 8):
-      [0] ldc #51
+      [0] ldc #42
         - String [getTagSearchSuggestions]
       [2] aload_1 v1
-      [3] invokestatic #161
+      [3] invokestatic #152
         - Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
       [6] pop
       [7] aload_1 v1
       [8] ldc #4
         - String [ ]
-      [10] invokevirtual #186
+      [10] invokevirtual #177
         - Methodref [java/lang/String.split (Ljava/lang/String;)[Ljava/lang/String;]
       [13] astore_1 v1
       [14] aload_0 v0
       [15] aload_0 v0
-      [16] invokevirtual #170
+      [16] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [19] invokestatic #124
+      [19] invokestatic #115
         - Methodref [android/accounts/AccountManager.get (Landroid/content/Context;)Landroid/accounts/AccountManager;]
-      [22] putfield #116
+      [22] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [25] aload_0 v0
       [26] aload_0 v0
-      [27] getfield #116
+      [27] getfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
-      [30] ldc #45
+      [30] ldc #36
         - String [com.deliciousdroid]
-      [32] invokevirtual #125
+      [32] invokevirtual #116
         - Methodref [android/accounts/AccountManager.getAccountsByType (Ljava/lang/String;)[Landroid/accounts/Account;]
       [35] iconst_0
       [36] aaload
-      [37] putfield #117
+      [37] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [40] new #114
+      [40] new #105
         - Class [java/util/TreeMap]
       [43] dup
-      [44] invokespecial #196
+      [44] invokespecial #187
         - Methodref [java/util/TreeMap.<init> ()V]
       [47] astore_2 v2
-      [48] new #88
+      [48] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [51] dup
-      [52] invokespecial #144
+      [52] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
-      [55] ldc #64
+      [55] ldc #55
         - String [tag]
-      [57] invokevirtual #147
+      [57] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
-      [60] new #109
+      [60] new #100
         - Class [java/util/ArrayList]
       [63] dup
-      [64] invokespecial #193
+      [64] invokespecial #184
         - Methodref [java/util/ArrayList.<init> ()V]
       [67] astore_3 v3
-      [68] new #109
+      [68] new #100
         - Class [java/util/ArrayList]
       [71] dup
-      [72] invokespecial #193
+      [72] invokespecial #184
         - Methodref [java/util/ArrayList.<init> ()V]
       [75] astore v4
       [77] aload_1 v1
@@ -29207,209 +29189,209 @@ Methods (count = 17):
       [94] aaload
       [95] astore_1 v1
       [96] aload_3 v3
-      [97] ldc #31
+      [97] ldc #23
         - String [NAME LIKE ?]
-      [99] invokevirtual #194
+      [99] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [102] pop
       [103] aload v4
-      [105] new #108
+      [105] new #99
         - Class [java/lang/StringBuilder]
       [108] dup
-      [109] ldc #14
+      [109] ldc #10
         - String [%]
-      [111] invokespecial #189
+      [111] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [114] aload_1 v1
-      [115] invokevirtual #191
+      [115] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [118] ldc #14
+      [118] ldc #10
         - String [%]
-      [120] invokevirtual #191
+      [120] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [123] invokevirtual #192
+      [123] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [126] invokevirtual #194
+      [126] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [129] pop
       [130] iinc v5, 1
       [133] iload v5
       [135] iload v6
       [137] ificmplt -47 (target=90)
-      [140] ldc #11
+      [140] ldc #7
         - String [ OR ]
       [142] aload_3 v3
-      [143] invokestatic #160
+      [143] invokestatic #151
         - Methodref [android/text/TextUtils.join (Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;]
       [146] astore_1 v1
       [147] iconst_3
-      [148] anewarray #107
+      [148] anewarray #98
         - Class [java/lang/String]
       [151] dup
       [152] iconst_0
-      [153] ldc #37
+      [153] ldc #28
         - String [_id]
       [155] aastore
       [156] dup
       [157] iconst_1
-      [158] ldc #29
+      [158] ldc #21
         - String [NAME]
       [160] aastore
       [161] dup
       [162] iconst_2
-      [163] ldc #25
+      [163] ldc #17
         - String [COUNT]
       [165] aastore
       [166] astore v5
       [168] aload_0 v0
-      [169] getstatic #122
+      [169] getstatic #113
         - Fieldref [com/deliciousdroid/providers/c.a Landroid/net/Uri;]
       [172] aload v5
       [174] aload_1 v1
       [175] aload v4
       [177] iconst_0
-      [178] anewarray #107
+      [178] anewarray #98
         - Class [java/lang/String]
-      [181] invokevirtual #195
+      [181] invokevirtual #186
         - Methodref [java/util/ArrayList.toArray ([Ljava/lang/Object;)[Ljava/lang/Object;]
-      [184] checkcast #73
+      [184] checkcast #64
         - Class [[Ljava/lang/String;]
       [187] aconst_null
-      [188] ldc #20
+      [188] ldc #14
         - String [10]
-      [190] invokespecial #168
+      [190] invokespecial #159
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.b (Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [193] dup
       [194] astore v6
-      [196] invokeinterface #203
+      [196] invokeinterface #194
         - InterfaceMethodref [android/database/Cursor.moveToFirst ()Z]
       [201] ifeq +194 (target=395)
       [204] aload v6
-      [206] ldc #29
+      [206] ldc #21
         - String [NAME]
-      [208] invokeinterface #200
+      [208] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [213] istore v7
       [215] aload v6
-      [217] ldc #25
+      [217] ldc #17
         - String [COUNT]
-      [219] invokeinterface #200
+      [219] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [224] istore_1 v1
-      [225] new #90
+      [225] new #81
         - Class [android/net/Uri$Builder]
       [228] dup
-      [229] invokespecial #153
+      [229] invokespecial #144
         - Methodref [android/net/Uri$Builder.<init> ()V]
       [232] dup
       [233] astore_3 v3
-      [234] ldc #47
+      [234] ldc #38
         - String [content]
-      [236] invokevirtual #158
+      [236] invokevirtual #149
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [239] pop
       [240] aload_3 v3
-      [241] new #108
+      [241] new #99
         - Class [java/lang/StringBuilder]
       [244] dup
       [245] aload_0 v0
-      [246] getfield #117
+      [246] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [249] getfield #115
+      [249] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [252] invokestatic #188
+      [252] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [255] invokespecial #189
+      [255] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [258] ldc #22
+      [258] ldc #15
         - String [@]
-      [260] invokevirtual #191
+      [260] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [263] ldc #46
+      [263] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [265] invokevirtual #191
+      [265] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [268] invokevirtual #192
+      [268] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [271] invokevirtual #157
+      [271] invokevirtual #148
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [274] pop
       [275] aload_3 v3
-      [276] ldc #42
+      [276] ldc #33
         - String [bookmarks]
-      [278] invokevirtual #154
+      [278] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [281] pop
       [282] aload_3 v3
-      [283] ldc #68
+      [283] ldc #59
         - String [tagname]
       [285] aload v6
       [287] iload v7
-      [289] invokeinterface #202
+      [289] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
-      [294] invokevirtual #155
+      [294] invokevirtual #146
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [297] pop
       [298] aload v6
       [300] iload_1 v1
-      [301] invokeinterface #201
+      [301] invokeinterface #192
         - InterfaceMethodref [android/database/Cursor.getInt (I)I]
       [306] istore v4
       [308] aload v6
       [310] iload v7
-      [312] invokeinterface #202
+      [312] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
       [317] astore v5
       [319] aload_2 v2
       [320] aload v5
-      [322] new #102
+      [322] new #93
         - Class [com/deliciousdroid/providers/i]
       [325] dup
       [326] aload v5
-      [328] new #108
+      [328] new #99
         - Class [java/lang/StringBuilder]
       [331] dup
       [332] iload v4
-      [334] invokestatic #183
+      [334] invokestatic #174
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [337] invokestatic #188
+      [337] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [340] invokespecial #189
+      [340] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [343] ldc #12
+      [343] ldc #8
         - String [ bookmark]
-      [345] invokevirtual #191
+      [345] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [348] iload v4
       [350] iconst_1
       [351] ificmple +8 (target=359)
-      [354] ldc #58
+      [354] ldc #49
         - String [s]
       [356] goto +5 (target=361)
       [359] ldc #3
         - String []
-      [361] invokevirtual #191
+      [361] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [364] invokevirtual #192
+      [364] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
       [367] ldc #2
         - Integer [2130837531]
       [369] aload_3 v3
-      [370] invokevirtual #156
+      [370] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
-      [373] invokevirtual #152
+      [373] invokevirtual #143
         - Methodref [android/net/Uri.toString ()Ljava/lang/String;]
-      [376] invokespecial #174
+      [376] invokespecial #165
         - Methodref [com/deliciousdroid/providers/i.<init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V]
-      [379] invokeinterface #209
+      [379] invokeinterface #200
         - InterfaceMethodref [java/util/Map.put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;]
       [384] pop
       [385] aload v6
-      [387] invokeinterface #204
+      [387] invokeinterface #195
         - InterfaceMethodref [android/database/Cursor.moveToNext ()Z]
       [392] ifne -167 (target=225)
       [395] aload v6
-      [397] invokeinterface #199
+      [397] invokeinterface #190
         - InterfaceMethodref [android/database/Cursor.close ()V]
       [402] aload_2 v2
       [403] areturn
@@ -29421,203 +29403,203 @@ Methods (count = 17):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 281, locals = 5, stack = 6):
       [0] aload_0 v0
-      [1] invokevirtual #170
+      [1] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [4] invokestatic #159
+      [4] invokestatic #150
         - Methodref [android/preference/PreferenceManager.getDefaultSharedPreferences (Landroid/content/Context;)Landroid/content/SharedPreferences;]
-      [7] ldc #56
+      [7] ldc #47
         - String [pref_searchicons]
       [9] iconst_1
-      [10] invokeinterface #197
+      [10] invokeinterface #188
         - InterfaceMethodref [android/content/SharedPreferences.getBoolean (Ljava/lang/String;Z)Z]
-      [15] invokestatic #181
+      [15] invokestatic #172
         - Methodref [java/lang/Boolean.valueOf (Z)Ljava/lang/Boolean;]
-      [18] invokevirtual #180
+      [18] invokevirtual #171
         - Methodref [java/lang/Boolean.booleanValue ()Z]
       [21] ifeq +148 (target=169)
-      [24] new #85
+      [24] new #76
         - Class [android/database/MatrixCursor]
       [27] dup
       [28] bipush 6
-      [30] anewarray #107
+      [30] anewarray #98
         - Class [java/lang/String]
       [33] dup
       [34] iconst_0
-      [35] ldc #37
+      [35] ldc #28
         - String [_id]
       [37] aastore
       [38] dup
       [39] iconst_1
-      [40] ldc #62
+      [40] ldc #53
         - String [suggest_text_1]
       [42] aastore
       [43] dup
       [44] iconst_2
-      [45] ldc #63
+      [45] ldc #54
         - String [suggest_text_2]
       [47] aastore
       [48] dup
       [49] iconst_3
-      [50] ldc #61
+      [50] ldc #52
         - String [suggest_intent_data]
       [52] aastore
       [53] dup
       [54] iconst_4
-      [55] ldc #59
+      [55] ldc #50
         - String [suggest_icon_1]
       [57] aastore
       [58] dup
       [59] iconst_5
-      [60] ldc #60
+      [60] ldc #51
         - String [suggest_icon_2]
       [62] aastore
-      [63] invokespecial #135
+      [63] invokespecial #126
         - Methodref [android/database/MatrixCursor.<init> ([Ljava/lang/String;)V]
       [66] astore_2 v2
       [67] iconst_0
       [68] istore_3 v3
       [69] aload_1 v1
-      [70] invokeinterface #210
+      [70] invokeinterface #201
         - InterfaceMethodref [java/util/Map.values ()Ljava/util/Collection;]
-      [75] invokeinterface #206
+      [75] invokeinterface #197
         - InterfaceMethodref [java/util/Collection.iterator ()Ljava/util/Iterator;]
       [80] astore v4
       [82] goto +74 (target=156)
       [85] aload v4
-      [87] invokeinterface #208
+      [87] invokeinterface #199
         - InterfaceMethodref [java/util/Iterator.next ()Ljava/lang/Object;]
-      [92] checkcast #102
+      [92] checkcast #93
         - Class [com/deliciousdroid/providers/i]
       [95] astore_1 v1
       [96] aload_2 v2
       [97] bipush 6
-      [99] anewarray #106
+      [99] anewarray #97
         - Class [java/lang/Object]
       [102] dup
       [103] iconst_0
       [104] iload_3 v3
       [105] iinc v3, 1
-      [108] invokestatic #184
+      [108] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
       [111] aastore
       [112] dup
       [113] iconst_1
       [114] aload_1 v1
-      [115] invokevirtual #175
+      [115] invokevirtual #166
         - Methodref [com/deliciousdroid/providers/i.a ()Ljava/lang/String;]
       [118] aastore
       [119] dup
       [120] iconst_2
       [121] aload_1 v1
-      [122] invokevirtual #176
+      [122] invokevirtual #167
         - Methodref [com/deliciousdroid/providers/i.b ()Ljava/lang/String;]
       [125] aastore
       [126] dup
       [127] iconst_3
       [128] aload_1 v1
-      [129] invokevirtual #179
+      [129] invokevirtual #170
         - Methodref [com/deliciousdroid/providers/i.e ()Ljava/lang/String;]
       [132] aastore
       [133] dup
       [134] iconst_4
       [135] aload_1 v1
-      [136] invokevirtual #177
+      [136] invokevirtual #168
         - Methodref [com/deliciousdroid/providers/i.c ()I]
-      [139] invokestatic #184
+      [139] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
       [142] aastore
       [143] dup
       [144] iconst_5
       [145] aload_1 v1
-      [146] invokevirtual #178
+      [146] invokevirtual #169
         - Methodref [com/deliciousdroid/providers/i.d ()I]
-      [149] invokestatic #184
+      [149] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
       [152] aastore
-      [153] invokevirtual #136
+      [153] invokevirtual #127
         - Methodref [android/database/MatrixCursor.addRow ([Ljava/lang/Object;)V]
       [156] aload v4
-      [158] invokeinterface #207
+      [158] invokeinterface #198
         - InterfaceMethodref [java/util/Iterator.hasNext ()Z]
       [163] ifne -78 (target=85)
       [166] goto +113 (target=279)
-      [169] new #85
+      [169] new #76
         - Class [android/database/MatrixCursor]
       [172] dup
       [173] iconst_4
-      [174] anewarray #107
+      [174] anewarray #98
         - Class [java/lang/String]
       [177] dup
       [178] iconst_0
-      [179] ldc #37
+      [179] ldc #28
         - String [_id]
       [181] aastore
       [182] dup
       [183] iconst_1
-      [184] ldc #62
+      [184] ldc #53
         - String [suggest_text_1]
       [186] aastore
       [187] dup
       [188] iconst_2
-      [189] ldc #63
+      [189] ldc #54
         - String [suggest_text_2]
       [191] aastore
       [192] dup
       [193] iconst_3
-      [194] ldc #61
+      [194] ldc #52
         - String [suggest_intent_data]
       [196] aastore
-      [197] invokespecial #135
+      [197] invokespecial #126
         - Methodref [android/database/MatrixCursor.<init> ([Ljava/lang/String;)V]
       [200] astore_2 v2
       [201] iconst_0
       [202] istore_3 v3
       [203] aload_1 v1
-      [204] invokeinterface #210
+      [204] invokeinterface #201
         - InterfaceMethodref [java/util/Map.values ()Ljava/util/Collection;]
-      [209] invokeinterface #206
+      [209] invokeinterface #197
         - InterfaceMethodref [java/util/Collection.iterator ()Ljava/util/Iterator;]
       [214] astore v4
       [216] goto +53 (target=269)
       [219] aload v4
-      [221] invokeinterface #208
+      [221] invokeinterface #199
         - InterfaceMethodref [java/util/Iterator.next ()Ljava/lang/Object;]
-      [226] checkcast #102
+      [226] checkcast #93
         - Class [com/deliciousdroid/providers/i]
       [229] astore_1 v1
       [230] aload_2 v2
       [231] iconst_4
-      [232] anewarray #106
+      [232] anewarray #97
         - Class [java/lang/Object]
       [235] dup
       [236] iconst_0
       [237] iload_3 v3
       [238] iinc v3, 1
-      [241] invokestatic #184
+      [241] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
       [244] aastore
       [245] dup
       [246] iconst_1
       [247] aload_1 v1
-      [248] invokevirtual #175
+      [248] invokevirtual #166
         - Methodref [com/deliciousdroid/providers/i.a ()Ljava/lang/String;]
       [251] aastore
       [252] dup
       [253] iconst_2
       [254] aload_1 v1
-      [255] invokevirtual #176
+      [255] invokevirtual #167
         - Methodref [com/deliciousdroid/providers/i.b ()Ljava/lang/String;]
       [258] aastore
       [259] dup
       [260] iconst_3
       [261] aload_1 v1
-      [262] invokevirtual #179
+      [262] invokevirtual #170
         - Methodref [com/deliciousdroid/providers/i.e ()Ljava/lang/String;]
       [265] aastore
-      [266] invokevirtual #136
+      [266] invokevirtual #127
         - Methodref [android/database/MatrixCursor.addRow ([Ljava/lang/Object;)V]
       [269] aload v4
-      [271] invokeinterface #207
+      [271] invokeinterface #198
         - InterfaceMethodref [java/util/Iterator.hasNext ()Z]
       [276] ifne -57 (target=219)
       [279] aload_2 v2
@@ -29631,71 +29613,71 @@ Methods (count = 17):
     + Code attribute instructions (code length = 341, locals = 8, stack = 8):
       [0] aload_0 v0
       [1] aload_0 v0
-      [2] invokevirtual #170
+      [2] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [5] invokestatic #124
+      [5] invokestatic #115
         - Methodref [android/accounts/AccountManager.get (Landroid/content/Context;)Landroid/accounts/AccountManager;]
-      [8] putfield #116
+      [8] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [11] aload_0 v0
       [12] aload_0 v0
-      [13] getfield #116
+      [13] getfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
-      [16] ldc #45
+      [16] ldc #36
         - String [com.deliciousdroid]
-      [18] invokevirtual #125
+      [18] invokevirtual #116
         - Methodref [android/accounts/AccountManager.getAccountsByType (Ljava/lang/String;)[Landroid/accounts/Account;]
       [21] iconst_0
       [22] aaload
-      [23] putfield #117
+      [23] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [26] new #88
+      [26] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [29] dup
-      [30] invokespecial #144
+      [30] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
       [33] astore_2 v2
       [34] aload_0 v0
-      [35] getfield #119
+      [35] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [38] invokevirtual #172
+      [38] invokevirtual #163
         - Methodref [com/deliciousdroid/providers/g.getReadableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [41] astore_3 v3
       [42] aload_2 v2
-      [43] ldc #64
+      [43] ldc #55
         - String [tag]
-      [45] invokevirtual #147
+      [45] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
       [48] iconst_2
-      [49] anewarray #107
+      [49] anewarray #98
         - Class [java/lang/String]
       [52] dup
       [53] iconst_0
-      [54] ldc #29
+      [54] ldc #21
         - String [NAME]
       [56] aastore
       [57] dup
       [58] iconst_1
-      [59] ldc #25
+      [59] ldc #17
         - String [COUNT]
       [61] aastore
       [62] astore v4
-      [64] ldc #24
+      [64] ldc #16
         - String [ACCOUNT=?]
       [66] astore v5
       [68] iconst_1
-      [69] anewarray #107
+      [69] anewarray #98
         - Class [java/lang/String]
       [72] dup
       [73] iconst_0
       [74] aload_0 v0
-      [75] getfield #117
+      [75] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [78] getfield #115
+      [78] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
       [81] aastore
       [82] astore v6
-      [84] ldc #30
+      [84] ldc #22
         - String [NAME ASC]
       [86] astore v7
       [88] aload_2 v2
@@ -29706,130 +29688,130 @@ Methods (count = 17):
       [96] aconst_null
       [97] aconst_null
       [98] aload v7
-      [100] invokevirtual #145
+      [100] invokevirtual #136
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.query (Landroid/database/sqlite/SQLiteDatabase;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
       [103] dup
       [104] astore_2 v2
       [105] aload_0 v0
-      [106] invokevirtual #170
+      [106] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [109] invokevirtual #129
+      [109] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [112] aload_1 v1
-      [113] invokeinterface #205
+      [113] invokeinterface #196
         - InterfaceMethodref [android/database/Cursor.setNotificationUri (Landroid/content/ContentResolver;Landroid/net/Uri;)V]
-      [118] new #85
+      [118] new #76
         - Class [android/database/MatrixCursor]
       [121] dup
       [122] iconst_4
-      [123] anewarray #107
+      [123] anewarray #98
         - Class [java/lang/String]
       [126] dup
       [127] iconst_0
-      [128] ldc #37
+      [128] ldc #28
         - String [_id]
       [130] aastore
       [131] dup
       [132] iconst_1
-      [133] ldc #55
+      [133] ldc #46
         - String [name]
       [135] aastore
       [136] dup
       [137] iconst_2
-      [138] ldc #48
+      [138] ldc #39
         - String [description]
       [140] aastore
       [141] dup
       [142] iconst_3
-      [143] ldc #52
+      [143] ldc #43
         - String [intent]
       [145] aastore
-      [146] invokespecial #135
+      [146] invokespecial #126
         - Methodref [android/database/MatrixCursor.<init> ([Ljava/lang/String;)V]
       [149] astore_1 v1
       [150] aload_2 v2
-      [151] invokeinterface #203
+      [151] invokeinterface #194
         - InterfaceMethodref [android/database/Cursor.moveToFirst ()Z]
       [156] ifeq +177 (target=333)
       [159] aload_2 v2
-      [160] ldc #29
+      [160] ldc #21
         - String [NAME]
-      [162] invokeinterface #200
+      [162] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [167] istore_3 v3
       [168] aload_2 v2
-      [169] ldc #25
+      [169] ldc #17
         - String [COUNT]
-      [171] invokeinterface #200
+      [171] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
       [176] istore v4
       [178] iconst_0
       [179] istore v5
       [181] aload_2 v2
       [182] iload_3 v3
-      [183] invokeinterface #202
+      [183] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
       [188] astore v6
-      [190] new #90
+      [190] new #81
         - Class [android/net/Uri$Builder]
       [193] dup
-      [194] invokespecial #153
+      [194] invokespecial #144
         - Methodref [android/net/Uri$Builder.<init> ()V]
       [197] dup
       [198] astore v7
-      [200] ldc #47
+      [200] ldc #38
         - String [content]
-      [202] invokevirtual #158
+      [202] invokevirtual #149
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [205] pop
       [206] aload v7
-      [208] new #108
+      [208] new #99
         - Class [java/lang/StringBuilder]
       [211] dup
       [212] aload_0 v0
-      [213] getfield #117
+      [213] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [216] getfield #115
+      [216] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [219] invokestatic #188
+      [219] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [222] invokespecial #189
+      [222] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [225] ldc #22
+      [225] ldc #15
         - String [@]
-      [227] invokevirtual #191
+      [227] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [230] ldc #46
+      [230] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [232] invokevirtual #191
+      [232] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [235] invokevirtual #192
+      [235] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [238] invokevirtual #157
+      [238] invokevirtual #148
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [241] pop
       [242] aload v7
-      [244] ldc #42
+      [244] ldc #33
         - String [bookmarks]
-      [246] invokevirtual #154
+      [246] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [249] pop
       [250] aload v7
-      [252] ldc #68
+      [252] ldc #59
         - String [tagname]
       [254] aload v6
-      [256] invokevirtual #155
+      [256] invokevirtual #146
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [259] pop
       [260] aload_1 v1
       [261] iconst_4
-      [262] anewarray #106
+      [262] anewarray #97
         - Class [java/lang/Object]
       [265] dup
       [266] iconst_0
       [267] iload v5
       [269] iinc v5, 1
-      [272] invokestatic #184
+      [272] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
       [275] aastore
       [276] dup
@@ -29838,40 +29820,40 @@ Methods (count = 17):
       [280] aastore
       [281] dup
       [282] iconst_2
-      [283] new #108
+      [283] new #99
         - Class [java/lang/StringBuilder]
       [286] dup
       [287] aload_2 v2
       [288] iload v4
-      [290] invokeinterface #201
+      [290] invokeinterface #192
         - InterfaceMethodref [android/database/Cursor.getInt (I)I]
-      [295] invokestatic #183
+      [295] invokestatic #174
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [298] invokestatic #188
+      [298] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [301] invokespecial #189
+      [301] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [304] ldc #13
+      [304] ldc #9
         - String [ bookmark(s)]
-      [306] invokevirtual #191
+      [306] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [309] invokevirtual #192
+      [309] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
       [312] aastore
       [313] dup
       [314] iconst_3
       [315] aload v7
-      [317] invokevirtual #156
+      [317] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
       [320] aastore
-      [321] invokevirtual #136
+      [321] invokevirtual #127
         - Methodref [android/database/MatrixCursor.addRow ([Ljava/lang/Object;)V]
       [324] aload_2 v2
-      [325] invokeinterface #204
+      [325] invokeinterface #195
         - InterfaceMethodref [android/database/Cursor.moveToNext ()Z]
       [330] ifne -149 (target=181)
       [333] aload_2 v2
-      [334] invokeinterface #199
+      [334] invokeinterface #190
         - InterfaceMethodref [android/database/Cursor.close ()V]
       [339] aload_1 v1
       [340] areturn
@@ -29883,15 +29865,15 @@ Methods (count = 17):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 135, locals = 6, stack = 5):
       [0] aload_0 v0
-      [1] getfield #119
+      [1] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [4] invokevirtual #173
+      [4] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [7] astore v5
-      [9] getstatic #120
+      [9] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [12] aload_1 v1
-      [13] invokevirtual #132
+      [13] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [16] lookupswitch (3 offsets, default=81) (target=97)
         1: offset = 36, target = 52
@@ -29899,61 +29881,61 @@ Methods (count = 17):
         8: offset = 66, target = 82
         default: offset = 81, target = 97
       [52] aload v5
-      [54] ldc #38
+      [54] ldc #29
         - String [bookmark]
       [56] aload_2 v2
       [57] aload_3 v3
       [58] aload v4
-      [60] invokevirtual #143
+      [60] invokevirtual #134
         - Methodref [android/database/sqlite/SQLiteDatabase.update (Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I]
       [63] istore_2 v2
       [64] goto +57 (target=121)
       [67] aload v5
-      [69] ldc #64
+      [69] ldc #55
         - String [tag]
       [71] aload_2 v2
       [72] aload_3 v3
       [73] aload v4
-      [75] invokevirtual #143
+      [75] invokevirtual #134
         - Methodref [android/database/sqlite/SQLiteDatabase.update (Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I]
       [78] istore_2 v2
       [79] goto +42 (target=121)
       [82] aload v5
-      [84] ldc #44
+      [84] ldc #35
         - String [bundle]
       [86] aload_2 v2
       [87] aload_3 v3
       [88] aload v4
-      [90] invokevirtual #143
+      [90] invokevirtual #134
         - Methodref [android/database/sqlite/SQLiteDatabase.update (Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I]
       [93] istore_2 v2
       [94] goto +27 (target=121)
-      [97] new #104
+      [97] new #95
         - Class [java/lang/IllegalArgumentException]
       [100] dup
-      [101] new #108
+      [101] new #99
         - Class [java/lang/StringBuilder]
       [104] dup
-      [105] ldc #34
+      [105] ldc #25
         - String [Unknown URI ]
-      [107] invokespecial #189
+      [107] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [110] aload_1 v1
-      [111] invokevirtual #190
+      [111] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [114] invokevirtual #192
+      [114] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [117] invokespecial #182
+      [117] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [120] athrow
       [121] aload_0 v0
-      [122] invokevirtual #170
+      [122] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [125] invokevirtual #129
+      [125] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
       [128] aload_1 v1
       [129] aconst_null
-      [130] invokevirtual #127
+      [130] invokevirtual #118
         - Methodref [android/content/ContentResolver.notifyChange (Landroid/net/Uri;Landroid/database/ContentObserver;)V]
       [133] iload_2 v2
       [134] ireturn
@@ -29963,392 +29945,325 @@ Methods (count = 17):
     Access flags: 0x2
       = private android.database.Cursor b(android.net.Uri)
     Class member attributes (count = 1):
-    + Code attribute instructions (code length = 528, locals = 8, stack = 8):
+    + Code attribute instructions (code length = 442, locals = 8, stack = 8):
       [0] aload_0 v0
       [1] aload_0 v0
-      [2] invokevirtual #170
+      [2] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [5] invokestatic #124
+      [5] invokestatic #115
         - Methodref [android/accounts/AccountManager.get (Landroid/content/Context;)Landroid/accounts/AccountManager;]
-      [8] putfield #116
+      [8] putfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
       [11] aload_0 v0
       [12] aload_0 v0
-      [13] getfield #116
+      [13] getfield #107
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.a Landroid/accounts/AccountManager;]
-      [16] ldc #45
+      [16] ldc #36
         - String [com.deliciousdroid]
-      [18] invokevirtual #125
+      [18] invokevirtual #116
         - Methodref [android/accounts/AccountManager.getAccountsByType (Ljava/lang/String;)[Landroid/accounts/Account;]
       [21] iconst_0
       [22] aaload
-      [23] putfield #117
+      [23] putfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
       [26] aload_1 v1
-      [27] ldc #68
+      [27] ldc #59
         - String [tagname]
-      [29] invokevirtual #150
+      [29] invokevirtual #141
         - Methodref [android/net/Uri.getQueryParameter (Ljava/lang/String;)Ljava/lang/String;]
       [32] astore_2 v2
-      [33] new #88
+      [33] new #79
         - Class [android/database/sqlite/SQLiteQueryBuilder]
       [36] dup
-      [37] invokespecial #144
+      [37] invokespecial #135
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.<init> ()V]
       [40] astore_3 v3
       [41] aload_0 v0
-      [42] getfield #119
+      [42] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [45] invokevirtual #172
+      [45] invokevirtual #163
         - Methodref [com/deliciousdroid/providers/g.getReadableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
       [48] astore v4
       [50] aload_3 v3
-      [51] ldc #38
+      [51] ldc #29
         - String [bookmark]
-      [53] invokevirtual #147
+      [53] invokevirtual #138
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.setTables (Ljava/lang/String;)V]
-      [56] new #109
+      [56] new #100
         - Class [java/util/ArrayList]
       [59] dup
-      [60] invokespecial #193
+      [60] invokespecial #184
         - Methodref [java/util/ArrayList.<init> ()V]
       [63] astore v5
       [65] iconst_3
-      [66] anewarray #107
+      [66] anewarray #98
         - Class [java/lang/String]
       [69] dup
       [70] iconst_0
-      [71] ldc #26
+      [71] ldc #18
         - String [DESCRIPTION]
       [73] aastore
       [74] dup
       [75] iconst_1
-      [76] ldc #33
+      [76] ldc #24
         - String [URL]
       [78] aastore
       [79] dup
       [80] iconst_2
-      [81] ldc #37
+      [81] ldc #28
         - String [_id]
       [83] aastore
       [84] astore v6
-      [86] new #108
+      [86] ldc #13
+        - String [(TAGS LIKE ? OR TAGS LIKE ? OR TAGS LIKE ? OR TAGS = ?) AND ACCOUNT=?]
+      [88] astore v7
+      [90] aload v5
+      [92] new #99
         - Class [java/lang/StringBuilder]
-      [89] dup
-      [90] ldc #19
-        - String [(TAGS LIKE '% ]
-      [92] invokespecial #189
-        - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [95] aload_2 v2
-      [96] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [99] ldc #6
-        - String [ %' OR ]
-      [101] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [104] ldc #32
-        - String [TAGS]
-      [106] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [109] ldc #10
-        - String [ LIKE '% ]
-      [111] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [114] aload_2 v2
-      [115] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [118] ldc #16
-        - String [' OR ]
-      [120] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [123] ldc #32
-        - String [TAGS]
-      [125] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [128] ldc #9
-        - String [ LIKE ']
-      [130] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [133] aload_2 v2
-      [134] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [137] ldc #6
-        - String [ %' OR ]
-      [139] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [142] ldc #32
-        - String [TAGS]
-      [144] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [147] ldc #7
-        - String [ = ']
-      [149] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [152] aload_2 v2
-      [153] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [156] ldc #17
-        - String [') AND ]
-      [158] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [161] ldc #23
-        - String [ACCOUNT]
-      [163] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [166] ldc #21
-        - String [=?]
-      [168] invokevirtual #191
-        - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [171] invokevirtual #192
-        - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [174] astore v7
-      [176] aload v5
-      [178] new #108
-        - Class [java/lang/StringBuilder]
-      [181] dup
-      [182] ldc #15
+      [95] dup
+      [96] ldc #11
         - String [% ]
-      [184] invokespecial #189
+      [98] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [187] aload_2 v2
-      [188] invokevirtual #191
+      [101] aload_2 v2
+      [102] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [191] ldc #5
+      [105] ldc #5
         - String [ %]
-      [193] invokevirtual #191
+      [107] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [196] invokevirtual #192
+      [110] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [199] invokevirtual #194
+      [113] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
-      [202] pop
-      [203] aload v5
-      [205] new #108
+      [116] pop
+      [117] aload v5
+      [119] new #99
         - Class [java/lang/StringBuilder]
-      [208] dup
-      [209] ldc #15
+      [122] dup
+      [123] ldc #11
         - String [% ]
-      [211] invokespecial #189
+      [125] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [214] aload_2 v2
-      [215] invokevirtual #191
+      [128] aload_2 v2
+      [129] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [218] invokevirtual #192
+      [132] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [221] invokevirtual #194
+      [135] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
-      [224] pop
-      [225] aload v5
-      [227] new #108
+      [138] pop
+      [139] aload v5
+      [141] new #99
         - Class [java/lang/StringBuilder]
-      [230] dup
-      [231] aload_2 v2
-      [232] invokestatic #188
+      [144] dup
+      [145] aload_2 v2
+      [146] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [235] invokespecial #189
+      [149] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [238] ldc #5
+      [152] ldc #5
         - String [ %]
-      [240] invokevirtual #191
+      [154] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [243] invokevirtual #192
+      [157] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [246] invokevirtual #194
+      [160] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
-      [249] pop
-      [250] aload v5
-      [252] aload_2 v2
-      [253] invokevirtual #194
+      [163] pop
+      [164] aload v5
+      [166] aload_2 v2
+      [167] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
-      [256] pop
-      [257] aload v5
-      [259] aload_0 v0
-      [260] getfield #117
+      [170] pop
+      [171] aload v5
+      [173] aload_0 v0
+      [174] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [263] getfield #115
+      [177] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [266] invokevirtual #194
+      [180] invokevirtual #185
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
-      [269] pop
-      [270] ldc #27
+      [183] pop
+      [184] ldc #19
         - String [DESCRIPTION ASC]
-      [272] astore_2 v2
-      [273] aload_3 v3
-      [274] aload v4
-      [276] aload v6
-      [278] aload v7
-      [280] aload v5
-      [282] iconst_0
-      [283] anewarray #107
+      [186] astore_2 v2
+      [187] aload_3 v3
+      [188] aload v4
+      [190] aload v6
+      [192] aload v7
+      [194] aload v5
+      [196] iconst_0
+      [197] anewarray #98
         - Class [java/lang/String]
-      [286] invokevirtual #195
+      [200] invokevirtual #186
         - Methodref [java/util/ArrayList.toArray ([Ljava/lang/Object;)[Ljava/lang/Object;]
-      [289] checkcast #73
+      [203] checkcast #64
         - Class [[Ljava/lang/String;]
-      [292] aconst_null
-      [293] aconst_null
-      [294] aload_2 v2
-      [295] invokevirtual #145
+      [206] aconst_null
+      [207] aconst_null
+      [208] aload_2 v2
+      [209] invokevirtual #136
         - Methodref [android/database/sqlite/SQLiteQueryBuilder.query (Landroid/database/sqlite/SQLiteDatabase;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;]
-      [298] dup
-      [299] astore_2 v2
-      [300] aload_0 v0
-      [301] invokevirtual #170
+      [212] dup
+      [213] astore_2 v2
+      [214] aload_0 v0
+      [215] invokevirtual #161
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.getContext ()Landroid/content/Context;]
-      [304] invokevirtual #129
+      [218] invokevirtual #120
         - Methodref [android/content/Context.getContentResolver ()Landroid/content/ContentResolver;]
-      [307] aload_1 v1
-      [308] invokeinterface #205
+      [221] aload_1 v1
+      [222] invokeinterface #196
         - InterfaceMethodref [android/database/Cursor.setNotificationUri (Landroid/content/ContentResolver;Landroid/net/Uri;)V]
-      [313] new #85
+      [227] new #76
         - Class [android/database/MatrixCursor]
-      [316] dup
-      [317] iconst_4
-      [318] anewarray #107
+      [230] dup
+      [231] iconst_4
+      [232] anewarray #98
         - Class [java/lang/String]
-      [321] dup
-      [322] iconst_0
-      [323] ldc #37
+      [235] dup
+      [236] iconst_0
+      [237] ldc #28
         - String [_id]
-      [325] aastore
-      [326] dup
-      [327] iconst_1
-      [328] ldc #55
+      [239] aastore
+      [240] dup
+      [241] iconst_1
+      [242] ldc #46
         - String [name]
-      [330] aastore
-      [331] dup
-      [332] iconst_2
-      [333] ldc #48
+      [244] aastore
+      [245] dup
+      [246] iconst_2
+      [247] ldc #39
         - String [description]
-      [335] aastore
-      [336] dup
-      [337] iconst_3
-      [338] ldc #52
+      [249] aastore
+      [250] dup
+      [251] iconst_3
+      [252] ldc #43
         - String [intent]
-      [340] aastore
-      [341] invokespecial #135
+      [254] aastore
+      [255] invokespecial #126
         - Methodref [android/database/MatrixCursor.<init> ([Ljava/lang/String;)V]
-      [344] astore_1 v1
-      [345] aload_2 v2
-      [346] invokeinterface #203
+      [258] astore_1 v1
+      [259] aload_2 v2
+      [260] invokeinterface #194
         - InterfaceMethodref [android/database/Cursor.moveToFirst ()Z]
-      [351] ifeq +169 (target=520)
-      [354] aload_2 v2
-      [355] ldc #26
+      [265] ifeq +169 (target=434)
+      [268] aload_2 v2
+      [269] ldc #18
         - String [DESCRIPTION]
-      [357] invokeinterface #200
+      [271] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
-      [362] istore_3 v3
-      [363] aload_2 v2
-      [364] ldc #33
+      [276] istore_3 v3
+      [277] aload_2 v2
+      [278] ldc #24
         - String [URL]
-      [366] invokeinterface #200
+      [280] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
-      [371] istore v4
-      [373] aload_2 v2
-      [374] ldc #37
+      [285] istore v4
+      [287] aload_2 v2
+      [288] ldc #28
         - String [_id]
-      [376] invokeinterface #200
+      [290] invokeinterface #191
         - InterfaceMethodref [android/database/Cursor.getColumnIndex (Ljava/lang/String;)I]
-      [381] istore v5
-      [383] iconst_0
-      [384] istore v6
-      [386] new #90
+      [295] istore v5
+      [297] iconst_0
+      [298] istore v6
+      [300] new #81
         - Class [android/net/Uri$Builder]
-      [389] dup
-      [390] invokespecial #153
+      [303] dup
+      [304] invokespecial #144
         - Methodref [android/net/Uri$Builder.<init> ()V]
-      [393] dup
-      [394] astore v7
-      [396] ldc #47
+      [307] dup
+      [308] astore v7
+      [310] ldc #38
         - String [content]
-      [398] invokevirtual #158
+      [312] invokevirtual #149
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
-      [401] pop
-      [402] aload v7
-      [404] new #108
+      [315] pop
+      [316] aload v7
+      [318] new #99
         - Class [java/lang/StringBuilder]
-      [407] dup
-      [408] aload_0 v0
-      [409] getfield #117
+      [321] dup
+      [322] aload_0 v0
+      [323] getfield #108
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.b Landroid/accounts/Account;]
-      [412] getfield #115
+      [326] getfield #106
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [415] invokestatic #188
+      [329] invokestatic #179
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [418] invokespecial #189
+      [332] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [421] ldc #22
+      [335] ldc #15
         - String [@]
-      [423] invokevirtual #191
+      [337] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [426] ldc #46
+      [340] ldc #37
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [428] invokevirtual #191
+      [342] invokevirtual #182
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [431] invokevirtual #192
+      [345] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [434] invokevirtual #157
+      [348] invokevirtual #148
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
-      [437] pop
-      [438] aload v7
-      [440] ldc #42
+      [351] pop
+      [352] aload v7
+      [354] ldc #33
         - String [bookmarks]
-      [442] invokevirtual #154
+      [356] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
-      [445] pop
-      [446] aload v7
-      [448] aload_2 v2
-      [449] iload v5
-      [451] invokeinterface #201
+      [359] pop
+      [360] aload v7
+      [362] aload_2 v2
+      [363] iload v5
+      [365] invokeinterface #192
         - InterfaceMethodref [android/database/Cursor.getInt (I)I]
-      [456] invokestatic #183
+      [370] invokestatic #174
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [459] invokevirtual #154
+      [373] invokevirtual #145
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
-      [462] pop
-      [463] aload_1 v1
-      [464] iconst_4
-      [465] anewarray #106
+      [376] pop
+      [377] aload_1 v1
+      [378] iconst_4
+      [379] anewarray #97
         - Class [java/lang/Object]
-      [468] dup
-      [469] iconst_0
-      [470] iload v6
-      [472] iinc v6, 1
-      [475] invokestatic #184
+      [382] dup
+      [383] iconst_0
+      [384] iload v6
+      [386] iinc v6, 1
+      [389] invokestatic #175
         - Methodref [java/lang/Integer.valueOf (I)Ljava/lang/Integer;]
-      [478] aastore
-      [479] dup
-      [480] iconst_1
-      [481] aload_2 v2
-      [482] iload_3 v3
-      [483] invokeinterface #202
+      [392] aastore
+      [393] dup
+      [394] iconst_1
+      [395] aload_2 v2
+      [396] iload_3 v3
+      [397] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
-      [488] aastore
-      [489] dup
-      [490] iconst_2
-      [491] aload_2 v2
-      [492] iload v4
-      [494] invokeinterface #202
+      [402] aastore
+      [403] dup
+      [404] iconst_2
+      [405] aload_2 v2
+      [406] iload v4
+      [408] invokeinterface #193
         - InterfaceMethodref [android/database/Cursor.getString (I)Ljava/lang/String;]
-      [499] aastore
-      [500] dup
-      [501] iconst_3
-      [502] aload v7
-      [504] invokevirtual #156
+      [413] aastore
+      [414] dup
+      [415] iconst_3
+      [416] aload v7
+      [418] invokevirtual #147
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
-      [507] aastore
-      [508] invokevirtual #136
+      [421] aastore
+      [422] invokevirtual #127
         - Methodref [android/database/MatrixCursor.addRow ([Ljava/lang/Object;)V]
-      [511] aload_2 v2
-      [512] invokeinterface #204
+      [425] aload_2 v2
+      [426] invokeinterface #195
         - InterfaceMethodref [android/database/Cursor.moveToNext ()Z]
-      [517] ifne -131 (target=386)
-      [520] aload_2 v2
-      [521] invokeinterface #199
+      [431] ifne -131 (target=300)
+      [434] aload_2 v2
+      [435] invokeinterface #190
         - InterfaceMethodref [android/database/Cursor.close ()V]
-      [526] aload_1 v1
-      [527] areturn
+      [440] aload_1 v1
+      [441] areturn
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 0):
   + Method:       bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
@@ -30356,10 +30271,10 @@ Methods (count = 17):
       = public int bulkInsert(android.net.Uri,android.content.ContentValues[])
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 88, locals = 3, stack = 5):
-      [0] getstatic #120
+      [0] getstatic #111
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.e Landroid/content/UriMatcher;]
       [3] aload_1 v1
-      [4] invokevirtual #132
+      [4] invokevirtual #123
         - Methodref [android/content/UriMatcher.match (Landroid/net/Uri;)I]
       [7] lookupswitch (3 offsets, default=57) (target=64)
         1: offset = 33, target = 40
@@ -30367,42 +30282,42 @@ Methods (count = 17):
         8: offset = 49, target = 56
         default: offset = 57, target = 64
       [40] aload_0 v0
-      [41] ldc #38
+      [41] ldc #29
         - String [bookmark]
       [43] aload_2 v2
-      [44] invokespecial #165
+      [44] invokespecial #156
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/lang/String;[Landroid/content/ContentValues;)I]
       [47] ireturn
       [48] aload_0 v0
-      [49] ldc #64
+      [49] ldc #55
         - String [tag]
       [51] aload_2 v2
-      [52] invokespecial #165
+      [52] invokespecial #156
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/lang/String;[Landroid/content/ContentValues;)I]
       [55] ireturn
       [56] aload_0 v0
-      [57] ldc #44
+      [57] ldc #35
         - String [bundle]
       [59] aload_2 v2
-      [60] invokespecial #165
+      [60] invokespecial #156
         - Methodref [com/deliciousdroid/providers/BookmarkContentProvider.a (Ljava/lang/String;[Landroid/content/ContentValues;)I]
       [63] ireturn
-      [64] new #104
+      [64] new #95
         - Class [java/lang/IllegalArgumentException]
       [67] dup
-      [68] new #108
+      [68] new #99
         - Class [java/lang/StringBuilder]
       [71] dup
-      [72] ldc #36
+      [72] ldc #27
         - String [Unknown Uri: ]
-      [74] invokespecial #189
+      [74] invokespecial #180
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [77] aload_1 v1
-      [78] invokevirtual #190
+      [78] invokevirtual #181
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;]
-      [81] invokevirtual #192
+      [81] invokevirtual #183
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [84] invokespecial #182
+      [84] invokespecial #173
         - Methodref [java/lang/IllegalArgumentException.<init> (Ljava/lang/String;)V]
       [87] athrow
       Code attribute exceptions (count = 0):
@@ -30414,25 +30329,25 @@ Methods (count = 17):
     + Code attribute instructions (code length = 98, locals = 7, stack = 4):
       [0] aload_0 v0
       [1] aload_0 v0
-      [2] getfield #119
+      [2] getfield #110
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.d Lcom/deliciousdroid/providers/g;]
-      [5] invokevirtual #173
+      [5] invokevirtual #164
         - Methodref [com/deliciousdroid/providers/g.getWritableDatabase ()Landroid/database/sqlite/SQLiteDatabase;]
-      [8] putfield #118
+      [8] putfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
       [11] aload_0 v0
-      [12] getfield #118
+      [12] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [15] invokevirtual #138
+      [15] invokevirtual #129
         - Methodref [android/database/sqlite/SQLiteDatabase.beginTransaction ()V]
-      [18] new #84
+      [18] new #75
         - Class [android/database/DatabaseUtils$InsertHelper]
       [21] dup
       [22] aload_0 v0
-      [23] getfield #118
+      [23] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
       [26] aload_1 v1
-      [27] invokespecial #133
+      [27] invokespecial #124
         - Methodref [android/database/DatabaseUtils$InsertHelper.<init> (Landroid/database/sqlite/SQLiteDatabase;Ljava/lang/String;)V]
       [30] astore_1 v1
       [31] aload_2 v2
@@ -30449,7 +30364,7 @@ Methods (count = 17):
       [49] astore_3 v3
       [50] aload_1 v1
       [51] aload_3 v3
-      [52] invokevirtual #134
+      [52] invokevirtual #125
         - Methodref [android/database/DatabaseUtils$InsertHelper.insert (Landroid/content/ContentValues;)J]
       [55] pop2
       [56] iinc v4, 1
@@ -30457,9 +30372,9 @@ Methods (count = 17):
       [61] iload v5
       [63] ificmplt -19 (target=44)
       [66] aload_0 v0
-      [67] getfield #118
+      [67] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [70] invokevirtual #142
+      [70] invokevirtual #133
         - Methodref [android/database/sqlite/SQLiteDatabase.setTransactionSuccessful ()V]
       [73] aload_2 v2
       [74] arraylength
@@ -30467,16 +30382,16 @@ Methods (count = 17):
       [76] goto +13 (target=89)
       [79] astore_1 v1
       [80] aload_0 v0
-      [81] getfield #118
+      [81] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [84] invokevirtual #140
+      [84] invokevirtual #131
         - Methodref [android/database/sqlite/SQLiteDatabase.endTransaction ()V]
       [87] aload_1 v1
       [88] athrow
       [89] aload_0 v0
-      [90] getfield #118
+      [90] getfield #109
         - Fieldref [com/deliciousdroid/providers/BookmarkContentProvider.c Landroid/database/sqlite/SQLiteDatabase;]
-      [93] invokevirtual #140
+      [93] invokevirtual #131
         - Methodref [android/database/sqlite/SQLiteDatabase.endTransaction ()V]
       [96] iload_1 v1
       [97] ireturn

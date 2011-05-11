@@ -303,6 +303,19 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	    return result;
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		Uri data = getIntent().getData();
+		
+		if(data != null) {
+			if(data.getUserInfo() != "") {
+				username = data.getUserInfo();
+			} else username = mAccount.name;
+		}
+	}
+	
 	private void loadBookmarkList() {
 		Cursor c = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
 		startManagingCursor(c);
