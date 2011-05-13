@@ -354,7 +354,7 @@ public class AddBookmark extends AppBaseActivity{
     		if(args.length > 0 && args[0] != null && args[0] != "") {
 	    		url = args[0];
 		
-	    		return NetworkUtilities.getWebpageTitle(url);
+	    		return NetworkUtilities.getWebpageTitle(url.trim());
     		} else return "";
     		
     	}

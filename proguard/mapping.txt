@@ -138,6 +138,7 @@ com.deliciousdroid.activity.BrowseBookmarks -> com.deliciousdroid.activity.Brows
     boolean onSearchRequested() -> onSearchRequested
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void onResume() -> onResume
     void loadBookmarkList() -> b
     void openBookmarkInBrowser(com.deliciousdroid.providers.BookmarkContent$Bookmark) -> a
     void viewBookmark(com.deliciousdroid.providers.BookmarkContent$Bookmark) -> b

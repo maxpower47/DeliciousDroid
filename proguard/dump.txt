@@ -24593,7 +24593,7 @@ _____________________________________________________________________
 
 Interfaces (count = 0):
 
-Constant Pool (count = 527):
+Constant Pool (count = 534):
   - Integer [2130903042]
   - Integer [2130903043]
   - Integer [2131296259]
@@ -24716,6 +24716,7 @@ Constant Pool (count = 527):
   - Methodref [android/content/Intent.getBundleExtra (Ljava/lang/String;)Landroid/os/Bundle;]
   - Methodref [android/content/Intent.getData ()Landroid/net/Uri;]
   - Methodref [android/content/Intent.getStringExtra (Ljava/lang/String;)Ljava/lang/String;]
+  - Methodref [android/content/Intent.hasExtra (Ljava/lang/String;)Z]
   - Methodref [android/content/Intent.putExtra (Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;]
   - Methodref [android/content/Intent.setAction (Ljava/lang/String;)Landroid/content/Intent;]
   - Methodref [android/content/Intent.setData (Landroid/net/Uri;)Landroid/content/Intent;]
@@ -24749,6 +24750,7 @@ Constant Pool (count = 527):
   - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onCreate (Landroid/os/Bundle;)V]
   - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onCreateOptionsMenu (Landroid/view/Menu;)Z]
   - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onOptionsItemSelected (Landroid/view/MenuItem;)Z]
+  - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onResume ()V]
   - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
   - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a (Lcom/deliciousdroid/providers/e;)V]
   - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b ()V]
@@ -24851,6 +24853,7 @@ Constant Pool (count = 527):
   + NameAndType [getStringExtra (Ljava/lang/String;)Ljava/lang/String;]
   + NameAndType [getUserInfo ()Ljava/lang/String;]
   + NameAndType [h Ljava/lang/String;]
+  + NameAndType [hasExtra (Ljava/lang/String;)Z]
   + NameAndType [i ()J]
   + NameAndType [i Ljava/lang/String;]
   + NameAndType [inflate (ILandroid/view/Menu;)V]
@@ -24862,6 +24865,7 @@ Constant Pool (count = 527):
   + NameAndType [onCreate (Landroid/os/Bundle;)V]
   + NameAndType [onCreateOptionsMenu (Landroid/view/Menu;)Z]
   + NameAndType [onOptionsItemSelected (Landroid/view/MenuItem;)Z]
+  + NameAndType [onResume ()V]
   + NameAndType [parse (Ljava/lang/String;)Landroid/net/Uri;]
   + NameAndType [parseInt (Ljava/lang/String;)I]
   + NameAndType [position I]
@@ -24941,6 +24945,7 @@ Constant Pool (count = 527):
   + Utf8 [(Ljava/lang/String;)Ljava/lang/String;]
   + Utf8 [(Ljava/lang/String;)Ljava/lang/StringBuilder;]
   + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;)Z]
   + Utf8 [(Ljava/lang/String;)[Ljava/lang/String;]
   + Utf8 [(Ljava/lang/String;Landroid/net/Uri;)V]
   + Utf8 [(Ljava/lang/String;Ljava/lang/String;)I]
@@ -25069,6 +25074,7 @@ Constant Pool (count = 527):
   + Utf8 [getStringExtra]
   + Utf8 [getUserInfo]
   + Utf8 [h]
+  + Utf8 [hasExtra]
   + Utf8 [hotlist]
   + Utf8 [i]
   + Utf8 [inflate]
@@ -25089,6 +25095,7 @@ Constant Pool (count = 527):
   + Utf8 [onCreate]
   + Utf8 [onCreateOptionsMenu]
   + Utf8 [onOptionsItemSelected]
+  + Utf8 [onResume]
   + Utf8 [onSearchRequested]
   + Utf8 [parse]
   + Utf8 [parseInt]
@@ -25135,14 +25142,14 @@ Fields (count = 4):
     Access flags: 0x2
       = private java.lang.String j
 
-Methods (count = 12):
+Methods (count = 13):
   - Method:       <init>()V
     Access flags: 0x1
       = public BrowseBookmarks()
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 21, locals = 1, stack = 2):
       [0] aload_0 v0
-      [1] invokespecial #152
+      [1] invokespecial #153
         - Methodref [com/deliciousdroid/activity/AppBaseListActivity.<init> ()V]
       [4] aload_0 v0
       [5] ldc #34
@@ -25167,19 +25174,19 @@ Methods (count = 12):
     + Code attribute instructions (code length = 751, locals = 4, stack = 10):
       [0] aload_0 v0
       [1] aload_1 v1
-      [2] invokespecial #153
+      [2] invokespecial #154
         - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onCreate (Landroid/os/Bundle;)V]
       [5] aload_0 v0
       [6] ldc #2
         - Integer [2130903043]
-      [8] invokevirtual #164
+      [8] invokevirtual #166
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setContentView (I)V]
       [11] aload_0 v0
       [12] getfield #105
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.a Landroid/accounts/Account;]
       [15] ifnull +735 (target=750)
       [18] aload_0 v0
-      [19] invokevirtual #161
+      [19] invokevirtual #163
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getIntent ()Landroid/content/Intent;]
       [22] dup
       [23] astore_1 v1
@@ -25191,14 +25198,14 @@ Methods (count = 12):
       [30] aload_2 v2
       [31] ifnull +59 (target=90)
       [34] aload_2 v2
-      [35] invokevirtual #130
+      [35] invokevirtual #131
         - Methodref [android/net/Uri.getUserInfo ()Ljava/lang/String;]
       [38] ldc #6
         - String []
       [40] ifacmpeq +14 (target=54)
       [43] aload_0 v0
       [44] aload_2 v2
-      [45] invokevirtual #130
+      [45] invokevirtual #131
         - Methodref [android/net/Uri.getUserInfo ()Ljava/lang/String;]
       [48] putfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
@@ -25212,14 +25219,14 @@ Methods (count = 12):
       [62] putfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
       [65] aload_2 v2
-      [66] invokevirtual #127
+      [66] invokevirtual #128
         - Methodref [android/net/Uri.getPath ()Ljava/lang/String;]
       [69] astore_3 v3
       [70] aload_0 v0
       [71] aload_2 v2
       [72] ldc #57
         - String [tagname]
-      [74] invokevirtual #128
+      [74] invokevirtual #129
         - Methodref [android/net/Uri.getQueryParameter (Ljava/lang/String;)Ljava/lang/String;]
       [77] putfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
@@ -25227,7 +25234,7 @@ Methods (count = 12):
       [81] aload_2 v2
       [82] ldc #49
         - String [bundlename]
-      [84] invokevirtual #128
+      [84] invokevirtual #129
         - Methodref [android/net/Uri.getQueryParameter (Ljava/lang/String;)Ljava/lang/String;]
       [87] putfield #111
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.j Ljava/lang/String;]
@@ -25236,7 +25243,7 @@ Methods (count = 12):
       [92] aload_1 v1
       [93] invokevirtual #119
         - Methodref [android/content/Intent.getAction ()Ljava/lang/String;]
-      [96] invokevirtual #192
+      [96] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [99] ifeq +142 (target=241)
       [102] aload_1 v1
@@ -25251,7 +25258,7 @@ Methods (count = 12):
       [114] aload_2 v2
       [115] ldc #57
         - String [tagname]
-      [117] invokevirtual #140
+      [117] invokevirtual #141
         - Methodref [android/os/Bundle.getString (Ljava/lang/String;)Ljava/lang/String;]
       [120] putfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
@@ -25259,7 +25266,7 @@ Methods (count = 12):
       [124] aload_2 v2
       [125] ldc #62
         - String [username]
-      [127] invokevirtual #140
+      [127] invokevirtual #141
         - Methodref [android/os/Bundle.getString (Ljava/lang/String;)Ljava/lang/String;]
       [130] putfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
@@ -25275,21 +25282,21 @@ Methods (count = 12):
       [144] dup
       [145] ldc #20
         - String [Bookmark Search Results For "]
-      [147] invokespecial #195
+      [147] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [150] aload_1 v1
-      [151] invokevirtual #196
+      [151] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [154] ldc #11
         - String ["]
-      [156] invokevirtual #196
+      [156] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [159] invokevirtual #197
+      [159] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [162] invokevirtual #166
+      [162] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [165] aload_0 v0
-      [166] invokevirtual #156
+      [166] invokevirtual #158
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
       [169] ifeq +527 (target=696)
       [172] aload_1 v1
@@ -25300,12 +25307,12 @@ Methods (count = 12):
       [178] getfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
       [181] aload_0 v0
-      [182] invokestatic #175
+      [182] invokestatic #177
         - Methodref [com/deliciousdroid/c/d.a (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)Landroid/database/Cursor;]
       [185] astore_1 v1
       [186] aload_0 v0
       [187] aload_1 v1
-      [188] invokevirtual #168
+      [188] invokevirtual #170
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startManagingCursor (Landroid/database/Cursor;)V]
       [191] new #84
         - Class [android/widget/SimpleCursorAdapter]
@@ -25341,20 +25348,20 @@ Methods (count = 12):
       [226] ldc #5
         - Integer [2131361818]
       [228] iastore
-      [229] invokespecial #151
+      [229] invokespecial #152
         - Methodref [android/widget/SimpleCursorAdapter.<init> (Landroid/content/Context;ILandroid/database/Cursor;[Ljava/lang/String;[I)V]
       [232] astore_1 v1
       [233] aload_0 v0
       [234] aload_1 v1
-      [235] invokevirtual #165
+      [235] invokevirtual #167
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setListAdapter (Landroid/widget/ListAdapter;)V]
       [238] goto +458 (target=696)
       [241] aload_2 v2
-      [242] invokevirtual #129
+      [242] invokevirtual #130
         - Methodref [android/net/Uri.getScheme ()Ljava/lang/String;]
       [245] ldc #51
         - String [content]
-      [247] invokevirtual #192
+      [247] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [250] ifne +25 (target=275)
       [253] aload_0 v0
@@ -25362,24 +25369,24 @@ Methods (count = 12):
         - Class [com/deliciousdroid/providers/e]
       [257] dup
       [258] aload_2 v2
-      [259] invokevirtual #132
+      [259] invokevirtual #133
         - Methodref [android/net/Uri.toString ()Ljava/lang/String;]
-      [262] invokespecial #180
+      [262] invokespecial #182
         - Methodref [com/deliciousdroid/providers/e.<init> (Ljava/lang/String;)V]
-      [265] invokespecial #157
+      [265] invokespecial #159
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a (Lcom/deliciousdroid/providers/e;)V]
       [268] aload_0 v0
-      [269] invokevirtual #160
+      [269] invokevirtual #162
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.finish ()V]
       [272] goto +424 (target=696)
       [275] aload_3 v3
       [276] ldc #15
         - String [/bookmarks]
-      [278] invokevirtual #192
+      [278] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [281] ifeq +107 (target=388)
       [284] aload_0 v0
-      [285] invokevirtual #156
+      [285] invokevirtual #158
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
       [288] ifeq +100 (target=388)
       [291] aload_0 v0
@@ -25408,16 +25415,16 @@ Methods (count = 12):
       [327] dup
       [328] ldc #28
         - String [My Bookmarks In ]
-      [330] invokespecial #195
+      [330] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [333] aload_0 v0
       [334] getfield #111
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.j Ljava/lang/String;]
-      [337] invokevirtual #196
+      [337] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [340] invokevirtual #197
+      [340] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [343] invokevirtual #166
+      [343] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [346] goto +35 (target=381)
       [349] aload_0 v0
@@ -25426,25 +25433,25 @@ Methods (count = 12):
       [353] dup
       [354] ldc #29
         - String [My Bookmarks Tagged With ]
-      [356] invokespecial #195
+      [356] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [359] aload_0 v0
       [360] getfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
-      [363] invokevirtual #196
+      [363] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [366] invokevirtual #197
+      [366] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [369] invokevirtual #166
+      [369] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [372] goto +9 (target=381)
       [375] aload_0 v0
       [376] ldc #27
         - String [My Bookmarks]
-      [378] invokevirtual #166
+      [378] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [381] aload_0 v0
-      [382] invokespecial #158
+      [382] invokespecial #160
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b ()V]
       [385] goto +311 (target=696)
       [388] aload_0 v0
@@ -25452,19 +25459,19 @@ Methods (count = 12):
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
       [392] ldc #53
         - String [network]
-      [394] invokevirtual #192
+      [394] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [397] ifeq +37 (target=434)
       [400] aload_0 v0
       [401] ldc #30
         - String [My Network's Recent Bookmarks]
-      [403] invokevirtual #166
+      [403] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [406] new #90
         - Class [com/deliciousdroid/activity/r]
       [409] dup
       [410] aload_0 v0
-      [411] invokespecial #172
+      [411] invokespecial #174
         - Methodref [com/deliciousdroid/activity/r.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
       [414] iconst_1
       [415] anewarray #99
@@ -25474,7 +25481,7 @@ Methods (count = 12):
       [420] ldc #53
         - String [network]
       [422] aastore
-      [423] invokevirtual #173
+      [423] invokevirtual #175
         - Methodref [com/deliciousdroid/activity/r.execute ([Ljava/lang/Object;)Landroid/os/AsyncTask;]
       [426] pop
       [427] goto +269 (target=696)
@@ -25485,19 +25492,19 @@ Methods (count = 12):
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
       [438] ldc #52
         - String [hotlist]
-      [440] invokevirtual #192
+      [440] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [443] ifeq +37 (target=480)
       [446] aload_0 v0
       [447] ldc #25
         - String [Hotlist Bookmarks]
-      [449] invokevirtual #166
+      [449] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [452] new #90
         - Class [com/deliciousdroid/activity/r]
       [455] dup
       [456] aload_0 v0
-      [457] invokespecial #172
+      [457] invokespecial #174
         - Methodref [com/deliciousdroid/activity/r.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
       [460] iconst_1
       [461] anewarray #99
@@ -25507,7 +25514,7 @@ Methods (count = 12):
       [466] ldc #52
         - String [hotlist]
       [468] aastore
-      [469] invokevirtual #173
+      [469] invokevirtual #175
         - Methodref [com/deliciousdroid/activity/r.execute ([Ljava/lang/Object;)Landroid/os/AsyncTask;]
       [472] pop
       [473] goto +223 (target=696)
@@ -25518,19 +25525,19 @@ Methods (count = 12):
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
       [484] ldc #55
         - String [popular]
-      [486] invokevirtual #192
+      [486] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [489] ifeq +37 (target=526)
       [492] aload_0 v0
       [493] ldc #31
         - String [Popular Bookmarks]
-      [495] invokevirtual #166
+      [495] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [498] new #90
         - Class [com/deliciousdroid/activity/r]
       [501] dup
       [502] aload_0 v0
-      [503] invokespecial #172
+      [503] invokespecial #174
         - Methodref [com/deliciousdroid/activity/r.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
       [506] iconst_1
       [507] anewarray #99
@@ -25540,7 +25547,7 @@ Methods (count = 12):
       [512] ldc #55
         - String [popular]
       [514] aastore
-      [515] invokevirtual #173
+      [515] invokevirtual #175
         - Methodref [com/deliciousdroid/activity/r.execute ([Ljava/lang/Object;)Landroid/os/AsyncTask;]
       [518] pop
       [519] goto +177 (target=696)
@@ -25549,7 +25556,7 @@ Methods (count = 12):
       [526] aload_3 v3
       [527] ldc #15
         - String [/bookmarks]
-      [529] invokevirtual #192
+      [529] invokevirtual #194
         - Methodref [java/lang/String.equals (Ljava/lang/Object;)Z]
       [532] ifeq +117 (target=649)
       [535] aload_0 v0
@@ -25568,25 +25575,25 @@ Methods (count = 12):
       [555] dup
       [556] ldc #21
         - String [Bookmarks For ]
-      [558] invokespecial #195
+      [558] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [561] aload_0 v0
       [562] getfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
-      [565] invokevirtual #196
+      [565] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [568] ldc #10
         - String [ Tagged With ]
-      [570] invokevirtual #196
+      [570] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [573] aload_0 v0
       [574] getfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
-      [577] invokevirtual #196
+      [577] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [580] invokevirtual #197
+      [580] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [583] invokevirtual #166
+      [583] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [586] goto +26 (target=612)
       [589] aload_0 v0
@@ -25595,22 +25602,22 @@ Methods (count = 12):
       [593] dup
       [594] ldc #21
         - String [Bookmarks For ]
-      [596] invokespecial #195
+      [596] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [599] aload_0 v0
       [600] getfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
-      [603] invokevirtual #196
+      [603] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [606] invokevirtual #197
+      [606] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [609] invokevirtual #166
+      [609] invokevirtual #168
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setTitle (Ljava/lang/CharSequence;)V]
       [612] new #90
         - Class [com/deliciousdroid/activity/r]
       [615] dup
       [616] aload_0 v0
-      [617] invokespecial #172
+      [617] invokespecial #174
         - Methodref [com/deliciousdroid/activity/r.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
       [620] iconst_2
       [621] anewarray #99
@@ -25627,7 +25634,7 @@ Methods (count = 12):
       [634] getfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
       [637] aastore
-      [638] invokevirtual #173
+      [638] invokevirtual #175
         - Methodref [com/deliciousdroid/activity/r.execute ([Ljava/lang/Object;)Landroid/os/AsyncTask;]
       [641] pop
       [642] goto +54 (target=696)
@@ -25636,20 +25643,20 @@ Methods (count = 12):
       [649] aload_3 v3
       [650] ldc #48
         - String [bookmarks]
-      [652] invokevirtual #191
+      [652] invokevirtual #193
         - Methodref [java/lang/String.contains (Ljava/lang/CharSequence;)Z]
       [655] ifeq +41 (target=696)
       [658] aload_2 v2
-      [659] invokevirtual #126
+      [659] invokevirtual #127
         - Methodref [android/net/Uri.getLastPathSegment ()Ljava/lang/String;]
-      [662] invokestatic #142
+      [662] invokestatic #143
         - Methodref [android/text/TextUtils.isDigitsOnly (Ljava/lang/CharSequence;)Z]
       [665] ifeq +31 (target=696)
       [668] aload_0 v0
       [669] aload_2 v2
-      [670] invokevirtual #126
+      [670] invokevirtual #127
         - Methodref [android/net/Uri.getLastPathSegment ()Ljava/lang/String;]
-      [673] invokestatic #188
+      [673] invokestatic #190
         - Methodref [java/lang/Integer.parseInt (Ljava/lang/String;)I]
       [676] istore_2 v2
       [677] astore_1 v1
@@ -25657,19 +25664,19 @@ Methods (count = 12):
         - Class [com/deliciousdroid/providers/e]
       [681] dup
       [682] iload_2 v2
-      [683] invokespecial #179
+      [683] invokespecial #181
         - Methodref [com/deliciousdroid/providers/e.<init> (I)V]
       [686] astore_2 v2
       [687] aload_1 v1
       [688] aload_2 v2
-      [689] invokespecial #159
+      [689] invokespecial #161
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b (Lcom/deliciousdroid/providers/e;)V]
       [692] aload_0 v0
-      [693] invokevirtual #160
+      [693] invokevirtual #162
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.finish ()V]
       [696] aload_0 v0
       [697] aload_0 v0
-      [698] invokevirtual #162
+      [698] invokevirtual #164
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getListView ()Landroid/widget/ListView;]
       [701] putfield #108
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.g Landroid/widget/ListView;]
@@ -25677,13 +25684,13 @@ Methods (count = 12):
       [705] getfield #108
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.g Landroid/widget/ListView;]
       [708] iconst_1
-      [709] invokevirtual #150
+      [709] invokevirtual #151
         - Methodref [android/widget/ListView.setTextFilterEnabled (Z)V]
       [712] aload_0 v0
       [713] getfield #108
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.g Landroid/widget/ListView;]
       [716] iconst_1
-      [717] invokevirtual #147
+      [717] invokevirtual #148
         - Methodref [android/widget/ListView.setFastScrollEnabled (Z)V]
       [720] aload_0 v0
       [721] getfield #108
@@ -25692,9 +25699,9 @@ Methods (count = 12):
         - Class [com/deliciousdroid/activity/n]
       [727] dup
       [728] aload_0 v0
-      [729] invokespecial #171
+      [729] invokespecial #173
         - Methodref [com/deliciousdroid/activity/n.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
-      [732] invokevirtual #149
+      [732] invokevirtual #150
         - Methodref [android/widget/ListView.setOnItemClickListener (Landroid/widget/AdapterView$OnItemClickListener;)V]
       [735] aload_0 v0
       [736] getfield #108
@@ -25703,9 +25710,9 @@ Methods (count = 12):
         - Class [com/deliciousdroid/activity/m]
       [742] dup
       [743] aload_0 v0
-      [744] invokespecial #170
+      [744] invokespecial #172
         - Methodref [com/deliciousdroid/activity/m.<init> (Lcom/deliciousdroid/activity/BrowseBookmarks;)V]
-      [747] invokevirtual #148
+      [747] invokevirtual #149
         - Methodref [android/widget/ListView.setOnCreateContextMenuListener (Landroid/view/View$OnCreateContextMenuListener;)V]
       [750] return
       Code attribute exceptions (count = 4):
@@ -25724,7 +25731,7 @@ Methods (count = 12):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 261, locals = 4, stack = 5):
       [0] aload_1 v1
-      [1] invokeinterface #202
+      [1] invokeinterface #204
         - InterfaceMethodref [android/view/MenuItem.getMenuInfo ()Landroid/view/ContextMenu$ContextMenuInfo;]
       [6] checkcast #81
         - Class [android/widget/AdapterView$AdapterContextMenuInfo]
@@ -25735,15 +25742,15 @@ Methods (count = 12):
       [14] aload_2 v2
       [15] getfield #104
         - Fieldref [android/widget/AdapterView$AdapterContextMenuInfo.position I]
-      [18] invokevirtual #146
+      [18] invokevirtual #147
         - Methodref [android/widget/ListView.getItemAtPosition (I)Ljava/lang/Object;]
       [21] checkcast #68
         - Class [android/database/Cursor]
-      [24] invokestatic #174
+      [24] invokestatic #176
         - Methodref [com/deliciousdroid/c/d.a (Landroid/database/Cursor;)Lcom/deliciousdroid/providers/e;]
       [27] astore_2 v2
       [28] aload_1 v1
-      [29] invokeinterface #201
+      [29] invokeinterface #203
         - InterfaceMethodref [android/view/MenuItem.getItemId ()I]
       [34] tableswitch (5 offsets, default=225) (target=259)
         2131361853: offset = 189, target = 223
@@ -25754,13 +25761,13 @@ Methods (count = 12):
         default: offset = 225, target = 259
       [68] aload_0 v0
       [69] aload_2 v2
-      [70] invokespecial #157
+      [70] invokespecial #159
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a (Lcom/deliciousdroid/providers/e;)V]
       [73] iconst_1
       [74] ireturn
       [75] aload_0 v0
       [76] aload_2 v2
-      [77] invokespecial #159
+      [77] invokespecial #161
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b (Lcom/deliciousdroid/providers/e;)V]
       [80] iconst_1
       [81] ireturn
@@ -25776,19 +25783,19 @@ Methods (count = 12):
       [93] astore_1 v1
       [94] ldc #41
         - String [android.intent.action.EDIT]
-      [96] invokevirtual #124
+      [96] invokevirtual #125
         - Methodref [android/content/Intent.setAction (Ljava/lang/String;)Landroid/content/Intent;]
       [99] pop
       [100] new #70
         - Class [android/net/Uri$Builder]
       [103] dup
-      [104] invokespecial #133
+      [104] invokespecial #134
         - Methodref [android/net/Uri$Builder.<init> ()V]
       [107] dup
       [108] astore_3 v3
       [109] ldc #51
         - String [content]
-      [111] invokevirtual #138
+      [111] invokevirtual #139
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [114] pop
       [115] aload_3 v3
@@ -25800,48 +25807,48 @@ Methods (count = 12):
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.a Landroid/accounts/Account;]
       [124] getfield #102
         - Fieldref [android/accounts/Account.name Ljava/lang/String;]
-      [127] invokestatic #194
+      [127] invokestatic #196
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [130] invokespecial #195
+      [130] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [133] ldc #17
         - String [@]
-      [135] invokevirtual #196
+      [135] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [138] ldc #50
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [140] invokevirtual #196
+      [140] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [143] invokevirtual #197
+      [143] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [146] invokevirtual #137
+      [146] invokevirtual #138
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [149] pop
       [150] aload_3 v3
       [151] ldc #48
         - String [bookmarks]
-      [153] invokevirtual #134
+      [153] invokevirtual #135
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [156] pop
       [157] aload_3 v3
       [158] aload_2 v2
-      [159] invokevirtual #181
+      [159] invokevirtual #183
         - Methodref [com/deliciousdroid/providers/e.a ()I]
-      [162] invokestatic #189
+      [162] invokestatic #191
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [165] invokevirtual #134
+      [165] invokevirtual #135
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [168] pop
       [169] aload_1 v1
       [170] aload_3 v3
-      [171] invokevirtual #136
+      [171] invokevirtual #137
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
-      [174] invokevirtual #125
+      [174] invokevirtual #126
         - Methodref [android/content/Intent.setData (Landroid/net/Uri;)Landroid/content/Intent;]
       [177] pop
       [178] aload_0 v0
       [179] aload_1 v1
-      [180] invokevirtual #167
+      [180] invokevirtual #169
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startActivity (Landroid/content/Intent;)V]
       [183] iconst_1
       [184] ireturn
@@ -25855,13 +25862,13 @@ Methods (count = 12):
       [194] aload_0 v0
       [195] getfield #106
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.b Landroid/content/Context;]
-      [198] invokespecial #176
+      [198] invokespecial #178
         - Methodref [com/deliciousdroid/f/a.<init> (Lcom/deliciousdroid/providers/e;Landroid/accounts/Account;Landroid/content/Context;)V]
       [201] astore_1 v1
       [202] new #93
         - Class [com/deliciousdroid/f/b]
       [205] dup
-      [206] invokespecial #177
+      [206] invokespecial #179
         - Methodref [com/deliciousdroid/f/b.<init> ()V]
       [209] iconst_1
       [210] anewarray #92
@@ -25870,7 +25877,7 @@ Methods (count = 12):
       [214] iconst_0
       [215] aload_1 v1
       [216] aastore
-      [217] invokevirtual #178
+      [217] invokevirtual #180
         - Methodref [com/deliciousdroid/f/b.execute ([Ljava/lang/Object;)Landroid/os/AsyncTask;]
       [220] pop
       [221] iconst_1
@@ -25887,21 +25894,21 @@ Methods (count = 12):
       [234] astore_1 v1
       [235] ldc #43
         - String [android.intent.action.SEND]
-      [237] invokevirtual #124
+      [237] invokevirtual #125
         - Methodref [android/content/Intent.setAction (Ljava/lang/String;)Landroid/content/Intent;]
       [240] pop
       [241] aload_1 v1
       [242] ldc #46
         - String [android.intent.extra.TEXT]
       [244] aload_2 v2
-      [245] invokevirtual #182
+      [245] invokevirtual #184
         - Methodref [com/deliciousdroid/providers/e.b ()Ljava/lang/String;]
-      [248] invokevirtual #123
+      [248] invokevirtual #124
         - Methodref [android/content/Intent.putExtra (Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;]
       [251] pop
       [252] aload_0 v0
       [253] aload_1 v1
-      [254] invokevirtual #167
+      [254] invokevirtual #169
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startActivity (Landroid/content/Intent;)V]
       [257] iconst_1
       [258] ireturn
@@ -25915,13 +25922,13 @@ Methods (count = 12):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 57, locals = 2, stack = 5):
       [0] aload_0 v0
-      [1] invokevirtual #156
+      [1] invokevirtual #158
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
       [4] ifeq +41 (target=45)
       [7] new #71
         - Class [android/os/Bundle]
       [10] dup
-      [11] invokespecial #139
+      [11] invokespecial #140
         - Methodref [android/os/Bundle.<init> ()V]
       [14] dup
       [15] astore_1 v1
@@ -25930,7 +25937,7 @@ Methods (count = 12):
       [18] aload_0 v0
       [19] getfield #110
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.i Ljava/lang/String;]
-      [22] invokevirtual #141
+      [22] invokevirtual #142
         - Methodref [android/os/Bundle.putString (Ljava/lang/String;Ljava/lang/String;)V]
       [25] aload_1 v1
       [26] ldc #62
@@ -25938,14 +25945,14 @@ Methods (count = 12):
       [28] aload_0 v0
       [29] getfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
-      [32] invokevirtual #141
+      [32] invokevirtual #142
         - Methodref [android/os/Bundle.putString (Ljava/lang/String;Ljava/lang/String;)V]
       [35] aload_0 v0
       [36] aconst_null
       [37] iconst_0
       [38] aload_1 v1
       [39] iconst_0
-      [40] invokevirtual #169
+      [40] invokevirtual #171
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startSearch (Ljava/lang/String;ZLandroid/os/Bundle;Z)V]
       [43] iconst_1
       [44] ireturn
@@ -25955,7 +25962,7 @@ Methods (count = 12):
       [48] getstatic #103
         - Fieldref [android/os/Bundle.EMPTY Landroid/os/Bundle;]
       [51] iconst_0
-      [52] invokevirtual #169
+      [52] invokevirtual #171
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startSearch (Ljava/lang/String;ZLandroid/os/Bundle;Z)V]
       [55] iconst_1
       [56] ireturn
@@ -25968,22 +25975,22 @@ Methods (count = 12):
     + Code attribute instructions (code length = 29, locals = 3, stack = 3):
       [0] aload_0 v0
       [1] aload_1 v1
-      [2] invokespecial #154
+      [2] invokespecial #155
         - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onCreateOptionsMenu (Landroid/view/Menu;)Z]
       [5] dup
       [6] istore_2 v2
       [7] ifeq +20 (target=27)
       [10] aload_0 v0
-      [11] invokevirtual #156
+      [11] invokevirtual #158
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
       [14] ifeq +13 (target=27)
       [17] aload_0 v0
-      [18] invokevirtual #163
+      [18] invokevirtual #165
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getMenuInflater ()Landroid/view/MenuInflater;]
       [21] ldc #3
         - Integer [2131296259]
       [23] aload_1 v1
-      [24] invokevirtual #145
+      [24] invokevirtual #146
         - Methodref [android/view/MenuInflater.inflate (ILandroid/view/Menu;)V]
       [27] iload_2 v2
       [28] ireturn
@@ -25997,7 +26004,7 @@ Methods (count = 12):
       [0] iconst_0
       [1] istore_2 v2
       [2] aload_1 v1
-      [3] invokeinterface #201
+      [3] invokeinterface #203
         - InterfaceMethodref [android/view/MenuItem.getItemId ()I]
       [8] tableswitch (6 offsets, default=103) (target=111)
         2131361859: offset = 40, target = 48
@@ -26057,16 +26064,79 @@ Methods (count = 12):
       [111] iload_2 v2
       [112] ifeq +10 (target=122)
       [115] aload_0 v0
-      [116] invokespecial #158
+      [116] invokespecial #160
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b ()V]
       [119] goto +9 (target=128)
       [122] aload_0 v0
       [123] aload_1 v1
-      [124] invokespecial #155
+      [124] invokespecial #156
         - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onOptionsItemSelected (Landroid/view/MenuItem;)Z]
       [127] istore_2 v2
       [128] iload_2 v2
       [129] ireturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       onResume()V
+    Access flags: 0x1
+      = public void onResume()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 79, locals = 2, stack = 3):
+      [0] aload_0 v0
+      [1] invokespecial #157
+        - Methodref [com/deliciousdroid/activity/AppBaseListActivity.onResume ()V]
+      [4] aload_0 v0
+      [5] invokevirtual #163
+        - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getIntent ()Landroid/content/Intent;]
+      [8] invokevirtual #121
+        - Methodref [android/content/Intent.getData ()Landroid/net/Uri;]
+      [11] dup
+      [12] astore_1 v1
+      [13] ifnull +28 (target=41)
+      [16] aload_1 v1
+      [17] invokevirtual #131
+        - Methodref [android/net/Uri.getUserInfo ()Ljava/lang/String;]
+      [20] ifnull +21 (target=41)
+      [23] aload_1 v1
+      [24] invokevirtual #131
+        - Methodref [android/net/Uri.getUserInfo ()Ljava/lang/String;]
+      [27] ldc #6
+        - String []
+      [29] ifacmpeq +12 (target=41)
+      [32] aload_0 v0
+      [33] aload_1 v1
+      [34] invokevirtual #131
+        - Methodref [android/net/Uri.getUserInfo ()Ljava/lang/String;]
+      [37] putfield #107
+        - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
+      [40] return
+      [41] aload_0 v0
+      [42] invokevirtual #163
+        - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getIntent ()Landroid/content/Intent;]
+      [45] ldc #62
+        - String [username]
+      [47] invokevirtual #123
+        - Methodref [android/content/Intent.hasExtra (Ljava/lang/String;)Z]
+      [50] ifeq +17 (target=67)
+      [53] aload_0 v0
+      [54] aload_0 v0
+      [55] invokevirtual #163
+        - Methodref [com/deliciousdroid/activity/BrowseBookmarks.getIntent ()Landroid/content/Intent;]
+      [58] ldc #62
+        - String [username]
+      [60] invokevirtual #122
+        - Methodref [android/content/Intent.getStringExtra (Ljava/lang/String;)Ljava/lang/String;]
+      [63] putfield #107
+        - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
+      [66] return
+      [67] aload_0 v0
+      [68] aload_0 v0
+      [69] getfield #105
+        - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.a Landroid/accounts/Account;]
+      [72] getfield #102
+        - Fieldref [android/accounts/Account.name Ljava/lang/String;]
+      [75] putfield #107
+        - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
+      [78] return
       Code attribute exceptions (count = 0):
       Code attribute attributes (attribute count = 0):
   + Method:       b()V
@@ -26120,13 +26190,13 @@ Methods (count = 12):
       [49] new #101
         - Class [java/util/ArrayList]
       [52] dup
-      [53] invokespecial #198
+      [53] invokespecial #200
         - Methodref [java/util/ArrayList.<init> ()V]
       [56] astore v6
       [58] new #101
         - Class [java/util/ArrayList]
       [61] dup
-      [62] invokespecial #198
+      [62] invokespecial #200
         - Methodref [java/util/ArrayList.<init> ()V]
       [65] astore v7
       [67] aload_2 v2
@@ -26138,7 +26208,7 @@ Methods (count = 12):
       [77] aload_2 v2
       [78] ldc #14
         - String [,]
-      [80] invokevirtual #193
+      [80] invokevirtual #195
         - Methodref [java/lang/String.split (Ljava/lang/String;)[Ljava/lang/String;]
       [83] dup
       [84] astore v10
@@ -26154,7 +26224,7 @@ Methods (count = 12):
       [101] aload v7
       [103] ldc #13
         - String [(TAGS LIKE ? OR TAGS LIKE ? OR TAGS LIKE ? OR TAGS = ?)]
-      [105] invokevirtual #199
+      [105] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [108] pop
       [109] aload v6
@@ -26163,18 +26233,18 @@ Methods (count = 12):
       [114] dup
       [115] ldc #12
         - String [% ]
-      [117] invokespecial #195
+      [117] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [120] aload_2 v2
-      [121] invokevirtual #196
+      [121] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [124] ldc #7
         - String [ %]
-      [126] invokevirtual #196
+      [126] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [129] invokevirtual #197
+      [129] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [132] invokevirtual #199
+      [132] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [135] pop
       [136] aload v6
@@ -26183,14 +26253,14 @@ Methods (count = 12):
       [141] dup
       [142] ldc #12
         - String [% ]
-      [144] invokespecial #195
+      [144] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [147] aload_2 v2
-      [148] invokevirtual #196
+      [148] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [151] invokevirtual #197
+      [151] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [154] invokevirtual #199
+      [154] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [157] pop
       [158] aload v6
@@ -26198,22 +26268,22 @@ Methods (count = 12):
         - Class [java/lang/StringBuilder]
       [163] dup
       [164] aload_2 v2
-      [165] invokestatic #194
+      [165] invokestatic #196
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [168] invokespecial #195
+      [168] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [171] ldc #7
         - String [ %]
-      [173] invokevirtual #196
+      [173] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [176] invokevirtual #197
+      [176] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [179] invokevirtual #199
+      [179] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [182] pop
       [183] aload v6
       [185] aload_2 v2
-      [186] invokevirtual #199
+      [186] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [189] pop
       [190] iinc v8, 1
@@ -26226,36 +26296,36 @@ Methods (count = 12):
       [204] ldc #9
         - String [ OR ]
       [206] aload v7
-      [208] invokestatic #143
+      [208] invokestatic #144
         - Methodref [android/text/TextUtils.join (Ljava/lang/CharSequence;Ljava/lang/Iterable;)Ljava/lang/String;]
-      [211] invokestatic #194
+      [211] invokestatic #196
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [214] invokespecial #195
+      [214] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [217] ldc #8
         - String [ AND ]
-      [219] invokevirtual #196
+      [219] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [222] ldc #18
         - String [ACCOUNT]
-      [224] invokevirtual #196
+      [224] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [227] ldc #16
         - String [=?]
-      [229] invokevirtual #196
+      [229] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [232] invokevirtual #197
+      [232] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
       [235] astore_2 v2
       [236] aload v6
       [238] aload_1 v1
-      [239] invokevirtual #199
+      [239] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [242] pop
       [243] goto +13 (target=256)
       [246] aload v6
       [248] aload_1 v1
-      [249] invokevirtual #199
+      [249] invokevirtual #201
         - Methodref [java/util/ArrayList.add (Ljava/lang/Object;)Z]
       [252] pop
       [253] ldc #19
@@ -26274,7 +26344,7 @@ Methods (count = 12):
       [273] iconst_0
       [274] anewarray #99
         - Class [java/lang/String]
-      [277] invokevirtual #200
+      [277] invokevirtual #202
         - Methodref [java/util/ArrayList.toArray ([Ljava/lang/Object;)[Ljava/lang/Object;]
       [280] checkcast #63
         - Class [[Ljava/lang/String;]
@@ -26284,7 +26354,7 @@ Methods (count = 12):
       [287] astore_1 v1
       [288] aload_0 v0
       [289] aload_1 v1
-      [290] invokevirtual #168
+      [290] invokevirtual #170
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startManagingCursor (Landroid/database/Cursor;)V]
       [293] new #84
         - Class [android/widget/SimpleCursorAdapter]
@@ -26320,12 +26390,12 @@ Methods (count = 12):
       [328] ldc #5
         - Integer [2131361818]
       [330] iastore
-      [331] invokespecial #151
+      [331] invokespecial #152
         - Methodref [android/widget/SimpleCursorAdapter.<init> (Landroid/content/Context;ILandroid/database/Cursor;[Ljava/lang/String;[I)V]
       [334] astore_1 v1
       [335] aload_0 v0
       [336] aload_1 v1
-      [337] invokevirtual #165
+      [337] invokevirtual #167
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.setListAdapter (Landroid/widget/ListAdapter;)V]
       [340] return
       Code attribute exceptions (count = 0):
@@ -26336,9 +26406,9 @@ Methods (count = 12):
     Class member attributes (count = 1):
     + Code attribute instructions (code length = 25, locals = 2, stack = 4):
       [0] aload_1 v1
-      [1] invokevirtual #182
+      [1] invokevirtual #184
         - Methodref [com/deliciousdroid/providers/e.b ()Ljava/lang/String;]
-      [4] invokestatic #131
+      [4] invokestatic #132
         - Methodref [android/net/Uri.parse (Ljava/lang/String;)Landroid/net/Uri;]
       [7] astore_1 v1
       [8] new #67
@@ -26352,7 +26422,7 @@ Methods (count = 12):
       [18] astore_1 v1
       [19] aload_0 v0
       [20] aload_1 v1
-      [21] invokevirtual #167
+      [21] invokevirtual #169
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startActivity (Landroid/content/Intent;)V]
       [24] return
       Code attribute exceptions (count = 0):
@@ -26371,7 +26441,7 @@ Methods (count = 12):
       [8] astore_2 v2
       [9] ldc #44
         - String [android.intent.action.VIEW]
-      [11] invokevirtual #124
+      [11] invokevirtual #125
         - Methodref [android/content/Intent.setAction (Ljava/lang/String;)Landroid/content/Intent;]
       [14] pop
       [15] aload_2 v2
@@ -26383,13 +26453,13 @@ Methods (count = 12):
       [22] new #70
         - Class [android/net/Uri$Builder]
       [25] dup
-      [26] invokespecial #133
+      [26] invokespecial #134
         - Methodref [android/net/Uri$Builder.<init> ()V]
       [29] dup
       [30] astore_3 v3
       [31] ldc #51
         - String [content]
-      [33] invokevirtual #138
+      [33] invokevirtual #139
         - Methodref [android/net/Uri$Builder.scheme (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [36] pop
       [37] aload_3 v3
@@ -26399,126 +26469,126 @@ Methods (count = 12):
       [42] aload_0 v0
       [43] getfield #107
         - Fieldref [com/deliciousdroid/activity/BrowseBookmarks.c Ljava/lang/String;]
-      [46] invokestatic #194
+      [46] invokestatic #196
         - Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
-      [49] invokespecial #195
+      [49] invokespecial #197
         - Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
       [52] ldc #17
         - String [@]
-      [54] invokevirtual #196
+      [54] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [57] ldc #50
         - String [com.deliciousdroid.providers.BookmarkContentProvider]
-      [59] invokevirtual #196
+      [59] invokevirtual #198
         - Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
-      [62] invokevirtual #197
+      [62] invokevirtual #199
         - Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
-      [65] invokevirtual #137
+      [65] invokevirtual #138
         - Methodref [android/net/Uri$Builder.encodedAuthority (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [68] pop
       [69] aload_3 v3
       [70] ldc #48
         - String [bookmarks]
-      [72] invokevirtual #134
+      [72] invokevirtual #135
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [75] pop
       [76] aload_0 v0
-      [77] invokevirtual #156
+      [77] invokevirtual #158
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a ()Z]
       [80] ifeq +18 (target=98)
       [83] aload_3 v3
       [84] aload_1 v1
-      [85] invokevirtual #181
+      [85] invokevirtual #183
         - Methodref [com/deliciousdroid/providers/e.a ()I]
-      [88] invokestatic #189
+      [88] invokestatic #191
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [91] invokevirtual #134
+      [91] invokevirtual #135
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [94] pop
       [95] goto +81 (target=176)
       [98] aload_3 v3
       [99] iconst_0
-      [100] invokestatic #189
+      [100] invokestatic #191
         - Methodref [java/lang/Integer.toString (I)Ljava/lang/String;]
-      [103] invokevirtual #134
+      [103] invokevirtual #135
         - Methodref [android/net/Uri$Builder.appendEncodedPath (Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [106] pop
       [107] aload_3 v3
       [108] ldc #61
         - String [url]
       [110] aload_1 v1
-      [111] invokevirtual #182
+      [111] invokevirtual #184
         - Methodref [com/deliciousdroid/providers/e.b ()Ljava/lang/String;]
-      [114] invokevirtual #135
+      [114] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [117] pop
       [118] aload_3 v3
       [119] ldc #60
         - String [title]
       [121] aload_1 v1
-      [122] invokevirtual #183
+      [122] invokevirtual #185
         - Methodref [com/deliciousdroid/providers/e.c ()Ljava/lang/String;]
-      [125] invokevirtual #135
+      [125] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [128] pop
       [129] aload_3 v3
       [130] ldc #54
         - String [notes]
       [132] aload_1 v1
-      [133] invokevirtual #184
+      [133] invokevirtual #186
         - Methodref [com/deliciousdroid/providers/e.d ()Ljava/lang/String;]
-      [136] invokevirtual #135
+      [136] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [139] pop
       [140] aload_3 v3
       [141] ldc #58
         - String [tags]
       [143] aload_1 v1
-      [144] invokevirtual #185
+      [144] invokevirtual #187
         - Methodref [com/deliciousdroid/providers/e.e ()Ljava/lang/String;]
-      [147] invokevirtual #135
+      [147] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [150] pop
       [151] aload_3 v3
       [152] ldc #59
         - String [time]
       [154] aload_1 v1
-      [155] invokevirtual #186
+      [155] invokevirtual #188
         - Methodref [com/deliciousdroid/providers/e.i ()J]
-      [158] invokestatic #190
+      [158] invokestatic #192
         - Methodref [java/lang/Long.toString (J)Ljava/lang/String;]
-      [161] invokevirtual #135
+      [161] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [164] pop
       [165] aload_3 v3
       [166] ldc #40
         - String [account]
       [168] aload_1 v1
-      [169] invokevirtual #187
+      [169] invokevirtual #189
         - Methodref [com/deliciousdroid/providers/e.k ()Ljava/lang/String;]
-      [172] invokevirtual #135
+      [172] invokevirtual #136
         - Methodref [android/net/Uri$Builder.appendQueryParameter (Ljava/lang/String;Ljava/lang/String;)Landroid/net/Uri$Builder;]
       [175] pop
       [176] aload_2 v2
       [177] aload_3 v3
-      [178] invokevirtual #136
+      [178] invokevirtual #137
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
-      [181] invokevirtual #125
+      [181] invokevirtual #126
         - Methodref [android/content/Intent.setData (Landroid/net/Uri;)Landroid/content/Intent;]
       [184] pop
       [185] ldc #38
         - String [View Bookmark Uri]
       [187] aload_3 v3
-      [188] invokevirtual #136
+      [188] invokevirtual #137
         - Methodref [android/net/Uri$Builder.build ()Landroid/net/Uri;]
-      [191] invokevirtual #132
+      [191] invokevirtual #133
         - Methodref [android/net/Uri.toString ()Ljava/lang/String;]
-      [194] invokestatic #144
+      [194] invokestatic #145
         - Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
       [197] pop
       [198] aload_0 v0
       [199] aload_2 v2
-      [200] invokevirtual #167
+      [200] invokevirtual #169
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.startActivity (Landroid/content/Intent;)V]
       [203] return
       Code attribute exceptions (count = 0):
@@ -26541,7 +26611,7 @@ Methods (count = 12):
     + Code attribute instructions (code length = 6, locals = 2, stack = 2):
       [0] aload_0 v0
       [1] aload_1 v1
-      [2] invokespecial #159
+      [2] invokespecial #161
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.b (Lcom/deliciousdroid/providers/e;)V]
       [5] return
       Code attribute exceptions (count = 0):
@@ -26553,7 +26623,7 @@ Methods (count = 12):
     + Code attribute instructions (code length = 6, locals = 2, stack = 2):
       [0] aload_0 v0
       [1] aload_1 v1
-      [2] invokespecial #157
+      [2] invokespecial #159
         - Methodref [com/deliciousdroid/activity/BrowseBookmarks.a (Lcom/deliciousdroid/providers/e;)V]
       [5] return
       Code attribute exceptions (count = 0):
