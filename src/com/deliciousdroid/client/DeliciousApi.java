@@ -493,7 +493,7 @@ public class DeliciousApi {
     		if(encoding != null && encoding.getValue().equalsIgnoreCase("gzip")) {
     			instream = new GZIPInputStream(instream);
     		}
-    		
+
     		return instream;
     	} else if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
     		throw new AuthenticationException();

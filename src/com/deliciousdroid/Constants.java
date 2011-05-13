@@ -33,6 +33,14 @@ public class Constants {
     public static final Uri CONTENT_URI_BASE = Uri.parse("content://com.deliciousdroid");
     
     public static final String CONTENT_SCHEME = "content";
+    
+    public static final String EXTRA_DESCRIPTION = "com.deliciousdroid.bookmark.description";
+    public static final String EXTRA_NOTES = "com.deliciousdroid.bookmark.notes";
+    public static final String EXTRA_TAGS = "com.deliciousdroid.bookmark.tags";
+    public static final String EXTRA_PRIVATE = "com.deliciousdroid.bookmark.private";
+    public static final String EXTRA_ERROR = "com.deliciousdroid.bookmark.error";
+    public static final String EXTRA_TIME = "com.deliciousdroid.bookmark.time";
+	public static final String EXTRA_UPDATE = "com.deliciousdroid.bookmark.update";
 
     /**
      * Authtoken type string.

@@ -141,6 +141,10 @@ public class BookmarkContent {
         	return mLastUpdate;
         }
         
+        public void setPrivate(Boolean priv) {
+        	mPrivate = priv;
+        }
+        
         public boolean getPrivate(){
         	return mPrivate;
         }

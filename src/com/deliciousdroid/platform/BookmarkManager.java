@@ -204,9 +204,15 @@ public class BookmarkManager {
 	}
 
 	public static void DeleteBookmark(Bookmark bookmark, Context context){
-		
-		String selection = BaseColumns._ID + "=" + bookmark.getId();
-		
+		int id = bookmark.getId();
+		String selection = "";
+
+		if(id > 0) {
+			selection = BaseColumns._ID + "=" + bookmark.getId();
+		} else {
+			selection = Bookmark.Url + "='" + bookmark.getUrl() + "'";
+		}
+
 		context.getContentResolver().delete(Bookmark.CONTENT_URI, selection, null);
 	}
 	

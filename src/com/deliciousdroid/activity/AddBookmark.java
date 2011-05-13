@@ -28,7 +28,9 @@ import java.util.Date;
 
 import org.apache.http.auth.AuthenticationException;
 
+import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
+import com.deliciousdroid.action.AddBookmarkTask;
 import com.deliciousdroid.action.BookmarkTaskArgs;
 import com.deliciousdroid.client.DeliciousApi;
 import com.deliciousdroid.client.NetworkUtilities;
@@ -40,12 +42,8 @@ import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.ui.TagSpan;
 import com.deliciousdroid.util.StringUtils;
 
-import android.accounts.Account;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,7 +57,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -83,7 +80,7 @@ public class AddBookmark extends AppBaseActivity{
 	private Bookmark bookmark;
 	Thread background;
 	private Boolean update = false;
-	private Resources res;
+	private Boolean error = false;
 	
 	private Bookmark oldBookmark;
 	
@@ -110,8 +107,6 @@ public class AddBookmark extends AppBaseActivity{
 		mRecommendedTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mPopularTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mNetworkTags.setMovementMethod(LinkMovementMethod.getInstance());
-		
-		res = getResources();
 
 		if(savedInstanceState ==  null){
 			Intent intent = getIntent();
@@ -156,13 +151,54 @@ public class AddBookmark extends AppBaseActivity{
 					finish();
 				}
 			} else if(Intent.ACTION_SEND.equals(intent.getAction())){
-				String extraData = intent.getStringExtra(Intent.EXTRA_TEXT);
+				Bookmark b = new Bookmark();
 				
-				String url = StringUtils.getUrl(extraData);
+				String url = StringUtils.getUrl(intent.getStringExtra(Intent.EXTRA_TEXT));
+				b.setUrl(url);
+				
+				if(url.equals("")) {
+					Toast.makeText(this, "Invalid URL", Toast.LENGTH_LONG).show();
+				}
+				
+				b.setDescription(intent.getStringExtra(Constants.EXTRA_DESCRIPTION));
+				b.setNotes(intent.getStringExtra(Constants.EXTRA_NOTES));
+				b.setTagString(intent.getStringExtra(Constants.EXTRA_TAGS));
+				b.setPrivate(intent.getBooleanExtra(Constants.EXTRA_PRIVATE, false));
+				error = intent.getBooleanExtra(Constants.EXTRA_ERROR, false);
 				
 				mEditUrl.setText(url);
 				
-				new GetWebpageTitleTask().execute(url);
+				if(b.getDescription() != null)
+					mEditDescription.setText(b.getDescription());
+
+				if(b.getNotes() != null)
+					mEditNotes.setText(b.getNotes());
+				
+				if(b.getTagString() != null)
+					mEditTags.setText(b.getTagString());
+				
+				mPrivate.setChecked(b.getPrivate());
+				
+				if(mEditDescription.getText().toString().equals(""))
+					new GetWebpageTitleTask().execute(b.getUrl());
+				
+				bookmark = b.copy();
+				
+				if(error){
+					update = intent.getBooleanExtra(Constants.EXTRA_UPDATE, false);
+
+					if(update) {
+						oldBookmark = new Bookmark();
+						oldBookmark.setAccount(mAccount.name);
+						oldBookmark.setDescription(intent.getStringExtra(Constants.EXTRA_DESCRIPTION + ".old"));
+						oldBookmark.setNotes(intent.getStringExtra(Constants.EXTRA_NOTES + ".old"));
+						oldBookmark.setUrl(intent.getStringExtra(Intent.EXTRA_TEXT + ".old"));
+						oldBookmark.setPrivate(intent.getBooleanExtra(Constants.EXTRA_PRIVATE + ".old", false));
+						oldBookmark.setTagString(intent.getStringExtra(Constants.EXTRA_TAGS + ".old"));
+						oldBookmark.setTime(intent.getLongExtra(Constants.EXTRA_TIME + ".old", 0));
+					}
+				}
+
 			} else if(Intent.ACTION_EDIT.equals(intent.getAction())){
 				int id = Integer.parseInt(intent.getData().getLastPathSegment());
 				try {
@@ -206,7 +242,10 @@ public class AddBookmark extends AppBaseActivity{
 	}
 
 	public void cancelHandler(View v) {
-    	finish();
+    	if(error)
+    		revertBookmark();
+    	
+		finish();
 	}
 	
     public void save() {
@@ -230,11 +269,60 @@ public class AddBookmark extends AppBaseActivity{
 			mEditNotes.getText().toString(), mEditTags.getText().toString(),
 			mPrivate.isChecked(), updateTime);
 		
-		BookmarkTaskArgs args = new BookmarkTaskArgs(bookmark, mAccount, mContext);
+		BookmarkTaskArgs args = new BookmarkTaskArgs(bookmark, oldBookmark, mAccount, mContext, update);
 		
 		new AddBookmarkTask().execute(args);
+		
+		if(update){
+			BookmarkManager.UpdateBookmark(bookmark, mAccount.name, this);
+
+			for(Tag t : oldBookmark.getTags()){
+				if(!bookmark.getTags().contains(t)) {
+					TagManager.UpleteTag(t, mAccount.name, this);
+				}
+			}
+		} else {
+			BookmarkManager.AddBookmark(bookmark, mAccount.name, this);
+		}
+
+		for(Tag t : bookmark.getTags()){
+			TagManager.UpsertTag(t, mAccount.name, this);
+		}
+		
+		finish();
+    }
+    
+    private void revertBookmark(){
+        Log.d("revert", "revert");
+        if(update) {
+        	BookmarkManager.UpdateBookmark(oldBookmark, mAccount.name, this);
+
+        	for(Tag t : bookmark.getTags()){
+        		if(!oldBookmark.getTags().contains(t)) {
+        			TagManager.UpleteTag(t, mAccount.name, this);
+        		}
+        	}
+
+        	for(Tag t : oldBookmark.getTags()){
+        		TagManager.UpsertTag(t, mAccount.name, this);
+        	}
+        } else {
+        	BookmarkManager.DeleteBookmark(bookmark, this);
+       
+        	for(Tag t : bookmark.getTags()){
+        		TagManager.UpleteTag(t, mAccount.name, this);
+        	}
+        }
     }
 
+    public void onBackPressed(){
+        if(error) {
+        	revertBookmark();
+        }
+       
+        super.onBackPressed();
+    }
+    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
@@ -254,7 +342,10 @@ public class AddBookmark extends AppBaseActivity{
 	    case R.id.menu_addbookmark_save:
 	    	save();
 			return true;
-	    case R.id.menu_addbookmark_cancel:       	
+	    case R.id.menu_addbookmark_cancel:
+	    	if(error)
+	    		revertBookmark();
+	    	
         	finish();
 	        return true;
 	    default:
@@ -279,71 +370,6 @@ public class AddBookmark extends AppBaseActivity{
         	}
         }
     };
-
-    private class AddBookmarkTask extends AsyncTask<BookmarkTaskArgs, Integer, Boolean>{
-    	private Context context;
-    	private Bookmark bookmark;
-    	private Account account;
-    	private ProgressDialog progress;
-    	
-    	@Override
-    	protected Boolean doInBackground(BookmarkTaskArgs... args) {
-    		context = args[0].getContext();
-    		bookmark = args[0].getBookmark();
-    		account = args[0].getAccount();
-    		
-    		try {
-    			Boolean success = DeliciousApi.addBookmark(bookmark, account, context);
-    			if(success){
-    				if(update){
-    					BookmarkManager.UpdateBookmark(bookmark, account.name, context);
-    				} else {
-    					BookmarkManager.AddBookmark(bookmark, account.name, context);
-    				}
-    				return true;
-    			} else return false;
-    		} catch (Exception e) {
-    			Log.d("addBookmark error", e.toString());
-    			return false;
-    		}
-    	}
-    	
-        protected void onPreExecute() {
-	        progress = new ProgressDialog(mContext);
-	        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	        progress.setMessage("Working...");
-	        progress.setCancelable(true);
-	        progress.show();
-        }
-
-        protected void onPostExecute(Boolean result) {
-        	progress.dismiss();
-        	
-    		if(result){
-    			for(Tag t : bookmark.getTags()){   				
-    				TagManager.UpsertTag(t, account.name, context);
-    			}
-    			
-    			if(update) {
-    				for(Tag t : oldBookmark.getTags()) {
-    					if(!bookmark.getTags().contains(t))
-    						TagManager.UpleteTag(t, account.name, context);
-    				}
-    			}
-    			
-    			String msg = null;
-    			if(update)
-    				msg = res.getString(R.string.edit_bookmark_success_msg);
-    			else msg = res.getString(R.string.add_bookmark_success_msg);
-    			
-    			Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    		} else {
-    			Toast.makeText(context, res.getString(R.string.add_bookmark_error_msg), Toast.LENGTH_SHORT).show();
-    		}
-    		
-    		finish();
-        }
-    }
     
     public class GetWebpageTitleTask extends AsyncTask<String, Integer, String>{
     	private String url;
