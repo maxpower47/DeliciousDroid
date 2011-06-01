@@ -166,6 +166,13 @@ public class AddBookmark extends AppBaseActivity{
 				b.setPrivate(intent.getBooleanExtra(Constants.EXTRA_PRIVATE, false));
 				error = intent.getBooleanExtra(Constants.EXTRA_ERROR, false);
 				
+				try{
+					Bookmark old = BookmarkManager.GetByUrl(b.getUrl(), this);
+					b = old.copy();
+				} catch(Exception e) {
+
+				}
+				
 				mEditUrl.setText(url);
 				
 				if(b.getDescription() != null)
@@ -265,9 +272,18 @@ public class AddBookmark extends AppBaseActivity{
 			updateTime = d.getTime();
 		}
 		
+		int oldid = 0;
+		if(bookmark != null && bookmark.getId() != 0) {
+			oldid = bookmark.getId();
+			update = true;
+			oldBookmark = bookmark.copy();
+		}
+		
 		bookmark = new Bookmark(url, mEditDescription.getText().toString(), 
 			mEditNotes.getText().toString(), mEditTags.getText().toString(),
 			mPrivate.isChecked(), updateTime);
+		
+		bookmark.setId(oldid);
 		
 		BookmarkTaskArgs args = new BookmarkTaskArgs(bookmark, oldBookmark, mAccount, mContext, update);
 		

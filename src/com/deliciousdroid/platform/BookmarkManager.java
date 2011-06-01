@@ -114,6 +114,37 @@ public class BookmarkManager {
 		}
 	}
 	
+	public static Bookmark GetByUrl(String url, Context context) throws ContentNotFoundException {		
+		final String[] projection = new String[] {Bookmark._ID, Bookmark.Account, Bookmark.Url, Bookmark.Description, Bookmark.Notes, Bookmark.Time, Bookmark.Tags, Bookmark.Hash, Bookmark.Meta};
+		final String selection = Bookmark.Url + "=?";
+		final String[] selectionargs = new String[]{ url };
+		
+		Cursor c = context.getContentResolver().query(Bookmark.CONTENT_URI, projection, selection, selectionargs, null);				
+		
+		if(c.moveToFirst()){
+			final int idColumn = c.getColumnIndex(Bookmark._ID);
+			final int accountColumn = c.getColumnIndex(Bookmark.Account);
+			final int urlColumn = c.getColumnIndex(Bookmark.Url);
+			final int descriptionColumn = c.getColumnIndex(Bookmark.Description);
+			final int notesColumn = c.getColumnIndex(Bookmark.Notes);
+			final int tagsColumn = c.getColumnIndex(Bookmark.Tags);
+			final int hashColumn = c.getColumnIndex(Bookmark.Hash);
+			final int metaColumn = c.getColumnIndex(Bookmark.Meta);
+			final int timeColumn = c.getColumnIndex(Bookmark.Time);
+
+			Bookmark b = new Bookmark(c.getInt(idColumn), c.getString(accountColumn), c.getString(urlColumn), 
+				c.getString(descriptionColumn), c.getString(notesColumn), c.getString(tagsColumn),
+				c.getString(hashColumn), c.getString(metaColumn), c.getLong(timeColumn));
+			
+			c.close();
+			
+			return b;
+		} else {
+			c.close();
+			throw new ContentNotFoundException();
+		}
+	}
+	
 	public static void AddBookmark(Bookmark bookmark, String account, Context context) {
 		String url = bookmark.getUrl();
 
