@@ -75,10 +75,10 @@ public class DeliciousApi {
     public static final String DELETE_BOOKMARK_URI = "posts/delete";
     public static final String ADD_BOOKMARKS_URI = "posts/add";
   
-    private static final String SCHEME = "http";
+    private static final String SCHEME = "https";
     private static final String SCHEME_HTTP = "http";
     private static final String DELICIOUS_AUTHORITY = "api.del.icio.us";
-    private static final int PORT = 80;
+    private static final int PORT = 443;
  
     private static final AuthScope SCOPE = new AuthScope(DELICIOUS_AUTHORITY, PORT);
 
