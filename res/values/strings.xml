@@ -147,7 +147,7 @@
     
     <string name="pref_accountsettings_title">Account Settings</string>
 	<string name="pref_accountsettings_key">pref_accountsettings</string>
-	<string name="pref_accountsettings_summary">Manage your Pinboard account on this device.</string>
+	<string name="pref_accountsettings_summary">Manage your Delicious account on this device.</string>
     
     <string name="pref_synctime_title">Bookmark Sync Frequency</string>
 	<string name="pref_synctime_key">pref_synctime</string>
