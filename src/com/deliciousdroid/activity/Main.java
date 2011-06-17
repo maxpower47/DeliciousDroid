@@ -104,7 +104,7 @@ public class Main extends AppBaseListActivity {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	if(position == 0){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();
@@ -118,7 +118,7 @@ public class Main extends AppBaseListActivity {
 		    		startActivity(i);
 		    	} else if(position == 1){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseTags.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();
@@ -132,7 +132,7 @@ public class Main extends AppBaseListActivity {
 		    		startActivity(i);
 		    	}  else if(position == 2){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseBundles.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();
@@ -146,7 +146,7 @@ public class Main extends AppBaseListActivity {
 		    		startActivity(i);
 		    	} else if(position == 3){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();
@@ -160,7 +160,7 @@ public class Main extends AppBaseListActivity {
 		    		startActivity(i);
 		    	} else if(position == 4){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();
@@ -174,7 +174,7 @@ public class Main extends AppBaseListActivity {
 		    		startActivity(i);
 		    	} else if(position == 5){
 		    		
-		    		Intent i = new Intent();
+		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
 		    		i.addCategory(Intent.CATEGORY_DEFAULT);
 		    		Uri.Builder data = new Uri.Builder();

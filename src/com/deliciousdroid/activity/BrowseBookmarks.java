@@ -340,7 +340,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	}
 	
 	private void viewBookmark(Bookmark b) {
-		Intent viewBookmark = new Intent();
+		Intent viewBookmark = new Intent(this, ViewBookmark.class);
 		viewBookmark.setAction(Intent.ACTION_VIEW);
 		viewBookmark.addCategory(Intent.CATEGORY_DEFAULT);
 		Uri.Builder data = new Uri.Builder();

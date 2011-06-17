@@ -147,7 +147,7 @@ public class BrowseBundles extends AppBaseListActivity {
 					final Cursor c = (Cursor)lv.getItemAtPosition(position);
 					Bundle b = BundleManager.CursorToBundle(c);
 			    	
-					Intent i = new Intent();
+					Intent i = new Intent(mContext, BrowseBookmarks.class);
 					i.setAction(Intent.ACTION_VIEW);
 					i.addCategory(Intent.CATEGORY_DEFAULT);
 	

@@ -3,6 +3,8 @@ package com.deliciousdroid.widget;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
 import com.deliciousdroid.activity.AddBookmark;
+import com.deliciousdroid.activity.BrowseBookmarks;
+import com.deliciousdroid.activity.BrowseTags;
 import com.deliciousdroid.activity.Main;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 
@@ -36,7 +38,7 @@ public class SearchWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
 
-            Intent bookmarkIntent = new Intent();
+            Intent bookmarkIntent = new Intent(context, BrowseBookmarks.class);
             bookmarkIntent.setAction(Intent.ACTION_VIEW);
             bookmarkIntent.addCategory(Intent.CATEGORY_DEFAULT);
     		Uri.Builder bookmarkData = new Uri.Builder();
@@ -45,7 +47,7 @@ public class SearchWidgetProvider extends AppWidgetProvider {
     		bookmarkData.appendEncodedPath("bookmarks");
     		bookmarkIntent.setData(bookmarkData.build());
     		
-    		Intent tagIntent = new Intent();
+    		Intent tagIntent = new Intent(context, BrowseTags.class);
     		tagIntent.setAction(Intent.ACTION_VIEW);
     		tagIntent.addCategory(Intent.CATEGORY_DEFAULT);
     		Uri.Builder tagData = new Uri.Builder();
@@ -59,7 +61,7 @@ public class SearchWidgetProvider extends AppWidgetProvider {
     		
     		Intent addIntent = new Intent(context, AddBookmark.class);
     		
-    		Intent networkIntent = new Intent();
+    		Intent networkIntent = new Intent(context, BrowseBookmarks.class);
     		networkIntent.setAction(Intent.ACTION_VIEW);
     		networkIntent.addCategory(Intent.CATEGORY_DEFAULT);
     		Uri.Builder data = new Uri.Builder();
