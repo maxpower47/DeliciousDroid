@@ -314,7 +314,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
      * Called when the authentication process completes (see attemptLogin()).
      */
     public void onAuthenticationResult(LoginResult result) {
-        Log.i(TAG, "onAuthenticationResult(" + result + ")");
+        Log.i(TAG, "onAuthenticationResult(" + result.getResult() + ")");
         // Hide the progress dialog
         hideProgress();
         if (result.getResult() && result.getToken() == null && result.getSessionHandle() == null) {

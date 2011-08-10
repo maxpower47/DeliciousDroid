@@ -71,8 +71,10 @@ public class NetworkUtilities {
     private static final String SCHEME_HTTP = "http";
     private static final String DELICIOUS_AUTHORITY = "api.del.icio.us";
     private static final int PORT = 443;
+    private static final int PORT_HTTP = 80;
  
     private static final AuthScope SCOPE = new AuthScope(DELICIOUS_AUTHORITY, PORT);
+    private static final AuthScope SCOPE_HTTP = new AuthScope(DELICIOUS_AUTHORITY, PORT_HTTP);
     
     private static final String OAUTH_AUTHORITY = "api.login.yahoo.com";
 
@@ -115,18 +117,18 @@ public class NetworkUtilities {
         final HttpResponse resp;
         
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME);
+        builder.scheme(SCHEME_HTTP);
         builder.authority(DELICIOUS_AUTHORITY);
         builder.appendEncodedPath("v1/posts/update");
         Uri uri = builder.build();
-
+        Log.d("auth uri", String.valueOf(uri));
         HttpGet request = new HttpGet(String.valueOf(uri));
-
+        
         DefaultHttpClient client = HttpClientFactory.getThreadSafeClient();
         
         CredentialsProvider provider = client.getCredentialsProvider();
         Credentials credentials = new UsernamePasswordCredentials(username, password);
-        provider.setCredentials(SCOPE, credentials);
+        provider.setCredentials(SCOPE_HTTP, credentials);
 
         try {
             resp = client.execute(request);
