@@ -41,6 +41,7 @@ import com.deliciousdroid.providers.ContentNotFoundException;
 import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.ui.TagSpan;
 import com.deliciousdroid.util.StringUtils;
+import com.deliciousdroid.widgets.MultiWordAutoCompleteView;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -57,6 +58,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -69,7 +71,7 @@ public class AddBookmark extends AppBaseActivity{
 	private EditText mEditDescription;
 	private ProgressBar mDescriptionProgress;
 	private EditText mEditNotes;
-	private EditText mEditTags;
+	private MultiWordAutoCompleteView mEditTags;
 	private TextView mRecommendedTags;
 	private ProgressBar mRecommendedProgress;
 	private TextView mPopularTags;
@@ -95,7 +97,7 @@ public class AddBookmark extends AppBaseActivity{
 		mEditDescription = (EditText) findViewById(R.id.add_edit_description);
 		mDescriptionProgress = (ProgressBar) findViewById(R.id.add_description_progress);
 		mEditNotes = (EditText) findViewById(R.id.add_edit_notes);
-		mEditTags = (EditText) findViewById(R.id.add_edit_tags);
+		mEditTags = (MultiWordAutoCompleteView) findViewById(R.id.add_edit_tags);
 		mRecommendedTags = (TextView) findViewById(R.id.add_recommended_tags);
 		mRecommendedProgress = (ProgressBar) findViewById(R.id.add_recommended_tags_progress);
 		mPopularTags = (TextView) findViewById(R.id.add_popular_tags);
@@ -107,6 +109,11 @@ public class AddBookmark extends AppBaseActivity{
 		mRecommendedTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mPopularTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mNetworkTags.setMovementMethod(LinkMovementMethod.getInstance());
+		
+		String[] tagArray = new String[5];
+		tagArray = TagManager.GetTagsAsArray(mAccount.name, null, this).toArray(tagArray);
+		ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(this, R.layout.autocomplete_view, tagArray);
+		mEditTags.setAdapter(autoCompleteAdapter);
 
 		if(savedInstanceState ==  null){
 			Intent intent = getIntent();
