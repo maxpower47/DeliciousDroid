@@ -124,7 +124,7 @@ public class NetworkUtilities {
         Log.d("auth uri", String.valueOf(uri));
         HttpGet request = new HttpGet(String.valueOf(uri));
         
-        DefaultHttpClient client = HttpClientFactory.getThreadSafeClient();
+        DefaultHttpClient client = (DefaultHttpClient)HttpClientFactory.getThreadSafeClient();
         
         CredentialsProvider provider = client.getCredentialsProvider();
         Credentials credentials = new UsernamePasswordCredentials(username, password);
