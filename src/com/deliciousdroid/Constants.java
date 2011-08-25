@@ -41,6 +41,8 @@ public class Constants {
     public static final String EXTRA_ERROR = "com.deliciousdroid.bookmark.error";
     public static final String EXTRA_TIME = "com.deliciousdroid.bookmark.time";
 	public static final String EXTRA_UPDATE = "com.deliciousdroid.bookmark.update";
+	
+	public static final String INSTAPAPER_URL = "http://www.instapaper.com/text?u=";
 
     /**
      * Authtoken type string.

@@ -21,6 +21,7 @@
 
 package com.deliciousdroid.activity;
 
+import java.net.URLEncoder;
 import java.util.Date;
 
 import com.deliciousdroid.Constants;
@@ -258,6 +259,11 @@ public class ViewBookmark extends AppBaseActivity{
 		    	sendIntent.putExtra(Intent.EXTRA_TITLE, sendTitle);
 		    	startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
 		    	return true;
+		    case R.id.menu_view_read:
+		    	String readUrl = Constants.INSTAPAPER_URL + URLEncoder.encode(((Spannable) mUrl.getText()).toString());
+		    	Uri readLink = Uri.parse(readUrl);
+				startActivity(new Intent(Intent.ACTION_VIEW, readLink));
+				return true;
 		    default:
 		        return super.onOptionsItemSelected(item);
 	    }

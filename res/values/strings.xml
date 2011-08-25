@@ -142,6 +142,7 @@
     <string name="menu_view_editbookmark_title">Edit</string>
     <string name="menu_view_deletebookmark_title">Delete</string>
     <string name="menu_view_sendbookmark_title">Share</string>
+    <string name="menu_view_readbookmark_title">Read</string>
     
     <string name="pref_cat_general_title">General Settings</string>
     <string name="pref_cat_sync_title">Sync Settings</string>

@@ -28,18 +28,24 @@
 		android:icon="@drawable/ic_menu_view"
 		android:orderInCategory="3" />
 	<item 
+		android:id="@+id/menu_view_read" 
+		android:title="@string/menu_view_readbookmark_title" 
+		android:icon="@drawable/ic_menu_read"
+		android:orderInCategory="4" />
+	<item 
 		android:id="@+id/menu_view_editbookmark" 
 		android:title="@string/menu_view_editbookmark_title" 
 		android:icon="@drawable/ic_menu_edit"
-		android:orderInCategory="4" />
-	<item 
-		android:id="@+id/menu_view_deletebookmark" 
-		android:title="@string/menu_view_deletebookmark_title" 
-		android:icon="@drawable/ic_menu_delete"
 		android:orderInCategory="5" />
 	<item 
 		android:id="@+id/menu_view_sendbookmark" 
 		android:title="@string/menu_view_sendbookmark_title" 
 		android:icon="@drawable/ic_menu_share"
-		android:orderInCategory="6" />
+		android:orderInCategory="7" />
+	<item 
+		android:id="@+id/menu_view_deletebookmark" 
+		android:title="@string/menu_view_deletebookmark_title" 
+		android:icon="@drawable/ic_menu_delete"
+		android:orderInCategory="8" />
+
 </menu>

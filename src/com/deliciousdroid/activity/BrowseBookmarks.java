@@ -22,6 +22,7 @@
 package com.deliciousdroid.activity;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.apache.http.ParseException;
 import org.apache.http.auth.AuthenticationException;
@@ -175,6 +176,8 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	
 			    	if(defaultAction.equals("view")) {
 			    		viewBookmark(b);
+			    	} else if(defaultAction.equals("read")){
+			    		readBookmark(b);
 			    	} else {
 			    		openBookmarkInBrowser(b);
 			    	}
@@ -242,7 +245,9 @@ public class BrowseBookmarks extends AppBaseListActivity {
 		    	sendIntent.putExtra(Intent.EXTRA_TITLE, b.getDescription());
 
 		    	startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
-
+				return true;
+			case R.id.menu_bookmark_context_read:
+				readBookmark(b);
 				return true;
 		}
 		return false;
@@ -347,6 +352,12 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	private void viewBookmark(int id) {
 		Bookmark b = new Bookmark(id);
 		viewBookmark(b);
+	}
+	
+	private void readBookmark(Bookmark b) {
+		String readUrl = Constants.INSTAPAPER_URL + URLEncoder.encode(b.getUrl());
+    	Uri readLink = Uri.parse(readUrl);
+		startActivity(new Intent(Intent.ACTION_VIEW, readLink));
 	}
 	
 	private void viewBookmark(Bookmark b) {
