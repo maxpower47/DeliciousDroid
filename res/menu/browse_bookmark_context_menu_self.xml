@@ -32,6 +32,9 @@
 		android:id="@+id/menu_bookmark_context_edit" 
 		android:title="@string/bookmark_context_edit" />
 	<item 
+		android:id="@+id/menu_bookmark_context_share" 
+		android:title="@string/bookmark_context_share" />
+	<item 
 		android:id="@+id/menu_bookmark_context_delete" 
 		android:title="@string/bookmark_context_delete" />
 </menu>

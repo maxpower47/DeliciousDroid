@@ -38,6 +38,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -225,7 +226,7 @@ public class ViewBookmark extends AppBaseActivity{
 	    // Handle item selection
 	    switch (item.getItemId()) {
 		    case R.id.menu_view_openbookmark:
-		    	String url = (String) mUrl.getText();
+		    	String url = ((Spannable) mUrl.getText()).toString();
 		    	Uri link = Uri.parse(url);
 				Intent i = new Intent(Intent.ACTION_VIEW, link);
 				startActivity(i);
@@ -246,7 +247,17 @@ public class ViewBookmark extends AppBaseActivity{
 		    case R.id.menu_view_deletebookmark:
 				BookmarkTaskArgs args = new BookmarkTaskArgs(bookmark, mAccount, this);	
 				new DeleteBookmarkTask().execute(args);
-				return true;	
+				return true;
+		    case R.id.menu_view_sendbookmark:
+		    	String sendUrl = ((Spannable) mUrl.getText()).toString();
+		    	String sendTitle = mTitle.getText().toString();
+		    	Intent sendIntent = new Intent(Intent.ACTION_SEND);
+		    	sendIntent.setType("text/plain");
+		    	sendIntent.putExtra(Intent.EXTRA_TEXT, sendUrl);
+		    	sendIntent.putExtra(Intent.EXTRA_SUBJECT, sendTitle);
+		    	sendIntent.putExtra(Intent.EXTRA_TITLE, sendTitle);
+		    	startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
+		    	return true;
 		    default:
 		        return super.onOptionsItemSelected(item);
 	    }

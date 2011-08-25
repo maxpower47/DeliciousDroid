@@ -234,6 +234,16 @@ public class BrowseBookmarks extends AppBaseListActivity {
 				addBookmark.putExtra(Intent.EXTRA_TEXT, b.getUrl());
 				startActivity(addBookmark);
 				return true;
+			case R.id.menu_bookmark_context_share:
+		    	Intent sendIntent = new Intent(Intent.ACTION_SEND);
+		    	sendIntent.setType("text/plain");
+		    	sendIntent.putExtra(Intent.EXTRA_TEXT, b.getUrl());
+		    	sendIntent.putExtra(Intent.EXTRA_SUBJECT, b.getDescription());
+		    	sendIntent.putExtra(Intent.EXTRA_TITLE, b.getDescription());
+
+		    	startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
+
+				return true;
 		}
 		return false;
 	}

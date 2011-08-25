@@ -92,6 +92,8 @@
     <string name="bookmark_context_share">Share</string>
     <string name="bookmark_context_add">Add</string>
     
+    <string name="share_chooser_title">Share</string>
+    
     <string name="bookmark_sort_date_asc">Date (Oldest First)</string>
     <string name="bookmark_sort_date_desc">Date (Newest First)</string>
     <string name="bookmark_sort_description_asc">Description (A-Z)</string>
