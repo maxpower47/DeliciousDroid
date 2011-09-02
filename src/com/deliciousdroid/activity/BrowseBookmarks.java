@@ -33,6 +33,7 @@ import com.deliciousdroid.Constants;
 import com.deliciousdroid.action.BookmarkTaskArgs;
 import com.deliciousdroid.action.DeleteBookmarkTask;
 import com.deliciousdroid.client.DeliciousFeed;
+import com.deliciousdroid.client.FeedForbiddenException;
 import com.deliciousdroid.platform.BookmarkManager;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
@@ -58,6 +59,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class BrowseBookmarks extends AppBaseListActivity {
 	
@@ -391,6 +393,7 @@ public class BrowseBookmarks extends AppBaseListActivity {
     	private String tag = null;
     	private ProgressDialog progress;
     	private Cursor c;
+    	private Exception ex = null;
     	
     	protected void onPreExecute() {
     		progress = new ProgressDialog(mContext);
@@ -428,6 +431,8 @@ public class BrowseBookmarks extends AppBaseListActivity {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch(FeedForbiddenException e){
+				ex = e;
 			}
 	
     		return result;
@@ -444,6 +449,11 @@ public class BrowseBookmarks extends AppBaseListActivity {
 	        		new int[]{R.id.bookmark_description, R.id.bookmark_tags});
         		
         		setListAdapter(a);
+        	} else {
+        		if(ex != null) {
+        			Toast toast = Toast.makeText(mContext, "Error opening feed.  Make sure your Delicious network privacy settings don't hide your network from other people.", Toast.LENGTH_LONG);
+        			toast.show();
+        		}
         	}
         }
     }

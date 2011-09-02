@@ -67,7 +67,7 @@ public class DeliciousFeed {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static List<User> fetchFriendUpdates(Account account) 
-    	throws JSONException, IOException, AuthenticationException {
+    	throws JSONException, IOException, AuthenticationException, FeedForbiddenException {
         final ArrayList<User> friendList = new ArrayList<User>();
 
         final HttpGet post = new HttpGet(FETCH_FRIEND_UPDATES_URI + account.name);
@@ -86,6 +86,9 @@ public class DeliciousFeed {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
                 Log.e(TAG, "Authentication exception in fetching remote contacts");
                 throw new AuthenticationException();
+            }  else if(resp.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+            	Log.e(TAG, "Fetching contact updates forbidden");
+            	throw new FeedForbiddenException();
             } else {
                 Log.e(TAG, "Server error in fetching remote contacts: "
                     + resp.getStatusLine());
@@ -242,7 +245,7 @@ public class DeliciousFeed {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static Cursor fetchNetworkRecent(String userName, int limit)
-    	throws JSONException, IOException, AuthenticationException {
+    	throws JSONException, IOException, AuthenticationException, FeedForbiddenException {
 
         final HttpGet post = new HttpGet(FETCH_NETWORK_RECENT_BOOKMARKS_URI + userName + "?count=" + limit);
         
@@ -267,6 +270,9 @@ public class DeliciousFeed {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
                 Log.e(TAG, "Authentication exception in fetching network recent list");
                 throw new AuthenticationException();
+            } else if(resp.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+            	Log.e(TAG, "Fetching network recent list forbidden");
+            	throw new FeedForbiddenException();
             } else {
                 Log.e(TAG, "Server error in fetching network recent list");
                 throw new IOException();

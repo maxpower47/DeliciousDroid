@@ -33,6 +33,7 @@ import android.util.Log;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.authenticator.AuthToken;
 import com.deliciousdroid.client.DeliciousFeed;
+import com.deliciousdroid.client.FeedForbiddenException;
 import com.deliciousdroid.client.User;
 import com.deliciousdroid.client.User.Status;
 import com.deliciousdroid.platform.ContactManager;
@@ -93,6 +94,8 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (final JSONException e) {
             syncResult.stats.numParseExceptions++;
             Log.e(TAG, "JSONException", e);
-        }
+        } catch (final FeedForbiddenException e) {
+            Log.e(TAG, "FeedForbiddenException");
+        } 
     }
 }
