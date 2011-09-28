@@ -31,16 +31,24 @@ import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
+import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthState;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -75,10 +83,10 @@ public class DeliciousApi {
     public static final String DELETE_BOOKMARK_URI = "posts/delete";
     public static final String ADD_BOOKMARKS_URI = "posts/add";
   
-    private static final String SCHEME = "http";
+    private static final String SCHEME = "https";
     private static final String SCHEME_HTTP = "http";
     private static final String DELICIOUS_AUTHORITY = "api.del.icio.us";
-    private static final int PORT = 80;
+    private static final int PORT = 443;
  
     private static final AuthScope SCOPE = new AuthScope(DELICIOUS_AUTHORITY, PORT);
 
@@ -153,10 +161,10 @@ public class DeliciousApi {
         response = convertStreamToString(responseStream);
         responseStream.close();
 
-        if (response.contains("<result code=\"done\" />")) {
+        if (response.contains("<result code=\"done\"/>")) {
             return true;
         } else {
-        	if(response.contains("<result code=\"something went wrong\" />")){
+        	if(response.contains("<result code=\"something went wrong\"/>")){
                 Log.e(TAG, "Server error in adding bookmark");
                 throw new IOException();
             } else if(response.contains("token_expired")){
@@ -458,11 +466,14 @@ public class DeliciousApi {
 			builder.appendQueryParameter(key, params.get(key));
 		}
 		
-		Log.d("apiCallUrl", builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+"));
-		post = new HttpGet(builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+"));
+		String finalUrl = builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+");
+		
+		
+		Log.d("apiCallUrl", finalUrl);
+		post = new HttpGet(finalUrl);
 		HttpHost host = new HttpHost(DELICIOUS_AUTHORITY);
 
-		post.setHeader("User-Agent", "DeliciousDroid_0.4.1");
+		post.setHeader("User-Agent", "DeliciousDroid");
 		post.setHeader("Accept-Encoding", "gzip");
 
     	if(authtype.equals(Constants.AUTH_TYPE_OAUTH)) {
@@ -481,6 +492,8 @@ public class DeliciousApi {
 	        CredentialsProvider provider = client.getCredentialsProvider();
 	        Credentials credentials = new UsernamePasswordCredentials(username, authtoken);
 	        provider.setCredentials(SCOPE, credentials);
+	        
+	        client.addRequestInterceptor(preemptiveAuth, 0);
 	        
 	        resp = client.execute(post);
     	}
@@ -501,6 +514,24 @@ public class DeliciousApi {
     		throw new IOException();
     	}
     }
+    
+    static HttpRequestInterceptor preemptiveAuth = new HttpRequestInterceptor() {
+        public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+            AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
+            CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(
+                    ClientContext.CREDS_PROVIDER);
+            HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+            
+            if (authState.getAuthScheme() == null) {
+                AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
+                Credentials creds = credsProvider.getCredentials(authScope);
+                if (creds != null) {
+                    authState.setAuthScheme(new BasicScheme());
+                    authState.setCredentials(creds);
+                }
+            }
+        }    
+    };
     
     /**
      * Converts an InputStream to a string.

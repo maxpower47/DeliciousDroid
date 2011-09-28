@@ -449,6 +449,10 @@ public class AddBookmark extends AppBaseActivity{
     	
         protected void onPostExecute(ArrayList<Tag> result) {
         	        	
+    		mRecommendedProgress.setVisibility(View.GONE);
+    		mPopularProgress.setVisibility(View.GONE);
+    		mNetworkProgress.setVisibility(View.GONE);
+    		
         	if(result != null) {
         		SpannableStringBuilder recommendedBuilder = new SpannableStringBuilder();
         		SpannableStringBuilder popularBuilder = new SpannableStringBuilder();
@@ -473,9 +477,6 @@ public class AddBookmark extends AppBaseActivity{
         		mRecommendedTags.setVisibility(View.VISIBLE);
         		mPopularTags.setVisibility(View.VISIBLE);
         		mNetworkTags.setVisibility(View.VISIBLE);
-        		mRecommendedProgress.setVisibility(View.GONE);
-        		mPopularProgress.setVisibility(View.GONE);
-        		mNetworkProgress.setVisibility(View.GONE);
 
         	} 	
         }

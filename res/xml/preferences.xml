@@ -24,11 +24,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory 
 		android:title="@string/pref_cat_general_title">
-		<CheckBoxPreference 
-			android:title="@string/pref_notification_title"
-			android:defaultValue="true"
-			android:summary="@string/pref_notification_summary"
-			android:key="@string/pref_notification_key" />
 		<ListPreference
 			android:title="@string/pref_view_bookmark_default_action_title"
 			android:summary="@string/pref_view_bookmark_default_action_summary"

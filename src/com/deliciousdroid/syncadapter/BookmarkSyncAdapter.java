@@ -22,13 +22,9 @@
 package com.deliciousdroid.syncadapter;
 
 import android.accounts.Account;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
@@ -36,9 +32,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.deliciousdroid.R;
 import com.deliciousdroid.Constants;
-import com.deliciousdroid.activity.Main;
 import com.deliciousdroid.client.DeliciousApi;
 import com.deliciousdroid.client.Update;
 import com.deliciousdroid.platform.BookmarkManager;
@@ -91,22 +85,11 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
     	
     	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
     	long lastUpdate = settings.getLong(Constants.PREFS_LAST_SYNC, 0);
-    	Boolean notifyPref = settings.getBoolean("pref_notification", true);
     	Update update = null;
     	String username = account.name;
 
     	update = DeliciousApi.lastUpdate(account, mContext);
 		
-		if(notifyPref && update.getInboxNew() > 0) {
-			NotificationManager nm = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-			Notification n = new Notification(R.drawable.ic_main, "New Delicious Bookmarks", System.currentTimeMillis());
-			Intent ni = new Intent(mContext, Main.class);
-			PendingIntent ci = PendingIntent.getActivity(mContext, 0, ni, 0);
-			n.setLatestEventInfo(mContext, "New Bookmarks", "You Have " + Integer.toString(update.getInboxNew()) + " New Bookmark(s)", ci);
-			
-			nm.notify(1, n);
-		}
-
     	if(update.getLastUpdate() > lastUpdate) {
 	
 			ArrayList<Bookmark> addBookmarkList = new ArrayList<Bookmark>();
