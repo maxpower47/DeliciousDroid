@@ -21,14 +21,9 @@
 
 package com.deliciousdroid.authenticator;
 
-import java.io.IOException;
-
-import org.apache.http.auth.AuthenticationException;
-
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -44,12 +39,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.deliciousdroid.R;
 import com.deliciousdroid.Constants;
-import com.deliciousdroid.activity.OauthLogin;
 import com.deliciousdroid.client.LoginResult;
 import com.deliciousdroid.client.NetworkUtilities;
 import com.deliciousdroid.providers.BookmarkContentProvider;
@@ -89,11 +82,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private String mUsername;
     private EditText mUsernameEdit;
     
-    private RadioButton mYahooAuth;
-    
-    private String oauthVerifier;
-    private String oauthToken;
-    private String oauthTokenSecret;
 
     /**
      * {@inheritDoc}
@@ -112,13 +100,15 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
         Log.i(TAG, "    request new: " + mRequestNewAccount);
         requestWindowFeature(Window.FEATURE_LEFT_ICON);
-        setContentView(R.layout.login_authtype);
+        setContentView(R.layout.login_activity);
         getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, android.R.drawable.ic_dialog_alert);
 
+        mUsernameEdit = (EditText) findViewById(R.id.username_edit);
+        mPasswordEdit = (EditText) findViewById(R.id.password_edit);
         mMessage = (TextView) findViewById(R.id.message);
-      
-        mYahooAuth = (RadioButton) findViewById(R.id.auth_type_yahoo);
-        mMessage.setText(R.string.login_activity_authtype_text);
+
+        mUsernameEdit.setText(mUsername);
+        mMessage.setText(getMessage());
     }
 
     /*
@@ -141,29 +131,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         });
         return dialog;
     }
-    
-    /**
-     * Handles onClick event on the Submit button. Sends username/password to
-     * the server for authentication.
-     * 
-     * @param view The Submit button for which this method is invoked
-     */
-    public void handleAuthtype(View view) {      
-
-    	if(mYahooAuth.isChecked()){
-            mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword, 1, mHandler,
-                    AuthenticatorActivity.this);
-    	} else {
-    		setContentView(R.layout.login_activity);
-    		
-            mUsernameEdit = (EditText) findViewById(R.id.username_edit);
-            mPasswordEdit = (EditText) findViewById(R.id.password_edit);
-            mMessage = (TextView) findViewById(R.id.message);
-
-            mUsernameEdit.setText(mUsername);
-            mMessage.setText(getMessage());
-    	}
-    }
 
     /**
      * Handles onClick event on the Submit button. Sends username/password to
@@ -177,13 +144,12 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         }
         mPassword = mPasswordEdit.getText().toString();
         
-        int authType = mYahooAuth.isChecked() ? 1 : 0;
         if (TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword)) {
             mMessage.setText(getMessage());
         } else {
             showProgress();
             // Start authenticating...
-            mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword, authType, mHandler,
+            mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword, mHandler,
                     AuthenticatorActivity.this);
         }
     }
@@ -218,84 +184,41 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     protected void finishLogin(String authToken) {
         Log.i(TAG, "finishLogin()");
         
-        boolean success = false;
-        
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         final String authtype = settings.getString(Constants.PREFS_AUTH_TYPE, Constants.AUTH_TYPE_DELICIOUS);
-        final String token = settings.getString(Constants.OAUTH_TOKEN_PROPERTY, "");
-        final String tokensecret = settings.getString(Constants.OAUTH_TOKEN_SECRET_PROPERTY, "");
-        final String sessionhandle = settings.getString(Constants.OAUTH_SESSION_HANDLE_PROPERTY, "");
         final int synctime = Integer.parseInt(settings.getString("pref_synctime", "0"));
         
-        if(authToken != null && authToken != ""){
-        	try {
-				mUsername = NetworkUtilities.getOauthUserName(authToken, tokensecret, this);
-				success = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (AuthenticationException e) {
+        final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
 
-			}
-        	mPassword = authToken;
-        } else success = true;
-        
-        if(success) {
-	        final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
-	
-	        if (mRequestNewAccount) {
-	            mAccountManager.addAccountExplicitly(account, mPassword, null);
-	            // Set contacts sync for this account.
-	            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
-	            ContentResolver.setSyncAutomatically(account, BookmarkContentProvider.AUTHORITY, true);
-	            if(synctime != 0) {
-	            	SyncUtils.addPeriodicSync(BookmarkContentProvider.AUTHORITY, Bundle.EMPTY, synctime, this);
-	            }
-	        } else {
-	            mAccountManager.setPassword(account, mPassword);
-	        }
-	  
-	        mAccountManager.setUserData(account, Constants.PREFS_AUTH_TYPE, authtype);
-	        mAccountManager.setUserData(account, Constants.OAUTH_TOKEN_PROPERTY, token);
-	        mAccountManager.setUserData(account, Constants.OAUTH_TOKEN_SECRET_PROPERTY, tokensecret);
-	        mAccountManager.setUserData(account, Constants.OAUTH_SESSION_HANDLE_PROPERTY, sessionhandle);
-	        
-	        final Intent intent = new Intent();
-	        
-	        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
-	        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
-	        if (mAuthtokenType != null && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
-	            intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthtoken);
-	        }
-	        
-    		SharedPreferences.Editor editor = settings.edit();
-    		editor.putLong(Constants.PREFS_LAST_SYNC, 0);
-            editor.commit();
-	        
-	        setAccountAuthenticatorResult(intent.getExtras());
-	        setResult(RESULT_OK, intent);
-	        finish();
+        if (mRequestNewAccount) {
+            mAccountManager.addAccountExplicitly(account, mPassword, null);
+            // Set contacts sync for this account.
+            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
+            ContentResolver.setSyncAutomatically(account, BookmarkContentProvider.AUTHORITY, true);
+            if(synctime != 0) {
+            	SyncUtils.addPeriodicSync(BookmarkContentProvider.AUTHORITY, Bundle.EMPTY, synctime, this);
+            }
         } else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.dialog_yahoo_not_linked_text)
-				.setCancelable(false)
-				.setTitle(R.string.dialog_yahoo_not_linked_title)
-			    .setPositiveButton("Go", new DialogInterface.OnClickListener() {
-			    	public void onClick(DialogInterface dialog, int id) {
-			    		finish();
-			        }
-			    });
-			
-			AlertDialog alert = builder.create();
-			alert.setIcon(android.R.drawable.ic_dialog_alert);
-			alert.show();
+            mAccountManager.setPassword(account, mPassword);
         }
-    }
-    
-    protected void getOauthAccessToken() {
-        Log.i(TAG, "getOauthAccessToken()");
+  
+        mAccountManager.setUserData(account, Constants.PREFS_AUTH_TYPE, authtype);
         
-        NetworkUtilities.getOauthRequestToken(oauthToken, oauthTokenSecret, oauthVerifier, mHandler, 
-        		AuthenticatorActivity.this);  
+        final Intent intent = new Intent();
+        
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
+        if (mAuthtokenType != null && mAuthtokenType.equals(Constants.AUTHTOKEN_TYPE)) {
+            intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthtoken);
+        }
+        
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putLong(Constants.PREFS_LAST_SYNC, 0);
+        editor.commit();
+        
+        setAccountAuthenticatorResult(intent.getExtras());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     /**
@@ -317,7 +240,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         Log.i(TAG, "onAuthenticationResult(" + result.getResult() + ")");
         // Hide the progress dialog
         hideProgress();
-        if (result.getResult() && result.getToken() == null && result.getSessionHandle() == null) {
+        if (result.getResult()) {
             if (!mConfirmCredentials) {
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = settings.edit();
@@ -328,29 +251,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             } else {
                 finishConfirmCredentials(true);
             }
-        } else if(result.getResult() && result.getToken() != null && result.getSessionHandle() == null){
-        	oauthToken = result.getToken();
-        	oauthTokenSecret = result.getTokenSecret();
-        	
-        	Intent i = new Intent(getApplicationContext(), OauthLogin.class);
-        	i.putExtra("oauth_url", result.getRequestUrl());
-        	startActivityForResult(i, 0);
-
-        } else if(result.getResult() && result.getSessionHandle() != null){
-        	Log.d(TAG, result.getToken());
-        	
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = settings.edit();
-            
-            editor.putString(Constants.OAUTH_TOKEN_PROPERTY, result.getToken());
-            editor.putString(Constants.OAUTH_TOKEN_SECRET_PROPERTY, result.getTokenSecret());
-            editor.putString(Constants.OAUTH_SESSION_HANDLE_PROPERTY, result.getSessionHandle());
-            editor.putString(Constants.PREFS_AUTH_TYPE, Constants.AUTH_TYPE_OAUTH);
-            editor.commit();
-
-        	finishLogin(result.getToken());
-
-        }else {
+        } else {
             Log.e(TAG, "onAuthenticationResult: failed to authenticate");
             if (mRequestNewAccount) {
                 // "Please enter a valid username/password.
@@ -378,18 +279,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             return getText(R.string.login_activity_loginfail_text_pwmissing);
         }
         return null;
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && intent.hasExtra(Constants.OAUTH_VERIFIER_PROPERTY)){
-	        Bundle extras = intent.getExtras();
-	        oauthVerifier = extras.getString(Constants.OAUTH_VERIFIER_PROPERTY);
-	        Log.d("oauth_verifier", oauthVerifier);
-	        
-	        getOauthAccessToken();
-        }
     }
 
     /**

@@ -39,8 +39,7 @@ import android.view.View;
 
 public class Main extends AppBaseListActivity {
 	
-	static final String[] MENU_ITEMS = new String[] {"My Bookmarks", "My Tags",
-		"Hotlist", "Popular"};
+	static final String[] MENU_ITEMS = new String[] {"My Bookmarks", "My Tags", "Hotlist", "Popular"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){

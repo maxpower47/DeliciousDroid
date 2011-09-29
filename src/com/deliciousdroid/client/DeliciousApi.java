@@ -31,7 +31,6 @@ import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -44,13 +43,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.deliciousdroid.Constants;
-import com.deliciousdroid.authenticator.AuthToken;
-import com.deliciousdroid.authenticator.OauthUtilities;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.BundleContent.Bundle;
 import com.deliciousdroid.providers.TagContent.Tag;
@@ -427,25 +426,31 @@ public class DeliciousApi {
      */
     private static InputStream DeliciousApiCall(String url, TreeMap<String, String> params, 
     		Account account, Context context) throws IOException, AuthenticationException{
-
-    	final AccountManager am = AccountManager.get(context);
-    	String authtype = am.getUserData(account, Constants.PREFS_AUTH_TYPE);
     	
-    	String username = account.name;
+    	
+    	final AccountManager am = AccountManager.get(context);
+    	
+		if(account == null)
+			throw new AuthenticationException();
+
+    	final String username = account.name;
     	String authtoken = null;
+    	
+    	try {
+			authtoken = am.blockingGetAuthToken(account, Constants.AUTHTOKEN_TYPE, false);
+		} catch (OperationCanceledException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AuthenticatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     	String path = null;
     	String scheme = null;
     	
-    	AuthToken at = new AuthToken(context, account);
-    	authtoken = at.getAuthToken();
-    	
-    	if(authtype.equals(Constants.AUTH_TYPE_OAUTH)) {
-    		path = "v2/" + url;
-    		scheme = SCHEME_HTTP;
-    	} else {
-    		path = "v1/" + url;
-    		scheme = SCHEME;
-    	}
+		path = "v1/" + url;
+		scheme = SCHEME;
     	
     	HttpResponse resp = null;
     	HttpGet post = null;
@@ -460,35 +465,21 @@ public class DeliciousApi {
 		
 		String finalUrl = builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+");
 		
-		
 		Log.d("apiCallUrl", finalUrl);
 		post = new HttpGet(finalUrl);
-		HttpHost host = new HttpHost(DELICIOUS_AUTHORITY);
 
 		post.setHeader("User-Agent", "DeliciousDroid");
 		post.setHeader("Accept-Encoding", "gzip");
-
-    	if(authtype.equals(Constants.AUTH_TYPE_OAUTH)) {
-    		Log.d("apiCall", "oauth");
-    		String tokenSecret = am.getUserData(account, Constants.OAUTH_TOKEN_SECRET_PROPERTY);
-
-			OauthUtilities.signRequest(post, params, authtoken, tokenSecret);
-
-			Log.d("header", post.getHeaders("Authorization")[0].getValue());
-	        
-	        resp = HttpClientFactory.getThreadSafeClient().execute(host, post);
-
-    	} else{ 
     		
-    		DefaultHttpClient client = (DefaultHttpClient)HttpClientFactory.getThreadSafeClient();
-	        CredentialsProvider provider = client.getCredentialsProvider();
-	        Credentials credentials = new UsernamePasswordCredentials(username, authtoken);
-	        provider.setCredentials(SCOPE, credentials);
-	        
-	        client.addRequestInterceptor(new PreemptiveAuthInterceptor(), 0);
-	        
-	        resp = client.execute(post);
-    	}
+		DefaultHttpClient client = (DefaultHttpClient)HttpClientFactory.getThreadSafeClient();
+        CredentialsProvider provider = client.getCredentialsProvider();
+        Credentials credentials = new UsernamePasswordCredentials(username, authtoken);
+        provider.setCredentials(SCOPE, credentials);
+        
+        client.addRequestInterceptor(new PreemptiveAuthInterceptor(), 0);
+        
+        resp = client.execute(post);
+        
     	if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
     		
     		InputStream instream = resp.getEntity().getContent();

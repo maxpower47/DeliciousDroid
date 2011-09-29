@@ -23,6 +23,8 @@ package com.deliciousdroid.syncadapter;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -31,7 +33,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.deliciousdroid.Constants;
-import com.deliciousdroid.authenticator.AuthToken;
 import com.deliciousdroid.client.DeliciousFeed;
 import com.deliciousdroid.client.FeedForbiddenException;
 import com.deliciousdroid.client.User;
@@ -69,9 +70,10 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
         List<User> users;
         List<Status> statuses;
         try {
-        	// use the account manager to request the credentials
-        	AuthToken at = new AuthToken(mContext, account);
-        	authtoken = at.getAuthToken();
+        	
+        	final AccountManager am = AccountManager.get(mContext);
+        	
+    		authtoken = am.blockingGetAuthToken(account, Constants.AUTHTOKEN_TYPE, false);
         	 
             // fetch updates from the sample service over the cloud
             users = DeliciousFeed.fetchFriendUpdates(account);
@@ -96,6 +98,10 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(TAG, "JSONException", e);
         } catch (final FeedForbiddenException e) {
             Log.e(TAG, "FeedForbiddenException");
-        } 
+        } catch (final AuthenticatorException e) {
+        	Log.e(TAG, "AuthenticatorException");
+        } catch (final OperationCanceledException e) {
+        	Log.e(TAG, "OperationCanceledException");
+        }
     }
 }
