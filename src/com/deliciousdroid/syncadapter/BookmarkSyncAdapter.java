@@ -103,7 +103,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			if(lastUpdate == 0){
 				Log.d("BookmarkSync", "In Bookmark Load");
 				tagList = DeliciousApi.getTags(account, mContext);
-				bundleList = DeliciousApi.getBundles(account, mContext);
+				//bundleList = DeliciousApi.getBundles(account, mContext);
 				ArrayList<String> accounts = new ArrayList<String>();
 				accounts.add(account.name);
 				BookmarkManager.TruncateBookmarks(accounts, mContext, false);
@@ -111,7 +111,7 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			} else {
 				Log.d("BookmarkSync", "In Bookmark Update");
 				tagList = DeliciousApi.getTags(account, mContext);
-				bundleList = DeliciousApi.getBundles(account, mContext);
+				//bundleList = DeliciousApi.getBundles(account, mContext);
 				changeList = DeliciousApi.getChangedBookmarks(account, mContext);
 				
 				for(Bookmark b : changeList){
