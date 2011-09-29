@@ -53,7 +53,8 @@ public class Update {
 			
 			int inboxstart = updateElement.indexOf("inboxnew");
 			int inboxend = updateElement.indexOf("\"", inboxstart + 10);
-			int inbox = Integer.parseInt(updateElement.substring(inboxstart + 10, inboxend));
+			//int inbox = Integer.parseInt(updateElement.substring(inboxstart + 10, inboxend));
+			int inbox = 0;
 			
 			return new Update(updateTime, inbox);
 		} catch (java.text.ParseException e) {
