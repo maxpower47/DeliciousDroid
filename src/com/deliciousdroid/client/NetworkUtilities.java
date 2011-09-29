@@ -129,6 +129,8 @@ public class NetworkUtilities {
         CredentialsProvider provider = client.getCredentialsProvider();
         Credentials credentials = new UsernamePasswordCredentials(username, password);
         provider.setCredentials(SCOPE_HTTP, credentials);
+        
+        client.addRequestInterceptor(new PreemptiveAuthInterceptor(), 0);
 
         try {
             resp = client.execute(request);
