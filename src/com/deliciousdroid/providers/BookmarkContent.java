@@ -109,7 +109,6 @@ public class BookmarkContent {
 			for(String s : this.getTagString().split(" ")) {
 				result.add(new Tag(s));
 			}
-			
 			return result;
         }
         
