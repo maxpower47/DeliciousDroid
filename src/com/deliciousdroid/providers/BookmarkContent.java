@@ -233,7 +233,7 @@ public class BookmarkContent {
                 
                 long time = 0;
                 
-				if(stime != null && stime != ""){
+				if(stime != null && !stime.equals("")){
 					try {
 						time = DateParser.parseTime(stime);
 					} catch (ParseException e) {
@@ -245,6 +245,7 @@ public class BookmarkContent {
                 return new Bookmark(url, description, notes, tags.join(" ").replace("\"", ""), account, time);
             } catch (final Exception ex) {
                 Log.i("User.Bookmark", "Error parsing JSON user object");
+                Log.e("User.Bookmark", ex.getMessage());
             }
             return null;
         }

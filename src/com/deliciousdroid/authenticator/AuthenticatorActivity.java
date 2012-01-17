@@ -193,7 +193,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
             // Set contacts sync for this account.
-            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, false);
+            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
             ContentResolver.setSyncAutomatically(account, BookmarkContentProvider.AUTHORITY, true);
             if(synctime != 0) {
             	SyncUtils.addPeriodicSync(BookmarkContentProvider.AUTHORITY, Bundle.EMPTY, synctime, this);

@@ -39,7 +39,7 @@ import android.view.View;
 
 public class Main extends AppBaseListActivity {
 	
-	static final String[] MENU_ITEMS = new String[] {"My Bookmarks", "My Tags", "Hotlist", "Popular"};
+	static final String[] MENU_ITEMS = new String[] {"My Bookmarks", "My Tags", "My Bundles", "Hotlist", "Popular", "Network Recent"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -130,6 +130,19 @@ public class Main extends AppBaseListActivity {
 		    		
 		    		startActivity(i);
 		    	} else if(position == 2){
+		    		Intent i = new Intent(mContext, BrowseBundles.class);
+		    		i.setAction(Intent.ACTION_VIEW);
+		    		i.addCategory(Intent.CATEGORY_DEFAULT);
+		    		Uri.Builder data = new Uri.Builder();
+		    		data.scheme(Constants.CONTENT_SCHEME);
+		    		data.encodedAuthority(mAccount.name + "@" + BookmarkContentProvider.AUTHORITY);
+		    		data.appendEncodedPath("bundles");
+		    		i.setData(data.build());
+		    		
+		    		Log.d("uri", data.build().toString());
+		    		
+		    		startActivity(i);
+		    	} else if(position == 3){
 		    		
 		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
@@ -143,7 +156,7 @@ public class Main extends AppBaseListActivity {
 		    		Log.d("uri", data.build().toString());
 		    		
 		    		startActivity(i);
-		    	} else if(position == 3){
+		    	} else if(position == 4){
 		    		
 		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
 		    		i.setAction(Intent.ACTION_VIEW);
@@ -151,6 +164,19 @@ public class Main extends AppBaseListActivity {
 		    		Uri.Builder data = new Uri.Builder();
 		    		data.scheme(Constants.CONTENT_SCHEME);
 		    		data.encodedAuthority("popular@" + BookmarkContentProvider.AUTHORITY);
+		    		data.appendEncodedPath("bookmarks");
+		    		i.setData(data.build());
+		    		
+		    		Log.d("uri", data.build().toString());
+		    		
+		    		startActivity(i);
+		    	} else if(position == 5){
+		    		Intent i = new Intent(mContext, BrowseBookmarks.class);
+		    		i.setAction(Intent.ACTION_VIEW);
+		    		i.addCategory(Intent.CATEGORY_DEFAULT);
+		    		Uri.Builder data = new Uri.Builder();
+		    		data.scheme(Constants.CONTENT_SCHEME);
+		    		data.encodedAuthority("network@" + BookmarkContentProvider.AUTHORITY);
 		    		data.appendEncodedPath("bookmarks");
 		    		i.setData(data.build());
 		    		
