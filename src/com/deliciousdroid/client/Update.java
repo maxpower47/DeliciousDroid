@@ -31,8 +31,20 @@ public class Update {
 		return lastUpdate;
 	}
 	
+	public void setLastUpdate(long lastUpdate){
+		this.lastUpdate = lastUpdate;
+	}
+	
 	public int getInboxNew(){
 		return inboxNew;
+	}
+	
+	public void setInboxNew(int inboxNew){
+		this.inboxNew = inboxNew;
+	}
+	
+	public Update(){
+		
 	}
 	
 	public Update(long update, int inbox){
@@ -41,6 +53,8 @@ public class Update {
 	}
 	
 	public static Update valueOf(String updateResponse){
+		Update result = new Update(0, 0);
+		
         try {
         	int start = updateResponse.indexOf("<update");
         	int end = updateResponse.indexOf("/>", start);
@@ -51,16 +65,16 @@ public class Update {
 
 			long updateTime = DateParser.parseTime(time);
 			
-			int inboxstart = updateElement.indexOf("inboxnew");
-			int inboxend = updateElement.indexOf("\"", inboxstart + 10);
+			//int inboxstart = updateElement.indexOf("inboxnew");
+			//int inboxend = updateElement.indexOf("\"", inboxstart + 10);
 			//int inbox = Integer.parseInt(updateElement.substring(inboxstart + 10, inboxend));
-			int inbox = 0;
+			//int inbox = 0;
+			result.setLastUpdate(updateTime);
 			
-			return new Update(updateTime, inbox);
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return result;
 	}
 	
 }

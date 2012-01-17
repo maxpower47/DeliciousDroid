@@ -54,12 +54,16 @@ public class DateParser {
     }
     
     public static long parseTime( String input ) throws java.text.ParseException {
-        c.set(IntUtils.parseUInt(input.substring(0, 4)), 
-        		IntUtils.parseUInt(input.substring(5, 7)) - 1, 
-        		IntUtils.parseUInt(input.substring(8, 10)), 
-        		IntUtils.parseUInt(input.substring(11, 13)), 
-        		IntUtils.parseUInt(input.substring(14, 16)), 
-        		IntUtils.parseUInt(input.substring(17, 19)));
+    	try{
+	        c.set(IntUtils.parseUInt(input.substring(0, 4)), 
+	        		IntUtils.parseUInt(input.substring(5, 7)) - 1, 
+	        		IntUtils.parseUInt(input.substring(8, 10)), 
+	        		IntUtils.parseUInt(input.substring(11, 13)), 
+	        		IntUtils.parseUInt(input.substring(14, 16)), 
+	        		IntUtils.parseUInt(input.substring(17, 19)));
+    	} catch(java.lang.StringIndexOutOfBoundsException e){
+    		throw new java.text.ParseException("String length error", 0);
+    	}
 
         return c.getTimeInMillis();  
     }
