@@ -111,7 +111,10 @@ public class AddBookmark extends AppBaseActivity{
 		mNetworkTags.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		String[] tagArray = new String[5];
-		tagArray = TagManager.GetTagsAsArray(mAccount.name, null, this).toArray(tagArray);
+		
+		if(mAccount != null){
+			tagArray = TagManager.GetTagsAsArray(mAccount.name, null, this).toArray(tagArray);
+		}
 		ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(this, R.layout.autocomplete_view, tagArray);
 		mEditTags.setAdapter(autoCompleteAdapter);
 
