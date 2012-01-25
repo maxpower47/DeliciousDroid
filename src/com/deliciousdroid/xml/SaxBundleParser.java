@@ -1,9 +1,9 @@
 /*
- * PinDroid - http://code.google.com/p/PinDroid/
+ * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * PinDroid is free software; you can redistribute it and/or modify
+ * DeliciousDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
@@ -14,7 +14,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PinDroid; if not, write to the Free Software
+ * along with DeliciousDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
@@ -64,7 +64,7 @@ public class SaxBundleParser {
         try {
             Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
         } catch (Exception e) {
-            throw new ParseException(e.getMessage(), 0);
+        	//throw new ParseException(e.getMessage(), 0);       
         }
         return bundles;
     }

@@ -405,7 +405,7 @@ public class DeliciousApi {
         try {
         	bundleList = parser.parse();
         } catch (ParseException e) {
-        	Log.e(TAG, "Server error in fetching bookmark list");
+        	Log.e(TAG, "Server error in fetching bundle list");
         	throw new IOException();
         }
 
