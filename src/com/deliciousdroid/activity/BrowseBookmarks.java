@@ -1,460 +1,398 @@
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
 
 package com.deliciousdroid.activity;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-
-import org.apache.http.ParseException;
-import org.apache.http.auth.AuthenticationException;
-import org.json.JSONException;
-
-import com.deliciousdroid.R;
-import com.deliciousdroid.Constants;
-import com.deliciousdroid.action.BookmarkTaskArgs;
-import com.deliciousdroid.action.DeleteBookmarkTask;
-import com.deliciousdroid.client.DeliciousFeed;
-import com.deliciousdroid.client.FeedForbiddenException;
-import com.deliciousdroid.platform.BookmarkManager;
-import com.deliciousdroid.providers.BookmarkContentProvider;
-import com.deliciousdroid.providers.BookmarkContent.Bookmark;
-
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnCreateContextMenuListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
-public class BrowseBookmarks extends AppBaseListActivity {
+import com.deliciousdroid.fragment.AddBookmarkFragment;
+import com.deliciousdroid.fragment.BrowseBookmarkFeedFragment;
+import com.deliciousdroid.fragment.BrowseBookmarksFragment;
+import com.deliciousdroid.fragment.BrowseTagsFragment;
+import com.deliciousdroid.fragment.ViewBookmarkFragment;
+import com.deliciousdroid.fragment.AddBookmarkFragment.OnBookmarkSaveListener;
+import com.deliciousdroid.fragment.BrowseBookmarksFragment.OnBookmarkSelectedListener;
+import com.deliciousdroid.fragment.BrowseTagsFragment.OnTagSelectedListener;
+import com.deliciousdroid.fragment.ViewBookmarkFragment.OnBookmarkActionListener;
+import com.deliciousdroid.Constants;
+import com.deliciousdroid.Constants.BookmarkViewType;
+import com.deliciousdroid.R;
+import com.deliciousdroid.action.IntentHelper;
+import com.deliciousdroid.platform.BookmarkManager;
+import com.deliciousdroid.providers.BookmarkContent.Bookmark;
+
+public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkSelectedListener, 
+	OnBookmarkActionListener, OnBookmarkSaveListener, OnTagSelectedListener {
+
+	private String tagname = "";
+	private Boolean unread = false;
+	private String path = "";
+	private Bookmark lastSelected = null;
+	private BookmarkViewType lastViewType = null;
 	
-	private ListView lv;
-	
-	private String sortfield = Bookmark.Time + " DESC";
-	
-	private String tagname = null;
-	private String bundlename = null;
+	static final String STATE_LASTBOOKMARK = "lastBookmark";
+	static final String STATE_LASTVIEWTYPE = "lastViewType";
+	static final String STATE_USERNAME = "username";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browse_bookmarks);
 		
-		if(mAccount != null) {		
-			Intent intent = getIntent();
+		Intent intent = getIntent();
+
+		Uri data = intent.getData();
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction t = fm.beginTransaction();
+		
+		if(fm.findFragmentById(R.id.listcontent) == null){
+			Fragment bookmarkFrag = new Fragment();
 	
-			Uri data = intent.getData();
-			String path = null;
 			
-			if(data != null) {
-				if(data.getUserInfo() != "") {
-					username = data.getUserInfo();
-				} else username = mAccount.name;
-				
-				path = data.getPath();
-				tagname = data.getQueryParameter("tagname");
-				bundlename = data.getQueryParameter("bundlename");
-			}
-			
-	    	if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	    		Bundle searchData = intent.getBundleExtra(SearchManager.APP_DATA);
-	
+	    		
 	    		if(searchData != null) {
 	    			tagname = searchData.getString("tagname");
 	    			username = searchData.getString("username");
+	    			unread = searchData.getBoolean("unread");
 	    		}
 	    		
 	    		String query = intent.getStringExtra(SearchManager.QUERY);
 	    		
-	    		setTitle("Bookmark Search Results For \"" + query + "\"");
-	    		
-	    		if(isMyself()) {
-	    			Cursor c = BookmarkManager.SearchBookmarks(query, tagname, username, this);
-	    			startManagingCursor(c);
-
-	    			SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
-	    				new String[]{Bookmark.Description, Bookmark.Tags}, 
-	    				new int[]{R.id.bookmark_description, R.id.bookmark_tags});
-	    		
-	    			setListAdapter(a);
+	    		if(intent.hasExtra("username")) {
+	    			username = intent.getStringExtra("username");
 	    		}
 	    		
-	    	} else if(!data.getScheme().equals("content")) {
-	    		
-	    		openBookmarkInBrowser(new Bookmark(data.toString()));
-	    		finish();
-	    		
-	    	} else if(path.equals("/bookmarks") && isMyself()) {
-	    		
-				if(tagname != null && tagname != "") {
-					if(bundlename != null && bundlename != "")
-						setTitle("My Bookmarks In " + bundlename);
-					else setTitle("My Bookmarks Tagged With " + tagname);
+				bookmarkFrag = new BrowseBookmarksFragment();
+				((BrowseBookmarksFragment) bookmarkFrag).setSearchQuery(query, username, tagname, unread);
+			} else if(!Constants.ACTION_SEARCH_SUGGESTION.equals(intent.getAction())) {
+				if(data != null) {
+					
+					if(data.getUserInfo() != "") {
+						username = data.getUserInfo();
+					} else username = mAccount.name;
+		
+					tagname = data.getQueryParameter("tagname");
+					unread = data.getQueryParameter("unread") != null;
+					path = data.getPath();
+				}
+				
+				if(isMyself()) {
+					bookmarkFrag = new BrowseBookmarksFragment();
+					((BrowseBookmarksFragment) bookmarkFrag).setQuery(username, tagname, unread);
 				} else {
-					setTitle("My Bookmarks");
+					bookmarkFrag = new BrowseBookmarkFeedFragment();
+					((BrowseBookmarkFeedFragment) bookmarkFrag).setQuery(username, tagname);
 				}
-				
-				loadBookmarkList();
-			} else if(username.equals("network")){
-				try{
-					setTitle("My Network's Recent Bookmarks");
-					
-					new LoadBookmarkFeedTask().execute("network");
-				}
-				catch(Exception e){}
-			} else if(username.equals("hotlist")){
-				try{
-					setTitle("Hotlist Bookmarks");
-					
-					new LoadBookmarkFeedTask().execute("hotlist");
-				}
-				catch(Exception e){}
-			} else if(username.equals("popular")){
-				try{
-					setTitle("Popular Bookmarks");
-					
-					new LoadBookmarkFeedTask().execute("popular");
-				}
-				catch(Exception e){}
-			} else if(path.equals("/bookmarks")) {
-				try{
-					if(tagname != null && tagname != "") {
-						setTitle("Bookmarks For " + username + " Tagged With " + tagname);
-					} else {
-						setTitle("Bookmarks For " + username);
-					}
-			    	
-					new LoadBookmarkFeedTask().execute(username, tagname);
-				}
-				catch(Exception e){}
-			} else if(path.contains("bookmarks") && TextUtils.isDigitsOnly(data.getLastPathSegment())) {
-				viewBookmark(Integer.parseInt(data.getLastPathSegment()));
-				finish();
 			}
-			
-			lv = getListView();
-			lv.setTextFilterEnabled(true);
-			lv.setFastScrollEnabled(true);
-		
-			lv.setOnItemClickListener(new OnItemClickListener() {
-			    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					final Cursor c = (Cursor)lv.getItemAtPosition(position);
-					Bookmark b = BookmarkManager.CursorToBookmark(c);
-	
-			    	if(defaultAction.equals("view")) {
-			    		viewBookmark(b);
-			    	} else if(defaultAction.equals("read")){
-			    		readBookmark(b);
-			    	} else {
-			    		openBookmarkInBrowser(b);
-			    	}
-			    }
-			});
-			
-			/* Add Context-Menu listener to the ListView. */
-			lv.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-				public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-					menu.setHeaderTitle("Actions");
-					MenuInflater inflater = getMenuInflater();
-					if(isMyself()){
-						inflater.inflate(R.menu.browse_bookmark_context_menu_self, menu);
-					} else {
-						inflater.inflate(R.menu.browse_bookmark_context_menu_other, menu);
-					}
-				}
-			});
+
+			t.add(R.id.listcontent, bookmarkFrag);
 		}
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem aItem) {
-		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) aItem.getMenuInfo();
-		final Cursor c = (Cursor)lv.getItemAtPosition(menuInfo.position);
-		Bookmark b = BookmarkManager.CursorToBookmark(c);
 		
-		switch (aItem.getItemId()) {
-			case R.id.menu_bookmark_context_open:
-				openBookmarkInBrowser(b);
-				return true;
-			case R.id.menu_bookmark_context_view:				
-				viewBookmark(b);
-				return true;
-			case R.id.menu_bookmark_context_edit:
-				Intent editBookmark = new Intent(this, AddBookmark.class);
-				editBookmark.setAction(Intent.ACTION_EDIT);
-				
-				Uri.Builder data = new Uri.Builder();
-				data.scheme(Constants.CONTENT_SCHEME);
-				data.encodedAuthority(mAccount.name + "@" + BookmarkContentProvider.AUTHORITY);
-				data.appendEncodedPath("bookmarks");
-				data.appendEncodedPath(Integer.toString(b.getId()));
-				editBookmark.setData(data.build());
-
-				startActivity(editBookmark);
-				return true;
-			
-			case R.id.menu_bookmark_context_delete:
-				BookmarkTaskArgs args = new BookmarkTaskArgs(b, mAccount, mContext);	
-				new DeleteBookmarkTask().execute(args);
-				return true;
-				
-			case R.id.menu_bookmark_context_add:				
-				Intent addBookmark = new Intent(this, AddBookmark.class);
-				addBookmark.setAction(Intent.ACTION_SEND);
-				addBookmark.putExtra(Intent.EXTRA_TEXT, b.getUrl());
-				startActivity(addBookmark);
-				return true;
-			case R.id.menu_bookmark_context_share:
-		    	Intent sendIntent = new Intent(Intent.ACTION_SEND);
-		    	sendIntent.setType("text/plain");
-		    	sendIntent.putExtra(Intent.EXTRA_TEXT, b.getUrl());
-		    	sendIntent.putExtra(Intent.EXTRA_SUBJECT, b.getDescription());
-		    	sendIntent.putExtra(Intent.EXTRA_TITLE, b.getDescription());
-
-		    	startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
-				return true;
-			case R.id.menu_bookmark_context_read:
-				readBookmark(b);
-				return true;
+		BrowseTagsFragment tagFrag = (BrowseTagsFragment) fm.findFragmentById(R.id.tagcontent);
+		if(tagFrag != null){
+			tagFrag.setAccount(username);
 		}
-		return false;
-	}
+		
+		if(path.contains("tags")){
+			t.hide(fm.findFragmentById(R.id.maincontent));
+			findViewById(R.id.panel_collapse_button).setVisibility(View.GONE);
+		} else{
+			if(tagFrag != null){
+				t.hide(tagFrag);
+			}
+		}
+		
+		Fragment addFrag = fm.findFragmentById(R.id.addcontent);
+		if(addFrag != null){
+			t.hide(addFrag);
+		}
+
+		t.commit();
+    }
 	
 	@Override
 	public boolean onSearchRequested() {
-		
 		if(isMyself()) {
 			Bundle contextData = new Bundle();
 			contextData.putString("tagname", tagname);
 			contextData.putString("username", username);
+			contextData.putBoolean("unread", unread);
 			startSearch(null, false, contextData, false);
-			return true;
 		} else {
 			startSearch(null, false, Bundle.EMPTY, false);
-			return true;
 		}
+		return true;
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		
-		if(result && isMyself()) {
-		    getMenuInflater().inflate(R.menu.browse_bookmark_menu, menu);
-		}
-		
-	    return result;
+		super.onCreateOptionsMenu(menu);
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_menu, menu);
+	    setupSearch(menu);
+	    return true;
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		if(lastSelected != null && lastViewType != null){
+			savedInstanceState.putSerializable(STATE_LASTBOOKMARK, lastSelected);
+	    	savedInstanceState.putSerializable(STATE_LASTVIEWTYPE, lastViewType);
+		}
+		
+		savedInstanceState.putString(STATE_USERNAME, username);
 
-		boolean result = false;
-		
-	    switch (item.getItemId()) {
-		    case R.id.menu_bookmark_sort_date_asc:
-		    	sortfield = Bookmark.Time + " ASC";
-				result = true;
-				break;
-		    case R.id.menu_bookmark_sort_date_desc:			
-		    	sortfield = Bookmark.Time + " DESC";
-		    	result = true;
-		    	break;
-		    case R.id.menu_bookmark_sort_description_asc:			
-		    	sortfield = Bookmark.Description + " ASC";
-		    	result = true;
-		    	break;
-		    case R.id.menu_bookmark_sort_description_desc:			
-		    	sortfield = Bookmark.Description + " DESC";
-		    	result = true;
-		    	break;
-		    case R.id.menu_bookmark_sort_url_asc:			
-		    	sortfield = Bookmark.Url + " ASC";
-		    	result = true;
-		    	break;
-		    case R.id.menu_bookmark_sort_url_desc:			
-		    	sortfield = Bookmark.Url + " DESC";
-		    	result = true;
-		    	break;
+	    super.onSaveInstanceState(savedInstanceState);
+	}
+	
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	   
+	    username = savedInstanceState.getString(STATE_USERNAME);
+	    
+	    if(findViewById(R.id.maincontent) != null) {
+	    	lastSelected = (Bookmark)savedInstanceState.getSerializable(STATE_LASTBOOKMARK);
+	    	lastViewType = (BookmarkViewType)savedInstanceState.getSerializable(STATE_LASTVIEWTYPE);
+	    	setBookmarkView(lastSelected, lastViewType);
 	    }
-	    
-	    if(result) {
-	    	loadBookmarkList();
-	    } else result = super.onOptionsItemSelected(item);
-	    
-	    return result;
 	}
 	
 	@Override
-	public void onResume(){
-		super.onResume();
+	public void onBackPressed(){
+		super.onBackPressed();
 		
-		Uri data = getIntent().getData();
-		if(data != null && data.getUserInfo() != null && data.getUserInfo() != "") {
-			username = data.getUserInfo();
-		} else if(getIntent().hasExtra("username")){
-			username = getIntent().getStringExtra("username");
-		} else username = mAccount.name;
-	}
-	
-	private void loadBookmarkList() {
-		Cursor c = BookmarkManager.GetBookmarks(username, tagname, sortfield, this);
-		startManagingCursor(c);
+		Fragment tagFrag = getSupportFragmentManager().findFragmentById(R.id.tagcontent);
+		View panelBtn = findViewById(R.id.panel_collapse_button);
 		
-		SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
-				new String[]{Bookmark.Description, Bookmark.Tags}, 
-				new int[]{R.id.bookmark_description, R.id.bookmark_tags});
-		
-		setListAdapter(a);
-	}
-	
-	private void openBookmarkInBrowser(Bookmark b) {
-    	String url = b.getUrl();
-    	Uri link = Uri.parse(url);
-		Intent i = new Intent(Intent.ACTION_VIEW, link);
-		
-		startActivity(i);
-	}
-	
-	private void viewBookmark(int id) {
-		Bookmark b = new Bookmark(id);
-		viewBookmark(b);
-	}
-	
-	private void readBookmark(Bookmark b) {
-		String readUrl = Constants.INSTAPAPER_URL + URLEncoder.encode(b.getUrl());
-    	Uri readLink = Uri.parse(readUrl);
-		startActivity(new Intent(Intent.ACTION_VIEW, readLink));
-	}
-	
-	private void viewBookmark(Bookmark b) {
-		Intent viewBookmark = new Intent(this, ViewBookmark.class);
-		viewBookmark.setAction(Intent.ACTION_VIEW);
-		viewBookmark.addCategory(Intent.CATEGORY_DEFAULT);
-		Uri.Builder data = new Uri.Builder();
-		data.scheme(Constants.CONTENT_SCHEME);
-		data.encodedAuthority(username + "@" + BookmarkContentProvider.AUTHORITY);
-		data.appendEncodedPath("bookmarks");
-		
-		if(isMyself()) {
-			data.appendEncodedPath(Integer.toString(b.getId()));
-		} else {
-			data.appendEncodedPath(Integer.toString(0));
-			data.appendQueryParameter("url", b.getUrl());
-			data.appendQueryParameter("title", b.getDescription());
-			data.appendQueryParameter("notes", b.getNotes());
-			data.appendQueryParameter("tags", b.getTagString());
-			data.appendQueryParameter("time", Long.toString(b.getTime()));
-			data.appendQueryParameter("account", b.getAccount());
+		if(tagFrag != null && panelBtn != null){
+			if(tagFrag.isVisible())
+				findViewById(R.id.panel_collapse_button).setVisibility(View.GONE);
+			else findViewById(R.id.panel_collapse_button).setVisibility(View.VISIBLE);
 		}
-		viewBookmark.setData(data.build());
+	}
+
+	public void onBookmarkView(Bookmark b) {
+		if(b != null){
+			if(findViewById(R.id.maincontent) != null || findViewById(R.id.tagcontent) != null) {
+				lastSelected = b;
+				lastViewType = BookmarkViewType.VIEW;
+				setBookmarkView(b, BookmarkViewType.VIEW);
+			} else {
+				startActivity(IntentHelper.ViewBookmark(b, BookmarkViewType.VIEW, username, this));
+			}
+		}
+	}
+
+	public void onBookmarkRead(Bookmark b) {
+		if(b != null){
+			if(findViewById(R.id.maincontent) != null) {
+				lastSelected = b;
+				lastViewType = BookmarkViewType.READ;
+				setBookmarkView(b, BookmarkViewType.READ);
+			} else {
+				startActivity(IntentHelper.ViewBookmark(b, BookmarkViewType.READ, username, this));
+			}
+		}
+	}
+
+	public void onBookmarkOpen(Bookmark b) {
+		if(b != null){
+			if(findViewById(R.id.maincontent) != null) {
+				lastSelected = b;
+				lastViewType = BookmarkViewType.WEB;
+				setBookmarkView(b, BookmarkViewType.WEB);
+			} else {
+				startActivity(IntentHelper.OpenInBrowser(b.getUrl()));
+			}
+		}
+	}
+
+	public void onBookmarkAdd(Bookmark b) {
+		if(b != null){
+			startActivity(IntentHelper.AddBookmark(b.getUrl(), mAccount.name, this));
+		}
+	}
+
+	public void onBookmarkShare(Bookmark b) {
+		if(b != null){
+			Intent sendIntent = IntentHelper.SendBookmark(b.getUrl(), b.getDescription());
+			startActivity(Intent.createChooser(sendIntent, getString(R.string.share_chooser_title)));
+		}
+	}
+
+	public void onBookmarkEdit(Bookmark b) {		
+		if(b != null){
+			if(findViewById(R.id.maincontent) != null) {
+				AddBookmarkFragment addFrag = (AddBookmarkFragment) getSupportFragmentManager().findFragmentById(R.id.addcontent);
+				addFrag.loadBookmark(b, null);
+				addFrag.refreshView();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				if(getSupportFragmentManager().findFragmentById(R.id.tagcontent).isVisible()){
+					transaction.hide(getSupportFragmentManager().findFragmentById(R.id.tagcontent));
+					transaction.show(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+					transaction.addToBackStack(null);
+				}
+				transaction.show(getSupportFragmentManager().findFragmentById(R.id.addcontent));
+				transaction.commit();
+				transaction = getSupportFragmentManager().beginTransaction();
+				transaction.hide(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+				transaction.commit();
+			} else {
+				startActivity(IntentHelper.EditBookmark(b, mAccount.name, this));
+			}
+		}
+	}
+
+	public void onBookmarkDelete(Bookmark b) {
+		BookmarkManager.LazyDelete(b, mAccount.name, this);
+	}
+
+	public void onViewTagSelected(String tag) {
+		if(findViewById(R.id.maincontent) != null) {
+			BrowseBookmarksFragment frag = new BrowseBookmarksFragment();
+			frag.setQuery(username, tag, false);
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.listcontent, frag);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			startActivity(IntentHelper.ViewBookmarks(tag, username, this));
+		}
+	}
+
+	public void onUserTagSelected(String tag, String user) {
+		if(findViewById(R.id.maincontent) != null) {
+			BrowseBookmarkFeedFragment frag = new BrowseBookmarkFeedFragment();
+			frag.setQuery(user, tag);
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.listcontent, frag);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			startActivity(IntentHelper.ViewBookmarks(tag, user, this));
+		}
+	}
+
+	public void onAccountSelected(String account) {
+		if(findViewById(R.id.maincontent) != null) {
+			BrowseBookmarkFeedFragment frag = new BrowseBookmarkFeedFragment();
+			frag.setQuery(account, null);
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.listcontent, frag);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			startActivity(IntentHelper.ViewBookmarks(null, account, this));
+		}
+	}
+
+	public void onBookmarkSave(Bookmark b) {
+		if(getSupportFragmentManager().findFragmentById(R.id.maincontent).isHidden()){
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.hide(getSupportFragmentManager().findFragmentById(R.id.addcontent));
+			transaction.show(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+			transaction.commit();
+		}
 		
-		Log.d("View Bookmark Uri", data.build().toString());
-		startActivity(viewBookmark);
+		onBookmarkView(b);
+	}
+
+	public void onBookmarkCancel(Bookmark b) {
+		if(getSupportFragmentManager().findFragmentById(R.id.maincontent).isHidden()){
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.hide(getSupportFragmentManager().findFragmentById(R.id.addcontent));
+			transaction.show(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+			transaction.commit();
+		}
+		
+		onBookmarkView(b);
+	}
+
+	public void onTagSelected(String tag) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		BrowseBookmarksFragment frag = new BrowseBookmarksFragment();
+		frag.setQuery(username, tag, false);
+		transaction.replace(R.id.listcontent, frag);
+		transaction.commit();
 	}
 	
-    public class LoadBookmarkFeedTask extends AsyncTask<String, Integer, Boolean>{
-    	private String user;
-    	private String tag = null;
-    	private ProgressDialog progress;
-    	private Cursor c;
-    	private Exception ex = null;
-    	
-    	protected void onPreExecute() {
-    		progress = new ProgressDialog(mContext);
-    		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    		progress.setMessage("Loading. Please wait...");
-    		progress.setCancelable(true);
-    		progress.show();
-    	}
-    	
-    	@Override
-    	protected Boolean doInBackground(String... args) {
-    		user = args[0];
-    		
-    		if(args.length > 1)
-    			tag = args[1];
-    		
-    		boolean result = false;
-    		
-			try {
-				if(user.equals("network")) {
-					c = DeliciousFeed.fetchNetworkRecent(mAccount.name, Integer.parseInt(bookmarkLimit));
-				} else if(user.equals("hotlist")) {
-					c = DeliciousFeed.fetchHotlist(Integer.parseInt(bookmarkLimit));
-				} else if(user.equals("popular")) {
-					c = DeliciousFeed.fetchPopular(Integer.parseInt(bookmarkLimit));
-				}  else {
-					c = DeliciousFeed.fetchFriendBookmarks(user, tag, Integer.parseInt(bookmarkLimit));
-				}
-				result = true;
-			} catch (AuthenticationException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch(FeedForbiddenException e){
-				ex = e;
+	private void setBookmarkView(Bookmark b, BookmarkViewType viewType){
+		if(getSupportFragmentManager().findFragmentById(R.id.maincontent).isHidden() && getSupportFragmentManager().findFragmentById(R.id.addcontent).isHidden()){
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			if(getSupportFragmentManager().findFragmentById(R.id.tagcontent).isVisible()){
+				transaction.hide(getSupportFragmentManager().findFragmentById(R.id.tagcontent));
+				findViewById(R.id.panel_collapse_button).setVisibility(View.VISIBLE);
 			}
+			transaction.show(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else if(getSupportFragmentManager().findFragmentById(R.id.maincontent).isHidden() && getSupportFragmentManager().findFragmentById(R.id.addcontent).isVisible()){
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.hide(getSupportFragmentManager().findFragmentById(R.id.addcontent));
+			transaction.show(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+			transaction.commit();
+		}
+		
+		ViewBookmarkFragment viewFrag = (ViewBookmarkFragment) getSupportFragmentManager().findFragmentById(R.id.maincontent);
+		viewFrag.setBookmark(b, viewType);
+		viewFrag.loadBookmark();
+	}
 	
-    		return result;
-    	}
-    	
-        protected void onPostExecute(Boolean result) {
-        	progress.dismiss();
-        	
-        	if(result) {
-        		startManagingCursor(c);
-        		
-        		SimpleCursorAdapter a = new SimpleCursorAdapter(mContext, R.layout.bookmark_view, c, 
-	        		new String[]{Bookmark.Description, Bookmark.Tags}, 
-	        		new int[]{R.id.bookmark_description, R.id.bookmark_tags});
-        		
-        		setListAdapter(a);
-        	} else {
-        		if(ex != null) {
-        			Toast toast = Toast.makeText(mContext, "Error opening feed.  Make sure your Delicious network privacy settings don't hide your network from other people.", Toast.LENGTH_LONG);
-        			toast.show();
-        		}
-        	}
-        }
-    }
+	public void collapsePanel(View v) {
+		
+		if(findViewById(R.id.listcontent) != null){
+			View bookmarkList = findViewById(R.id.listcontent);
+			
+			if(bookmarkList.getVisibility() == View.VISIBLE)
+				bookmarkList.setVisibility(View.GONE);
+			else bookmarkList.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void saveHandler(View v) {
+		FragmentManager fm = getSupportFragmentManager();
+		AddBookmarkFragment addFrag = (AddBookmarkFragment)fm.findFragmentById(R.id.addcontent);
+		
+		if(addFrag != null){
+			addFrag.saveHandler(v);
+		}
+	}
+	
+	public void cancelHandler(View v) {
+		FragmentManager fm = getSupportFragmentManager();
+		AddBookmarkFragment addFrag = (AddBookmarkFragment)fm.findFragmentById(R.id.addcontent);
+		
+		if(addFrag != null) {
+			addFrag.cancelHandler(v);
+		}
+	}
 }

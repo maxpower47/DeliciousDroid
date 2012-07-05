@@ -1,98 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Label for this package -->
-    <string name="label">Delicious</string>
-
-    <!-- Permission label -->
-    <string name="permlab_samplesyncadapterAuthPassword">access to passwords for Delicious accounts</string>
-    <!-- Permission description -->
-    <string name="permdesc_samplesyncadapterAuthPassword">Allows applications direct access to the passwords for the
-        Delicious account(s) you have configured.</string>
-
-    <!-- Permission label -->
-    <string name="permlab_samplesyncadapterAuth">view configured accounts</string>
-    <!-- Permission description -->
-    <string name="permdesc_samplesyncadapterAuth">Allows applications to see the usernames (email addresses) of
-        the Delicious account(s) you have configured.</string>
-    <string name="notification_login_error">Touch to sign into your Delicious account.</string>
+    <string name="label">Pinboard</string>
+    <string name="pindroid">PinDroid</string>
+    <string name="pinboard_lower">pinboard</string>
+    
+    <string name="profile_action">Delicious</string>
+    <string name="view_profile">View Profile</string>
 
     <!-- Title string for Login activity-->
-    <string name="ui_activity_title">Sign-in</string>
+    <string name="ui_activity_title">Sign in</string>
     <!-- Message shown in progress dialog while app connects to the server -->
-    <string name="ui_activity_authenticating">Authenticating\u2026</string>
+    <string name="ui_activity_authenticating">Authenticating</string>
 
     <!-- AuthenticatorActivity -->
-    <skip />
     <!-- Label above username EditText -->
     <string name="login_activity_username_label">Username</string>
     <!-- Label above password EditText -->
     <string name="login_activity_password_label">Password</string>
     <!-- Button to sign in after entering username and password -->
     <string name="login_activity_ok_button">Sign in</string>
-    
-    <string name="login_authtype_ok_button">Continue</string>
 
     <!-- Message shown in dialog if the username or password is invalid. -->
-    <string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Delicious account is
+    <string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Pinboard account is
         required. Please try again. </string>
     <!-- Message shown in dialog if the password is invalid -->
     <string name="login_activity_loginfail_text_pwonly">You entered the wrong password or your account has changed.
         Please re-enter your password.</string>
     <!-- Message shown in dialog to prompt the user for their password -->
-    <string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
+    <string name="login_activity_loginfail_text_pwmissing">Enter the password for your Pinboard account.</string>
     <!-- Message shown if the provided account doesn't support the current activity. -->
-    <string name="login_activity_newaccount_text">Sign in to your Delicious account. </string>
-    
-    <string name="login_activity_authtype_text">Choose your account type.</string>
-    <string name="login_activity_authtype_yahoo">Yahoo</string>
-    <string name="login_activity_authtype_delicious">Delicious</string>
+    <string name="login_activity_newaccount_text">Sign in to your Pinboard account. \n\nDon\'t have a Pinboard account?  \nSign up at http://pinboard.in/signup</string>
 
-    <!-- Button that takes the user to the "sign in" screen -->
-    <string name="sign_in_button_label">Sign in</string>
-    <!-- Button for going to the previous screen or step -->
-    <string name="back_button_label">Back</string>
-    <!-- Button to cancel the current operation -->
-    <string name="cancel_button_label">Cancel</string>
-    <string name="profile_action">Delicious</string>
-    <string name="view_profile">View Profile</string>
-    <string name="titleMain">Delicious</string>
+    <string name="titleMain">Pinboard</string>
     
-    <string name="menu_addbookmark_title">Add Bookmark</string>
-    <string name="menu_sort_title">Sort</string>
-    <string name="menu_search_title">Search</string>
-    <string name="menu_settings_title">Settings</string>
+    <!-- Main -->
+    <string name="main_menu_my_bookmarks">My Bookmarks</string>
+    <string name="main_menu_my_unread_bookmarks">My Unread</string>
+    <string name="main_menu_my_tags">My Tags</string>
+    <string name="main_menu_network_bookmarks">Network Bookmarks</string>
+    <string name="main_menu_recent_bookmarks">Recent Bookmarks</string>
+
+	<!-- MainSearchResults -->
+    <string name="main_search_results_title">Search Results</string>
+      
+    <!-- BrowseBookmarks -->
+    <string name="browse_my_bookmarks_title">My Bookmarks</string>
+    <string name="browse_my_unread_bookmarks_title">My Unread Bookmarks</string>
+    <string name="browse_my_bookmarks_tagged_title">My Bookmarks Tagged With %1$s</string>
+    <string name="browse_my_unread_bookmarks_tagged_title">My Unread Bookmarks Tagged With %1$s</string>
+    <string name="browse_recent_bookmarks_title">Recent Bookmarks</string>
+    <string name="browse_network_bookmarks_title">Network Bookmarks</string>
+    <string name="browse_user_bookmarks_title">Bookmarks For %1$s</string>
+    <string name="browse_user_bookmarks_tagged_title">Bookmarks For %1$s Tagged With %2$s</string>
     
     <string name="bookmark_context_open">Open in browser</string>
     <string name="bookmark_context_view">View Details</string>
     <string name="bookmark_context_read">Read</string>
+    <string name="bookmark_context_markread">Mark as Read</string>
     <string name="bookmark_context_edit">Edit</string>
     <string name="bookmark_context_delete">Delete</string>
     <string name="bookmark_context_share">Share</string>
     <string name="bookmark_context_add">Add</string>
     
-    <string name="share_chooser_title">Share</string>
+    <string name="share_chooser_title">Share link</string>
     
     <string name="bookmark_sort_date_asc">Date (Oldest First)</string>
     <string name="bookmark_sort_date_desc">Date (Newest First)</string>
@@ -100,6 +93,29 @@
     <string name="bookmark_sort_description_desc">Description (Z-A)</string>
     <string name="bookmark_sort_url_asc">Url (A-Z)</string>
     <string name="bookmark_sort_url_desc">Url (Z-A)</string>
+    
+    <string name="menu_addbookmark_title">Add Bookmark</string>
+    <string name="menu_sort_bookmark_title">Sort Bookmarks</string>
+    <string name="menu_sort_tag_title">Sort Tags</string>
+    <string name="menu_search_title">Search</string>
+    <string name="menu_settings_title">Settings</string>
+    
+    <string name="bookmark_unsynced_alt">Unsynced Indicator</string>
+    <string name="bookmark_unread_alt">Unread Indicator</string>
+    
+    <!-- BrowseTags -->
+    <string name="browse_my_tags_title">My Tags</string>
+     
+    <string name="tag_sort_name_asc">Name (A-Z)</string>
+    <string name="tag_sort_name_desc">Name (Z-A)</string>
+    <string name="tag_sort_count_asc">Count (Least First)</string>
+    <string name="tag_sort_count_desc">Count (Most First)</string>
+    
+    <!-- AddBookmark -->
+    <string name="add_bookmark_add_title">Add Bookmark</string>
+    <string name="add_bookmark_edit_title">Edit Bookmark</string>
+    
+    <string name="add_bookmark_default_title">[no title]</string>
     
     <string name="add_button_save">Save</string>
     <string name="add_button_cancel">Cancel</string>
@@ -109,72 +125,141 @@
     <string name="add_title_tags">Tags</string>
     <string name="add_title_recommended_tags">Recommended Tags</string>
     <string name="add_title_popular_tags">Popular Tags</string>
-    <string name="add_title_network_tags">Network Tags</string>
+    <string name="add_title_private">Private?</string>
+    <string name="add_title_toread">To Read?</string>
     
-    <string name="main_search_label">Delicious</string>
+    <string name="add_bookmark_invalid_url">Error: Blank or invalid URL</string>
+    <string name="add_bookmark_blank_url">Error: Blank URL</string>
+    
+    <!-- Searching -->
+    <string name="main_search_label">Pinboard</string>
     <string name="main_search_hint">Tags, Titles, Notes</string>
     <string name="main_search_description">Tags, titles, and notes</string>
     
-    <string name="tag_search_label">Delicious Tags</string>
+    <string name="tag_search_label">Pinboard Tags</string>
     <string name="tag_search_hint">Tags</string>
     
-    <string name="tag_sort_name_asc">Name (A-Z)</string>
-    <string name="tag_sort_name_desc">Name (Z-A)</string>
-    <string name="tag_sort_count_asc">Count (Least First)</string>
-    <string name="tag_sort_count_desc">Count (Most First)</string>
-    
-    <string name="bookmark_search_label">Delicious Bookmarks</string>
+    <string name="bookmark_search_label">Pinboard Bookmarks</string>
     <string name="bookmark_search_hint">Tags, Titles, Notes</string>
     
-    <string name="tag_search_text">Search Delicious</string>
+    <string name="search_results_bookmark">Bookmark Results</string>
+    <string name="search_results_tag">Tag Results</string>
+    <string name="search_results_global_tag">Global Tag Results</string>
     
-    <string name="add_bookmark_success_msg">Bookmark Added Successfully</string>
-    <string name="edit_bookmark_success_msg">Bookmark Updated Successfully</string>
-    <string name="add_bookmark_error_msg">Error</string>
+    <string name="bookmark_search_results_title">Bookmark Search Results For \"%1$s\"</string>
+    <string name="unread_search_results_title">Unread Search Results For \"%1$s\"</string>
+    <string name="tag_search_results_title">Tag Search Results For \"%1$s\"</string>
+    <string name="search_results_global_tag_title">Global Tag Results For \"%1$s\"</string>
     
+    <string name="bookmark_count">bookmark(s)</string>
+    
+    <!-- Content Provider -->
+    <string name="bookmark_content_provider_label">Bookmarks</string>  
+    
+    <string name="sync_receiver_label">PinDroid Bookmark Sync</string>
+    <string name="syncing_toast">Syncing…</string>
+
+    <!-- ViewBookmark -->
+    <string name="view_bookmark_title">View Bookmark Details</string>
     <string name="view_bookmark_notes_title">Notes</string>
     <string name="view_bookmark_tags_title">Tags</string>
     <string name="view_bookmark_time_title">Saved on</string>
     <string name="view_bookmark_account_title">By</string>
     
+    <string name="menu_view_title">View</string>
     <string name="menu_view_read_title">Read</string>
-    <string name="menu_view_openbookmark_title">Open in browser</string>
+    <string name="menu_view_details_title">Details</string>
+    <string name="menu_view_openbookmark_title">Web</string>
     <string name="menu_view_editbookmark_title">Edit</string>
     <string name="menu_view_deletebookmark_title">Delete</string>
     <string name="menu_view_sendbookmark_title">Share</string>
-    <string name="menu_view_readbookmark_title">Read</string>
+    
+    <!-- Widget -->
+    <string name="search_widget_label">PinDroid 4x1</string>
+    
+    <!-- Preferences -->
+    <string name="preferences_title">PinDroid Settings</string>
+    
+    <string name="account_preferences_cat_title">General Settings</string>
+    <string name="account_preferences_key">account_settings</string>
+    <string name="account_preferences_title">Account Settings</string>
+    <string name="account_preferences_summary">Sync and notification settings.</string>
     
     <string name="pref_cat_general_title">General Settings</string>
     <string name="pref_cat_sync_title">Sync Settings</string>
+    <string name="pref_cat_save_title">Save Settings</string>
+    <string name="pref_cat_reading_title">Reading Options</string>
     <string name="pref_cat_help_title">Help</string>
     
     <string name="pref_accountsettings_title">Account Settings</string>
-	<string name="pref_accountsettings_key">pref_accountsettings</string>
-	<string name="pref_accountsettings_summary">Manage your Delicious account on this device.</string>
+    <string name="pref_accountsettings_key">pref_accountsettings</string>
+    <string name="pref_accountsettings_summary">Manage your Pinboard account on this device.</string>
     
-    <string name="pref_synctime_title">Bookmark Sync Frequency</string>
-	<string name="pref_synctime_key">pref_synctime</string>
-	<string name="pref_synctime_summary">How often to sync bookmarks.</string>
+    <string name="pref_synctime_title">Sync Frequency</string>
+    <string name="pref_synctime_key">pref_synctime</string>
+    <string name="pref_synctime_summary">How often to sync bookmarks.</string>
     
-    <string name="pref_notification_title">Display Notifications</string>
-    <string name="pref_notification_key">pref_notification</string>
-    <string name="pref_notification_summary">Display notifications when new links are received in your inbox.</string>
- 
     <string name="pref_view_bookmark_default_action_title">Bookmark Action</string>
     <string name="pref_view_bookmark_default_action_key">pref_view_bookmark_default_action</string>
     <string name="pref_view_bookmark_default_action_summary">Default action for bookmarks.</string>
     
-    <string name="pref_contact_bookmark_results_title">Contact Bookmarks</string>
-    <string name="pref_contact_bookmark_results_key">pref_contact_bookmark_results</string>
-    <string name="pref_contact_bookamrk_results_summary">Number of bookmarks to retrieve for network contacts.</string>
-    
     <string name="pref_searchicons_title">Display Search Icons</string>
     <string name="pref_searchicons_key">pref_searchicons</string>
     <string name="pref_searchicons_summary">Display icons in search suggestions.</string>
+    <string name="pref_searchicons_summary_off">Don\'t display icons in search suggestions.</string>
+    <string name="pref_searchicons_summary_on">Display icons in search suggestions.</string>
+    <string name="pref_searchicons_switch_off">No</string>
+    <string name="pref_searchicons_switch_on">Yes</string>
+    
+    <string name="pref_save_private_default_title">Private Default</string>
+    <string name="pref_save_private_default_key">pref_save_private_default</string>
+    <string name="pref_save_private_default_summary">Set new bookmarks as private by default.</string>
+    <string name="pref_save_private_default_summary_off">Set new bookmarks as public by default.</string>
+    <string name="pref_save_private_default_summary_on">Set new bookmarks as private by default.</string>
+    <string name="pref_save_private_default_switch_off">No</string>
+    <string name="pref_save_private_default_switch_on">Yes</string>
+    
+    <string name="pref_save_toread_default_title">Unread Default</string>
+    <string name="pref_save_toread_default_key">pref_save_toread_default</string>
+    <string name="pref_save_toread_default_summary">Set new bookmarks as unread by default.</string>
+    <string name="pref_save_toread_default_summary_off">Set new bookmarks as read by default.</string>
+    <string name="pref_save_toread_default_summary_on">Set new bookmarks as unread by default.</string>
+    <string name="pref_save_toread_default_switch_off">No</string>
+    <string name="pref_save_toread_default_switch_on">Yes</string>
+    
+    <string name="pref_markasread_title">Mark as Read</string>
+    <string name="pref_markasread_key">pref_markasread</string>
+    <string name="pref_markasread_summary">Mark unread bookmarks as read when you read them.</string>
+    <string name="pref_markasread_summary_off">Leave unread bookmarks unread when you read them.</string>
+    <string name="pref_markasread_summary_on">Mark unread bookmarks as read when you read them.</string>
+    <string name="pref_markasread_switch_off">No</string>
+    <string name="pref_markasread_switch_on">Yes</string>
     
     <string name="pref_forcesync_title">Sync Now</string>
     <string name="pref_forcesync_key">pref_forcesync</string>
-    <string name="pref_forcesync_summary">Start a bookmark sync</string>
+    <string name="pref_forcesync_summary">Start a bookmark sync.</string>
+
+    
+    <string name="pref_reading_background_title">Background</string>
+    <string name="pref_reading_background_key">pref_reading_background</string>
+    <string name="pref_reading_background_summary">Background color in read view</string>
+    
+    <string name="pref_reading_font_title">Font</string>
+    <string name="pref_reading_font_key">pref_reading_font</string>
+    <string name="pref_reading_font_summary">Font for read view</string>
+    
+    <string name="pref_reading_margins_title">Margins</string>
+    <string name="pref_reading_margins_key">pref_reading_margins</string>
+    <string name="pref_reading_margins_summary">Side margins for read view</string>
+    
+    <string name="pref_reading_fontsize_title">Font Size</string>
+    <string name="pref_reading_fontsize_key">pref_reading_fontsize</string>
+    <string name="pref_reading_fontsize_summary">Font size for read view</string>
+    
+    <string name="pref_reading_linespace_title">Line Spacing</string>
+    <string name="pref_reading_linespace_key">pref_reading_linespace</string>
+    <string name="pref_reading_linespace_summary">Space between lines in read view</string>
+
     
     <string name="pref_license_title">License</string>
     <string name="pref_license_key">pref_license</string>
@@ -182,15 +267,51 @@
     
     <string name="pref_help_title">Help</string>
     <string name="pref_help_key">pref_help</string>
-    <string name="pref_help_summary">Help on using DeliciousDroid</string>
+    <string name="pref_help_summary">Help on using PinDroid</string>
+    
+    <string name="pref_about_title">About</string>
+    <string name="pref_about_key">pref_about</string>
+    <string name="pref_about_summary">About PinDroid</string>
     
     <string name="pref_donate_title">Donate</string>
     <string name="pref_donate_key">pref_donate</string>
-    <string name="pref_donate_summary">Support DeliciousDroid</string>
+    <string name="pref_donate_summary">Support PinDroid</string>
     
-    <string name="dialog_no_account_title">No Delicious Account Found</string>
-    <string name="dialog_no_account_text">To add your Delicious account go to Accounts and Sync in Settings.</string>
     
-    <string name="dialog_yahoo_not_linked_title">Account Error</string>
-    <string name="dialog_yahoo_not_linked_text">You may not have a Delicious account linked to that Yahoo ID.  Go to the main Delicious site and create an account first.</string>
+    <string name="perm_read_bookmarks_label">Read PinDroid bookmarks</string>
+    <string name="perm_read_bookmarks_description">Grants the ability to read the PinDroid bookmark store</string>
+    <string name="perm_write_bookmarks_label">Write PinDroid bookmarks</string>
+    <string name="perm_write_bookmarks_description">Grants the ability to write to the PinDroid bookmark store</string>
+    
+    <!-- Image alt text, for accessibility -->
+    <string name="alt_action_search_btn">Search</string>
+    <string name="alt_bookmark_list_private">Private</string>
+    <string name="alt_bookmark_view_private">Private</string>
+    
+    <string name="alt_widget_main">PinDroid</string>
+    <string name="alt_widget_my_bookmarks">My Bookmarks</string>
+    <string name="alt_widget_unread_bookmarks">Unread Bookmarks</string>
+    <string name="alt_widget_unread_bookmark_count">Unread Bookmark Count</string>
+    <string name="alt_widget_my_tags">My Tags</string>
+    <string name="alt_widget_add_bookmark">Add Bookmark</string>
+    <string name="alt_widget_search">Search</string>
+    
+    <!-- AboutActivity -->
+    <string name="about_activity_title">About PinDroid</string>
+    <string name="about_text">
+    &lt;html&gt; 
+    &lt;body style="background-color:#000000;color:#BEBEBE"&gt;
+    	PinDroid is a port of DeliciousDroid for the Pinboard bookmarking system.&lt;br/&gt;&lt;br/&gt;
+    	Developed, maintained, and supported by Matt Schmidt&lt;br/&gt;&lt;br/&gt;
+    	Find a bug or have a suggestion for a new feature?  Open an issue at &lt;a href=\'http://code.google.com/p/pindroid/issues\'&gt;http://code.google.com/p/pindroid/issues&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;
+    	Or, drop me a line on Twitter @PinDroid&lt;br/&gt;&lt;br/&gt;
+    	&lt;b&gt;Known Issues:&lt;/b&gt;
+    	&lt;ul&gt;
+     		&lt;li&gt;Only a single Pinboard account is currently supported. &lt;/li&gt;
+     		&lt;li&gt;Certain features from DeliciousDroid have not been ported yet due to limitations in Pinboards API, including contact syncing and viewing network bookmark lists. &lt;/li&gt;
+    	&lt;/ul&gt;&lt;br/&gt;
+    	Read view powered by viewtext.org
+    &lt;/body&gt;
+    &lt;/html&gt;
+    </string>
 </resources>

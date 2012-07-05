@@ -1,44 +1,43 @@
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
 
 package com.deliciousdroid.providers;
 
-import java.text.ParseException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.deliciousdroid.providers.TagContent.Tag;
-import com.deliciousdroid.util.DateParser;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 public class BookmarkContent {
 
-	public static class Bookmark implements BaseColumns {
-		public static final Uri CONTENT_URI = Uri.parse("content://" + 
-				BookmarkContentProvider.AUTHORITY + "/bookmark");
+	public static class Bookmark implements BaseColumns, Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8170498291668576792L;
+
+		public static final Uri CONTENT_URI = Uri.parse("content://" + BookmarkContentProvider.AUTHORITY + "/bookmark");
 		
 		public static final  String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.deliciousdroid.bookmarks";
 		
@@ -50,7 +49,9 @@ public class BookmarkContent {
 		public static final String Hash = "HASH";
 		public static final String Meta = "META";
 		public static final String Time = "TIME";
-		public static final String LastUpdate = "LASTUPDATE";
+		public static final String Shared = "SHARED";
+		public static final String Synced = "SYNCED";
+		public static final String Deleted = "DELETED";
 		
 		private int mId = 0;
 		private String mAccount = null;
@@ -60,9 +61,10 @@ public class BookmarkContent {
         private String mTags = null;
         private String mHash = null;
         private String mMeta = null;
-        private Boolean mPrivate = false;
+        private boolean mShared = true;
         private long mTime = 0;
-        private long mLastUpdate = 0;
+        private boolean mSynced = false;
+        private boolean mDeleted = false;
 
         public int getId(){
         	return mId;
@@ -89,7 +91,7 @@ public class BookmarkContent {
         }
         
         public String getNotes(){
-        	return mNotes;
+        	return mNotes == null ? "" : mNotes;
         }
         
         public void setNotes(String notes) {
@@ -100,26 +102,30 @@ public class BookmarkContent {
         	return mTags;
         }
         
-        public void setTagString(String tags) {
+        public void setTagString(String tags){
         	mTags = tags;
         }
         
         public ArrayList<Tag> getTags(){
 			ArrayList<Tag> result = new ArrayList<Tag>();
-			for(String s : this.getTagString().split(" ")) {
-				result.add(new Tag(s));
+			
+			if(mTags != null){
+				for(String s : mTags.split(" ")) {
+					result.add(new Tag(s));
+				}
 			}
+			
 			return result;
         }
         
         public String getHash(){
         	return mHash;
         }
-
+        
         public void setHash(String hash) {
         	mHash = hash;
         }
-        
+
         public String getMeta(){
         	return mMeta;
         }
@@ -136,24 +142,36 @@ public class BookmarkContent {
         	mTime = time;
         }
         
-        public long getLastUpdate(){
-        	return mLastUpdate;
+        public boolean getShared(){
+        	return mShared;
         }
         
-        public void setPrivate(Boolean priv) {
-        	mPrivate = priv;
-        }
-        
-        public boolean getPrivate(){
-        	return mPrivate;
+        public void setShared(boolean shared) {
+        	mShared = shared;
         }
         
         public String getAccount(){
         	return mAccount;
         }
         
-        public void setAccount(String account){
+        public void setAccount(String account) {
         	mAccount = account;
+        }
+        
+        public boolean getSynced(){
+        	return mSynced;
+        }
+        
+        public void setSynced(boolean synced){
+        	mSynced = synced;
+        }
+        
+        public boolean getDeleted(){
+        	return mDeleted;
+        }
+        
+        public void setDeleted(boolean deleted){
+        	mDeleted = deleted;
         }
         
         public Bookmark() {
@@ -167,25 +185,16 @@ public class BookmarkContent {
             mUrl = url;
         }
         
-        public Bookmark(String url, String description, String notes, String tags, String account, long time) {
-            mUrl = url;
-            mDescription = description;
-            mNotes = notes;
-            mTags = tags;
-            mAccount = account;
-            mTime = time;
-        }
-        
         public Bookmark(String url, String description, String notes, String tags, boolean priv, long time) {
             mUrl = url;
             mDescription = description;
             mNotes = notes;
             mTags = tags;
-            mPrivate = priv;
+            mShared = priv;
             mTime = time;
         }
         
-        public Bookmark(int id, String account, String url, String description, String notes, String tags, String hash, String meta, long time) {
+        public Bookmark(int id, String account, String url, String description, String notes, String tags, String hash, String meta, long time, boolean share, boolean synced, boolean deleted) {
             mId = id;
         	mUrl = url;
             mDescription = description;
@@ -195,6 +204,9 @@ public class BookmarkContent {
             mMeta = meta;
             mTime = time;
             mAccount = account;
+            mShared = share;
+            mSynced = synced;
+            mDeleted = deleted;
         }
         
         public Bookmark copy() {
@@ -203,51 +215,30 @@ public class BookmarkContent {
         	b.mDescription = this.mDescription;
         	b.mHash = this.mHash;
         	b.mId = this.mId;
-        	b.mLastUpdate = this.mLastUpdate;
         	b.mMeta = this.mMeta;
         	b.mNotes = this.mNotes;
-        	b.mPrivate = this.mPrivate;
+        	b.mShared = this.mShared;
         	b.mTags = this.mTags;
         	b.mTime = this.mTime;
         	b.mUrl = this.mUrl;
-        	
+        	b.mSynced = this.mSynced;
+        	b.mDeleted = this.mDeleted;
         	return b;
         }
         
-        public static Bookmark valueOf(JSONObject userBookmark) {
-            try {
-                final String url = userBookmark.getString("u");
-                final String description = userBookmark.getString("d");
-                final JSONArray tags = userBookmark.getJSONArray("t");
-                final String stime = userBookmark.getString("dt");
-                
-                String notes = "";
-                String account = "";
-                
-                if(userBookmark.has("n")) {
-                	notes = userBookmark.getString("n");
-                }
-                if(userBookmark.has("a")) {
-                	account = userBookmark.getString("a");
-                }
-                
-                long time = 0;
-                
-				if(stime != null && !stime.equals("")){
-					try {
-						time = DateParser.parseTime(stime);
-					} catch (ParseException e) {
-						Log.d("Parse error", stime);
-						e.printStackTrace();
-					}
-				}
-
-                return new Bookmark(url, description, notes, tags.join(" ").replace("\"", ""), account, time);
-            } catch (final Exception ex) {
-                Log.i("User.Bookmark", "Error parsing JSON user object");
-                Log.e("User.Bookmark", ex.getMessage());
-            }
-            return null;
+        public void clear() {
+        	this.mAccount = null;
+        	this.mDescription = null;
+        	this.mHash = null;
+        	this.mId = 0;
+        	this.mMeta = null;
+        	this.mNotes = null;
+        	this.mShared = true;
+        	this.mTags = null;
+        	this.mTime = 0;
+        	this.mUrl = null;
+        	this.mSynced = false;
+        	this.mDeleted = false;
         }
 	}
 }

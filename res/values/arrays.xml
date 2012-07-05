@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
  -->
 <resources>
-	<string-array name="pref_contact_bookmark_results_entries">
-        <item>10</item>
-        <item>50</item>
-        <item>100</item>
-    </string-array>
-    <string-array name="pref_contact_bookmark_results_values">
-        <item>10</item>
-        <item>50</item>
-        <item>100</item>
-    </string-array>
     <string-array name="pref_view_bookmark_default_action_entries">
         <item>Open in browser</item>
         <item>View details</item>
@@ -41,12 +31,64 @@
         <item>browser</item>
         <item>view</item>
         <item>read</item>
+    </string-array> 
+    <string-array name="pref_reading_background_entries">
+        <item>White</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="pref_reading_background_values">
+        <item>-1</item>
+        <item>-16777216</item>
+    </string-array>
+    <string-array name="pref_reading_font_entries">
+        <item>Roboto (sans)</item>
+        <item>News Cycle (sans)</item>
+        <item>Alegreya (serif)</item>
+        <item>Cousine (fixed-width)</item>
+    </string-array>
+    <string-array name="pref_reading_font_values">
+        <item>Roboto-Regular</item>
+        <item>NewsCycle-Regular</item>
+        <item>Alegreya-Regular</item>
+        <item>Cousine-Regular-Latin</item>
+    </string-array>
+    <string-array name="pref_reading_margins_entries">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="pref_reading_margins_values">
+        <item>10</item>
+        <item>20</item>
+        <item>40</item>
+    </string-array>
+    <string-array name="pref_reading_fontsize_entries">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="pref_reading_fontsize_values">
+        <item>12</item>
+        <item>16</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="pref_reading_linespace_entries">
+        <item>Less</item>
+        <item>Normal</item>
+        <item>More</item>
+    </string-array>
+    <string-array name="pref_reading_linespace_values">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
     </string-array>
     <string-array name="pref_synctime_entries">
         <item>5 mins</item>
         <item>15 mins</item>
         <item>30 mins</item>
         <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
         <item>12 hours</item>
         <item>24 hours</item>
     </string-array>
@@ -55,8 +97,9 @@
         <item>15</item>
         <item>30</item>
         <item>60</item>
+        <item>180</item>
+        <item>360</item>
         <item>720</item>
         <item>0</item>
     </string-array>
-    
 </resources>

@@ -28,6 +28,9 @@ import com.deliciousdroid.providers.BookmarkContentProvider;
 import com.deliciousdroid.providers.BundleContent.Bundle;
 import com.deliciousdroid.providers.TagContent.Tag;
 
+import android.accounts.Account;
+import android.app.Activity;
+import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
@@ -40,7 +43,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 
-public class BrowseBundles extends AppBaseListActivity {
+public class BrowseBundles extends ListActivity {
 		
 	private String sortfield = Bundle.Name + " ASC";
 	
@@ -52,12 +55,14 @@ public class BrowseBundles extends AppBaseListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browse_bundles);
 		
+		Account mAccount = null;
 		if(mAccount != null) {
 			
 			Intent intent = getIntent();
 			String action = intent.getAction();
 			
 			Uri data = getIntent().getData();
+			final String username;
 			if(data != null) {
 				username = data.getUserInfo();
 			} else username = mAccount.name;
@@ -73,7 +78,7 @@ public class BrowseBundles extends AppBaseListActivity {
 				
 			} else if(Intent.ACTION_SEARCH.equals(action)) {
 				if(intent.hasExtra(SearchManager.QUERY)){
-					Intent i = new Intent(mContext, MainSearchResults.class);
+					Intent i = new Intent(getBaseContext(), MainSearchResults.class);
 					i.putExtras(intent.getExtras());
 					startActivity(i);
 					finish();
@@ -147,7 +152,7 @@ public class BrowseBundles extends AppBaseListActivity {
 					final Cursor c = (Cursor)lv.getItemAtPosition(position);
 					Bundle b = BundleManager.CursorToBundle(c);
 			    	
-					Intent i = new Intent(mContext, BrowseBookmarks.class);
+					Intent i = new Intent(getBaseContext(), BrowseBookmarks.class);
 					i.setAction(Intent.ACTION_VIEW);
 					i.addCategory(Intent.CATEGORY_DEFAULT);
 	
@@ -165,20 +170,6 @@ public class BrowseBundles extends AppBaseListActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		
-		if(result && isMyself()) {
-		    SubMenu sortmenu = menu.addSubMenu(Menu.NONE, Menu.NONE, 1, R.string.menu_sort_title);
-		    sortmenu.setIcon(R.drawable.ic_menu_sort_alphabetically);
-		    sortmenu.add(Menu.NONE, sortNameAsc, 0, "Name (A-Z)");
-		    sortmenu.add(Menu.NONE, sortNameDesc, 1, "Name (Z-A)");
-		}
-		
-	    return result;
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -203,6 +194,7 @@ public class BrowseBundles extends AppBaseListActivity {
 	}
 	
 	private void loadBundleList() {
+		String username = null;
 		Cursor c = BundleManager.GetBundles(username, sortfield, this);
 		startManagingCursor(c);
 		setListAdapter(new SimpleCursorAdapter(this, R.layout.bundle_view, c, new String[] {Bundle.Name}, new int[] {R.id.bundle_name}));

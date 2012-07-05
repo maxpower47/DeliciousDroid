@@ -1,20 +1,20 @@
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
@@ -25,36 +25,16 @@ import com.deliciousdroid.util.DateParser;
 
 public class Update {
 	private long lastUpdate;
-	private int inboxNew;
 	
 	public long getLastUpdate(){
 		return lastUpdate;
 	}
 	
-	public void setLastUpdate(long lastUpdate){
-		this.lastUpdate = lastUpdate;
-	}
-	
-	public int getInboxNew(){
-		return inboxNew;
-	}
-	
-	public void setInboxNew(int inboxNew){
-		this.inboxNew = inboxNew;
-	}
-	
-	public Update(){
-		
-	}
-	
-	public Update(long update, int inbox){
+	public Update(long update){
 		lastUpdate = update;
-		inboxNew = inbox;
 	}
 	
 	public static Update valueOf(String updateResponse){
-		Update result = new Update(0, 0);
-		
         try {
         	int start = updateResponse.indexOf("<update");
         	int end = updateResponse.indexOf("/>", start);
@@ -63,18 +43,13 @@ public class Update {
         	int timeend = updateElement.indexOf("\"", timestart + 7);
         	String time = updateElement.substring(timestart + 6, timeend);
 
-			long updateTime = DateParser.parseTime(time);
+			long updateTime = DateParser.parse(time).getTime();
 			
-			//int inboxstart = updateElement.indexOf("inboxnew");
-			//int inboxend = updateElement.indexOf("\"", inboxstart + 10);
-			//int inbox = Integer.parseInt(updateElement.substring(inboxstart + 10, inboxend));
-			//int inbox = 0;
-			result.setLastUpdate(updateTime);
-			
+			return new Update(updateTime);
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 		}
-		return result;
+		return null;
 	}
 	
 }

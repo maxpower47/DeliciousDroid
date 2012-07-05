@@ -1,19 +1,20 @@
 package com.deliciousdroid.util;
 
-public class IntUtils {
-	public static int parseUInt(final String s) {
-		// Check for a sign.
-		int num  = 0;
-		final int len  = s.length();
-		final char ch  = s.charAt(0);
+public class IntUtils {	
+	public static int parseUInt(final String s)
+	{
+	    // Check for a sign.
+	    int num  = 0;
+	    final int len  = s.length();
+	    final char ch  = s.charAt(0);
 
-		num = '0' - ch;
+	    num = '0' - ch;
 
-		// Build the number.
-		int i = 1;
-		while ( i < len )
-			num = num * 10 + '0' - s.charAt(i++);
+	    // Build the number.
+	    int i = 1;
+	    while ( i < len )
+	        num = num * 10 + '0' - s.charAt(i++);
 
-		return -1 * num;
-	}  
+	    return -1 * num;
+	} 
 }

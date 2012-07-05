@@ -1,20 +1,20 @@
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateParser {
-
+	
 	public static final TimeZone tz = TimeZone.getTimeZone("GMT");
 	public static final Calendar c = Calendar.getInstance(tz);
 	
@@ -53,17 +53,13 @@ public class DateParser {
         
     }
     
-    public static long parseTime( String input ) throws java.text.ParseException {
-    	try{
-	        c.set(IntUtils.parseUInt(input.substring(0, 4)), 
-	        		IntUtils.parseUInt(input.substring(5, 7)) - 1, 
-	        		IntUtils.parseUInt(input.substring(8, 10)), 
-	        		IntUtils.parseUInt(input.substring(11, 13)), 
-	        		IntUtils.parseUInt(input.substring(14, 16)), 
-	        		IntUtils.parseUInt(input.substring(17, 19)));
-    	} catch(java.lang.StringIndexOutOfBoundsException e){
-    		throw new java.text.ParseException("String length error", 0);
-    	}
+    public static long parseTime( String input ) {
+        c.set(IntUtils.parseUInt(input.substring(0, 4)), 
+        		IntUtils.parseUInt(input.substring(5, 7)) - 1, 
+        		IntUtils.parseUInt(input.substring(8, 10)), 
+        		IntUtils.parseUInt(input.substring(11, 13)), 
+        		IntUtils.parseUInt(input.substring(14, 16)), 
+        		IntUtils.parseUInt(input.substring(17, 19)));
 
         return c.getTimeInMillis();  
     }

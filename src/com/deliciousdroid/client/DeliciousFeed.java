@@ -22,6 +22,8 @@
 package com.deliciousdroid.client;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +39,8 @@ import org.json.JSONObject;
 
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
+import com.deliciousdroid.client.HttpClientFactory;
+import com.deliciousdroid.xml.SaxFeedParser;
 
 import android.accounts.Account;
 import android.database.Cursor;
@@ -49,10 +53,10 @@ public class DeliciousFeed {
     public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
 
     public static final String FETCH_FRIEND_UPDATES_URI = "http://feeds.delicious.com/v2/json/networkmembers/";
-    public static final String FETCH_FRIEND_BOOKMARKS_URI = "http://feeds.delicious.com/v2/json/";
-    public static final String FETCH_NETWORK_RECENT_BOOKMARKS_URI = "http://feeds.delicious.com/v2/json/network/";
-    public static final String FETCH_HOTLIST_BOOKMARKS_URI = "http://feeds.delicious.com/v2/json";
-    public static final String FETCH_POPULAR_BOOKMARKS_URI = "http://feeds.delicious.com/v2/json/popular";
+    public static final String FETCH_FRIEND_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/";
+    public static final String FETCH_NETWORK_RECENT_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/network/";
+    public static final String FETCH_HOTLIST_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss";
+    public static final String FETCH_POPULAR_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/popular";
     public static final String FETCH_STATUS_URI = "http://feeds.delicious.com/v2/json/network/";
     public static final String FETCH_TAGS_URI = "http://feeds.delicious.com/v2/json/tags/";
 	
@@ -193,44 +197,37 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static Cursor fetchFriendBookmarks(String username, String tagName, int limit)
-    	throws JSONException, IOException, AuthenticationException {
+    public static Cursor fetchUserRecent(String username, String tagName)
+    	throws IOException,  ParseException {
     	
     	String url = FETCH_FRIEND_BOOKMARKS_URI + username;
     	
     	if(tagName != null && tagName != "")
     		url += "/" + tagName;
-    	url += "?count=" + limit;
+    	url += "?count=100";
     	
         final HttpGet post = new HttpGet(url);
         
-        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
-    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
-            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
+        Cursor bookmarkList = null;
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
-        final String response = EntityUtils.toString(resp.getEntity());
+        InputStream responseStream = resp.getEntity().getContent();
 
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 
-            final JSONArray bookmarks = new JSONArray(response);
-            
-            for (int i = 0; i < bookmarks.length(); i++) {
-            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
-            	
-                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
-                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
-            }
+        	SaxFeedParser parser = new SaxFeedParser(responseStream);
+
+			bookmarkList = parser.parse();
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
                 Log.e(TAG, "Authentication exception in fetching friend status list");
-                throw new AuthenticationException();
+                //throw new AuthenticationException();
             } else {
                 Log.e(TAG, "Server error in fetching friend status list");
                 throw new IOException();
             }
         }
-        return bookmarkCursor;
+        return bookmarkList;
     }
     
     /**
@@ -244,42 +241,27 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static Cursor fetchNetworkRecent(String userName, int limit)
-    	throws JSONException, IOException, AuthenticationException, FeedForbiddenException {
+    public static Cursor fetchNetworkRecent(String userName)
+    	throws IOException, ParseException {
 
-        final HttpGet post = new HttpGet(FETCH_NETWORK_RECENT_BOOKMARKS_URI + userName + "?count=" + limit);
+        final HttpGet post = new HttpGet(FETCH_NETWORK_RECENT_BOOKMARKS_URI + userName + "?count=100");
         
-        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
-	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
-        	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
+        Cursor bookmarkList = null;
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
-        final String response = EntityUtils.toString(resp.getEntity());
+        InputStream responseStream = resp.getEntity().getContent();
 
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        	SaxFeedParser parser = new SaxFeedParser(responseStream);
 
-            final JSONArray bookmarks = new JSONArray(response);
-            
-            for (int i = 0; i < bookmarks.length(); i++) {
-            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
-            	
-                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
-                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
-            }
+			bookmarkList = parser.parse();
+
         } else {
-            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-                Log.e(TAG, "Authentication exception in fetching network recent list");
-                throw new AuthenticationException();
-            } else if(resp.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
-            	Log.e(TAG, "Fetching network recent list forbidden");
-            	throw new FeedForbiddenException();
-            } else {
-                Log.e(TAG, "Server error in fetching network recent list");
-                throw new IOException();
-            }
+        	Log.e(TAG, "Server error in fetching network recent list");
+            throw new IOException();
         }
-
-        return bookmarkCursor;
+        
+        return bookmarkList;
     }
     
     /**
@@ -292,40 +274,27 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static Cursor fetchHotlist(int limit)
-    	throws JSONException, IOException, AuthenticationException {
+    public static Cursor fetchHotlist()
+    	throws IOException, ParseException {
 
-        final HttpGet post = new HttpGet(FETCH_HOTLIST_BOOKMARKS_URI + "?count=" + limit);
+        final HttpGet post = new HttpGet(FETCH_HOTLIST_BOOKMARKS_URI + "?count=100");
         
-        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
-    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
-            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
+        Cursor bookmarkList = null;
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
-        final String response = EntityUtils.toString(resp.getEntity());
+        InputStream responseStream = resp.getEntity().getContent();
 
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        	SaxFeedParser parser = new SaxFeedParser(responseStream);
 
-            final JSONArray bookmarks = new JSONArray(response);
-            Log.d(TAG, response);
-            
-            for (int i = 0; i < bookmarks.length(); i++) {
-            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
-            	
-                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
-                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
-            }
+			bookmarkList = parser.parse();
+
         } else {
-            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-                Log.e(TAG, "Authentication exception in fetching hotlist");
-                throw new AuthenticationException();
-            } else {
-                Log.e(TAG, "Server error in fetching hotlist");
-                throw new IOException();
-            }
+        	Log.e(TAG, "Server error in fetching network recent list");
+            throw new IOException();
         }
-
-        return bookmarkCursor;
+        
+        return bookmarkList;
     }
     
     /**
@@ -338,39 +307,26 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static Cursor fetchPopular(int limit)
-    	throws JSONException, IOException, AuthenticationException {
+    public static Cursor fetchPopular()
+    	throws IOException, ParseException {
 
-        final HttpGet post = new HttpGet(FETCH_POPULAR_BOOKMARKS_URI + "?count=" + limit);
+        final HttpGet post = new HttpGet(FETCH_POPULAR_BOOKMARKS_URI + "?count=100");
         
-        final MatrixCursor bookmarkCursor = new MatrixCursor(new String[] {Bookmark._ID, Bookmark.Url, 
-    	        Bookmark.Description, Bookmark.Meta, Bookmark.Tags,
-            	Bookmark.Notes, Bookmark.Time, Bookmark.Account});
+        Cursor bookmarkList = null;
 
         final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
-        final String response = EntityUtils.toString(resp.getEntity());
+        InputStream responseStream = resp.getEntity().getContent();
 
         if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        	SaxFeedParser parser = new SaxFeedParser(responseStream);
 
-            final JSONArray bookmarks = new JSONArray(response);
-            Log.d(TAG, response);
-            
-            for (int i = 0; i < bookmarks.length(); i++) {
-            	Bookmark b = Bookmark.valueOf(bookmarks.getJSONObject(i));
-            	
-                bookmarkCursor.addRow(new Object[]{0, b.getUrl(), b.getDescription(),
-                	b.getMeta(), b.getTagString(), b.getNotes(), b.getTime(), b.getAccount()});
-            }
+			bookmarkList = parser.parse();
+
         } else {
-            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-                Log.e(TAG, "Authentication exception in fetching popular");
-                throw new AuthenticationException();
-            } else {
-                Log.e(TAG, "Server error in fetching popular");
-                throw new IOException();
-            }
+        	Log.e(TAG, "Server error in fetching network recent list");
+            throw new IOException();
         }
-
-        return bookmarkCursor;
+        
+        return bookmarkList;
     }
 }

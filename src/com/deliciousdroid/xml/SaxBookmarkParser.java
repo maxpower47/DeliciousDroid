@@ -62,12 +62,7 @@ public class SaxBookmarkParser {
             		currentBookmark.setUrl(url);
             	}
             	if(time != null) {
-            		try {
-						currentBookmark.setTime(DateParser.parseTime(time));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+            		currentBookmark.setTime(DateParser.parseTime(time));
             	}
             	if(description != null) {
             		currentBookmark.setDescription(description);
@@ -87,6 +82,8 @@ public class SaxBookmarkParser {
             	if(hashurl != null) {
             		currentBookmark.setHash(hashurl);
             	}
+            	
+            	currentBookmark.setSynced(true);
             	
             	bookmarks.add(currentBookmark.copy());
             }

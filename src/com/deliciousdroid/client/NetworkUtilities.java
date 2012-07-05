@@ -21,11 +21,11 @@
 
 package com.deliciousdroid.client;
 
-import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
-import com.deliciousdroid.authenticator.AuthenticatorActivity;
+import com.deliciousdroid.Constants;
+import com.deliciousdroid.client.HttpClientFactory;
+import com.deliciousdroid.providers.ArticleContent.Article;
 
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -39,8 +39,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * Provides utility methods for communicating with the server.
@@ -66,30 +68,9 @@ public class NetworkUtilities {
  
     private static final AuthScope SCOPE = new AuthScope(DELICIOUS_AUTHORITY, PORT);
     private static final AuthScope SCOPE_HTTP = new AuthScope(DELICIOUS_AUTHORITY, PORT_HTTP);
-    
 
     /**
-     * Executes the network requests on a separate thread.
-     * 
-     * @param runnable The runnable instance containing network mOperations to
-     *        be executed.
-     */
-    public static Thread performOnBackgroundThread(final Runnable runnable) {
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    runnable.run();
-                } finally {
-                }
-            }
-        };
-        t.start();
-        return t;
-    }
-
-    /**
-     * Attempts to authenticate to Delicious using a legacy Delicious account.
+     * Attempts to authenticate to Pinboard using a legacy Pinboard account.
      * 
      * @param username The user's username.
      * @param password The user's password.
@@ -98,25 +79,22 @@ public class NetworkUtilities {
      * @return The boolean result indicating whether the user was
      *         successfully authenticated.
      */
-    public static boolean deliciousAuthenticate(String username, String password,
-        Handler handler, final Context context) {
+    public static boolean pinboardAuthenticate(String username, String password) {
         final HttpResponse resp;
         
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME_HTTP);
+        builder.scheme(SCHEME);
         builder.authority(DELICIOUS_AUTHORITY);
         builder.appendEncodedPath("v1/posts/update");
         Uri uri = builder.build();
-        Log.d("auth uri", String.valueOf(uri));
+
         HttpGet request = new HttpGet(String.valueOf(uri));
-        
+
         DefaultHttpClient client = (DefaultHttpClient)HttpClientFactory.getThreadSafeClient();
         
         CredentialsProvider provider = client.getCredentialsProvider();
         Credentials credentials = new UsernamePasswordCredentials(username, password);
-        provider.setCredentials(SCOPE_HTTP, credentials);
-        
-        client.addRequestInterceptor(new PreemptiveAuthInterceptor(), 0);
+        provider.setCredentials(SCOPE, credentials);
 
         try {
             resp = client.execute(request);
@@ -124,20 +102,17 @@ public class NetworkUtilities {
                 if (Log.isLoggable(TAG, Log.VERBOSE)) {
                     Log.v(TAG, "Successful authentication");
                 }
-                sendResult(new LoginResult(true), handler, context);
                 return true;
             } else {
                 if (Log.isLoggable(TAG, Log.VERBOSE)) {
                     Log.v(TAG, "Error authenticating" + resp.getStatusLine());
                 }
-                sendResult(new LoginResult(false), handler, context);
                 return false;
             }
         } catch (final IOException e) {
             if (Log.isLoggable(TAG, Log.VERBOSE)) {
                 Log.v(TAG, "IOException when getting authtoken", e);
             }
-            sendResult(new LoginResult(false), handler, context);
             return false;
         } finally {
             if (Log.isLoggable(TAG, Log.VERBOSE)) {
@@ -146,6 +121,7 @@ public class NetworkUtilities {
         }
     }
 
+    
     /**
      * Gets the title of a web page.
      * 
@@ -162,12 +138,12 @@ public class NetworkUtilities {
 	
 	    	HttpResponse resp = null;
 	    	HttpGet post = null;
-	    		
-			post = new HttpGet(url);
-
-			post.setHeader("User-Agent", "Mozilla/5.0");
+	    	
+	    	try {
+				post = new HttpGet(url.replace("|", "%7C"));
 	
-	        try {
+				post.setHeader("User-Agent", "Mozilla/5.0");
+	
 				resp = HttpClientFactory.getThreadSafeClient().execute(post);
 
 		    	if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -184,43 +160,43 @@ public class NetworkUtilities {
     }
     
     /**
-     * Sends the authentication response from server back to the caller main UI
-     * thread through its handler.
+     * Gets the title of a web page.
      * 
-     * @param result The boolean holding authentication result
-     * @param handler The main UI thread's handler instance.
-     * @param context The caller Activity's context.
+     * @param url The URL of the web page.
+     * @return A String containing the title of the web page.
      */
-    private static void sendResult(final LoginResult result, final Handler handler,
-        final Context context) {
-        if (handler == null || context == null) {
-            return;
-        }
-        
-        handler.post(new Runnable() {
-            public void run() {
-                ((AuthenticatorActivity) context).onAuthenticationResult(result);
-            }
-        });
-    }
-
-    /**
-     * Attempts to authenticate the user credentials on the server.
-     * 
-     * @param username The user's username
-     * @param password The user's password to be authenticated
-     * @param handler The main UI thread's handler instance.
-     * @param context The caller Activity's context
-     * @return Thread The thread on which the network mOperations are executed.
-     */
-    public static Thread attemptAuth(final String username,
-        final String password, final Handler handler, final Context context) {
-        final Runnable runnable = new Runnable() {
-            public void run() {
-            	deliciousAuthenticate(username, password, handler, context);
-            }
-        };
-        // run on background thread.
-        return NetworkUtilities.performOnBackgroundThread(runnable);
+    public static Article getArticleText(String url) {
+   	
+    	if(url != null && !url.equals("")) {
+    		
+    		if(!url.startsWith("http")){
+    			url = "http://" + url;
+    		}
+	
+	    	HttpResponse resp = null;
+	    	HttpGet post = null;
+	    	
+	    	try {
+				post = new HttpGet(Constants.TEXT_EXTRACTOR_URL + URLEncoder.encode(url, "UTF-8") + "&format=json");
+	
+				post.setHeader("User-Agent", "Mozilla/5.0");
+	
+				resp = HttpClientFactory.getThreadSafeClient().execute(post);
+				
+		        
+		        final int statusCode = resp.getStatusLine().getStatusCode();
+				
+		    	if (statusCode == HttpStatus.SC_OK) {		    		
+		    		final String response = EntityUtils.toString(resp.getEntity());
+		    		
+		    		final JSONObject article = new JSONObject(response);
+		    		
+		    		return Article.valueOf(article);
+		    	}
+			} catch (Exception e) {
+				return null;
+			}
+    	}
+		return null;
     }
 }

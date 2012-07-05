@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * DeliciousDroid - http://code.google.com/p/DeliciousDroid/
+ * PinDroid - http://code.google.com/p/PinDroid/
  *
  * Copyright (C) 2010 Matt Schmidt
  *
- * DeliciousDroid is free software; you can redistribute it and/or modify
+ * PinDroid is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3 of the License,
  * or (at your option) any later version.
  *
- * DeliciousDroid is distributed in the hope that it will be useful, but
+ * PinDroid is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with DeliciousDroid; if not, write to the Free Software
+ * along with PinDroid; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
@@ -24,12 +24,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="42dip"
-	android:background="#CCC">
+	android:background="@color/actionbar_background">
 	<TextView android:id="@+id/action_bar_title"
 		android:textSize="16dip"
 		android:textStyle="bold"
-		android:textColor="#555"
-		android:text="DeliciousDroid"
+		android:textColor="@color/actionbar_text"
+		android:text="@string/pindroid"
 		android:layout_width="265dip"
 		android:maxLines="2"
 		android:ellipsize="end"
@@ -38,13 +38,14 @@
 		android:layout_alignParentLeft="true"
 		android:layout_centerVertical="true" />
 	<ImageButton android:id="@+id/action_bar_search"
-		android:src="@android:drawable/ic_menu_search"
+		android:src="@drawable/ic_menu_search"
 		android:scaleType="fitXY"
 		android:background="@drawable/action_bar_button"
 		android:layout_width="42dip"
 		android:layout_height="fill_parent"
 		android:layout_alignParentRight="true"
-		android:onClick="searchHandler" />
+		android:onClick="searchHandler"
+		android:contentDescription="@string/alt_action_search_btn" />
 	<LinearLayout android:id="@+id/divider_btn_search"
 		android:background="@drawable/action_bar_divider"
 		android:layout_width="1dip"

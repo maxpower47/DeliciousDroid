@@ -31,6 +31,7 @@ import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -56,6 +57,8 @@ import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.xml.SaxBookmarkParser;
 import com.deliciousdroid.xml.SaxBundleParser;
 import com.deliciousdroid.xml.SaxTagParser;
+import com.deliciousdroid.client.TooManyRequestsException;
+import com.deliciousdroid.client.Update;
 
 public class DeliciousApi {
 	
@@ -64,15 +67,15 @@ public class DeliciousApi {
     public static final String USER_AGENT = "AuthenticationService/1.0";
     public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
 
-    public static final String FETCH_TAGS_URI = "tags/get";
-    public static final String FETCH_BUNDLES_URI = "tags/bundles/all";
-    public static final String FETCH_SUGGESTED_TAGS_URI = "posts/suggest";
-    public static final String FETCH_BOOKMARKS_URI = "posts/all";
-    public static final String FETCH_CHANGED_BOOKMARKS_URI = "posts/all";
-    public static final String FETCH_BOOKMARK_URI = "posts/get";
-    public static final String LAST_UPDATE_URI = "posts/update";
-    public static final String DELETE_BOOKMARK_URI = "posts/delete";
-    public static final String ADD_BOOKMARKS_URI = "posts/add";
+    public static final String FETCH_TAGS_URI = "v1/tags/get";
+    public static final String FETCH_BUNDLES_URI = "v1/tags/bundles/all";
+    public static final String FETCH_SUGGESTED_TAGS_URI = "v1/posts/suggest";
+    public static final String FETCH_BOOKMARKS_URI = "v1/posts/all";
+    public static final String FETCH_CHANGED_BOOKMARKS_URI = "v1/posts/all";
+    public static final String FETCH_BOOKMARK_URI = "v1/posts/get";
+    public static final String LAST_UPDATE_URI = "v1/posts/update";
+    public static final String DELETE_BOOKMARK_URI = "v1/posts/delete";
+    public static final String ADD_BOOKMARKS_URI = "v1/posts/add";
   
     private static final String SCHEME = "http";
     private static final String SCHEME_HTTP = "http";
@@ -92,24 +95,29 @@ public class DeliciousApi {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static Update lastUpdate(Account account, Context context)
-    	throws IOException, AuthenticationException {
+    	throws IOException, AuthenticationException, TooManyRequestsException {
 
     	String response = null;
     	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	Update update = null;
-    	String url = LAST_UPDATE_URI;
     	
-    	responseStream = DeliciousApiCall(url, params, account, context);
-        response = convertStreamToString(responseStream);
-        responseStream.close();
+    	responseStream = DeliciousApiCall(LAST_UPDATE_URI, params, account, context);
+    	response = convertStreamToString(responseStream);
+    	responseStream.close();
     	
-        if (response.contains("<?xml")) {
-        	update = Update.valueOf(response);
-        } else {
-            Log.e(TAG, "Server error in fetching bookmark list");
-            throw new IOException();
-        }
+    	try{
+	        if (response.contains("<?xml")) {
+	        	update = Update.valueOf(response);
+	        } else {
+	            Log.e(TAG, "Server error in fetching bookmark list");
+	            throw new IOException();
+	        }
+    	}
+    	catch(Exception e) {
+    		Log.e(TAG, "Server error in fetching bookmark list");
+    		throw new IOException();
+    	}
         return update;
     }
     
@@ -126,7 +134,7 @@ public class DeliciousApi {
      * @throws Exception If an unknown error is encountered.
      */
     public static Boolean addBookmark(Bookmark bookmark, Account account, Context context) 
-    	throws Exception {
+    	throws IOException, AuthenticationException, TooManyRequestsException {
 
     	String url = bookmark.getUrl();
     	if(url.endsWith("/")) {
@@ -140,31 +148,23 @@ public class DeliciousApi {
 		params.put("tags", bookmark.getTagString());
 		params.put("url", bookmark.getUrl());
 		
-		if(bookmark.getPrivate()){
-			params.put("shared", "no");
-		}
+		if(bookmark.getShared()){
+			params.put("shared", "yes");
+		} else params.put("shared", "no");
 		
 		String uri = ADD_BOOKMARKS_URI;
 		String response = null;
 		InputStream responseStream = null;
 
     	responseStream = DeliciousApiCall(uri, params, account, context);
-        response = convertStreamToString(responseStream);
-        responseStream.close();
+    	response = convertStreamToString(responseStream);
+    	responseStream.close();
 
         if (response.contains("<result code=\"done\"/>")) {
             return true;
         } else {
-        	if(response.contains("<result code=\"something went wrong\"/>")){
-                Log.e(TAG, "Server error in adding bookmark");
-                throw new IOException();
-            } else if(response.contains("token_expired")){
-            	Log.d(TAG, "Token Expired");
-            	throw new TokenRejectedException();
-            } else{
-            	Log.e(TAG, "Unknown error in adding bookmark");
-            	throw new Exception();
-            }
+        	Log.e(TAG, "Server error in adding bookmark");
+            throw new IOException();
         }
     }
     
@@ -179,7 +179,7 @@ public class DeliciousApi {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static Boolean deleteBookmark(Bookmark bookmark, Account account, Context context) 
-    	throws IOException, AuthenticationException {
+    	throws IOException, AuthenticationException, TooManyRequestsException {
 
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String response = null;
@@ -189,10 +189,10 @@ public class DeliciousApi {
     	params.put("url", bookmark.getUrl());
 
     	responseStream = DeliciousApiCall(url, params, account, context);
-        response = convertStreamToString(responseStream);
-        responseStream.close();
+    	response = convertStreamToString(responseStream);
+    	responseStream.close();
     	
-        if (response.contains("<result code=\"done\"")) {
+        if (response.contains("<result code=\"done\"") || response.contains("<result code=\"item not found\"")) {
             return true;
         } else {
             Log.e(TAG, "Server error in fetching bookmark list");
@@ -213,7 +213,7 @@ public class DeliciousApi {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static ArrayList<Bookmark> getBookmark(ArrayList<String> hashes, Account account,
-        Context context) throws IOException, AuthenticationException {
+        Context context) throws IOException, AuthenticationException, TooManyRequestsException {
 
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
     	TreeMap<String, String> params = new TreeMap<String, String>();
@@ -232,18 +232,35 @@ public class DeliciousApi {
 
     	responseStream = DeliciousApiCall(url, params, account, context);
     	SaxBookmarkParser parser = new SaxBookmarkParser(responseStream);
-
-        try {
-        	bookmarkList = parser.parse();
-        } catch (ParseException e) {
-        	Log.e(TAG, "Server error in fetching bookmark list");
-        	throw new IOException();
-        }
+    	
+    	try {
+			bookmarkList = parser.parse();
+		} catch (ParseException e) {
+            Log.e(TAG, "Server error in fetching bookmark list");
+            throw new IOException();
+		}
 
         responseStream.close();
         return bookmarkList;
     }
     
+    /**
+     * Retrieves the entire list of bookmarks for a user from Pinboard.
+     * 
+     * @param tagname If specified, will only retrieve bookmarks with a specific tag.
+     * @param account The account being synced.
+     * @param context The current application context.
+     * @return A list of bookmarks received from the server.
+     * @throws IOException If a server error was encountered.
+     * @throws AuthenticationException If an authentication error was encountered.
+     * @throws TooManyRequestsException 
+     */
+    public static ArrayList<Bookmark> getAllBookmarks(String tagName, Account account, Context context) 
+    	throws IOException, AuthenticationException, TooManyRequestsException {
+
+        return getAllBookmarks(tagName, 0, 0, account, context);
+    }
+        
     /**
      * Retrieves the entire list of bookmarks for a user from Delicious.  Warning:  Overuse of this 
      * api call will get your account throttled.
@@ -255,10 +272,10 @@ public class DeliciousApi {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static ArrayList<Bookmark> getAllBookmarks(String tagName, Account account, Context context) 
-    	throws IOException, AuthenticationException {
-    	
+    public static ArrayList<Bookmark> getAllBookmarks(String tagName, int start, int count, Account account, Context context) 
+	throws IOException, AuthenticationException, TooManyRequestsException {
     	ArrayList<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+
     	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	String url = FETCH_BOOKMARKS_URI;
@@ -267,19 +284,30 @@ public class DeliciousApi {
     		params.put("tag", tagName);
     	}
     	
+    	if(start != 0){
+    		params.put("start", Integer.toString(start));
+    	}
+    	
+    	if(count != 0){
+    		params.put("results", Integer.toString(count));
+    	}
+    	
     	params.put("meta", "yes");
 
     	responseStream = DeliciousApiCall(url, params, account, context);
     	SaxBookmarkParser parser = new SaxBookmarkParser(responseStream);
-
-        try {
-        	bookmarkList = parser.parse();
-        } catch (ParseException e) {
-        	Log.e(TAG, "Server error in fetching bookmark list");
-        	throw new IOException();
-        }
+    	
+    	//Log.d("kdf", convertStreamToString(responseStream));
+    	
+    	try {
+			bookmarkList = parser.parse();
+		} catch (ParseException e) {
+            Log.e(TAG, "Server error in fetching bookmark list");
+            throw new IOException();
+		}
 
         responseStream.close();
+        
         return bookmarkList;
     }
     
@@ -328,9 +356,14 @@ public class DeliciousApi {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static ArrayList<Tag> getSuggestedTags(String suggestUrl, Account account, Context context) 
-    	throws IOException, AuthenticationException {
+    	throws IOException, AuthenticationException, TooManyRequestsException {
     	
     	ArrayList<Tag> tagList = new ArrayList<Tag>();
+    	
+		if(!suggestUrl.startsWith("http")){
+			suggestUrl = "http://" + suggestUrl;
+		}
+
     	InputStream responseStream = null;
     	TreeMap<String, String> params = new TreeMap<String, String>();
     	params.put("url", suggestUrl);
@@ -340,12 +373,12 @@ public class DeliciousApi {
     	responseStream = DeliciousApiCall(url, params, account, context);
     	SaxTagParser parser = new SaxTagParser(responseStream);
     	
-        try {
-        	tagList = parser.parseSuggested();
-        } catch (ParseException e) {
-        	Log.e(TAG, "Server error in fetching bookmark list");
-        	throw new IOException();
-        }
+    	try {
+			tagList = parser.parseSuggested();
+		} catch (ParseException e) {
+            Log.e(TAG, "Server error in fetching bookmark list");
+            throw new IOException();
+		}
 
         responseStream.close();
         return tagList;
@@ -361,22 +394,22 @@ public class DeliciousApi {
      * @throws AuthenticationException If an authentication error was encountered.
      */
     public static ArrayList<Tag> getTags(Account account, Context context) 
-    	throws IOException, AuthenticationException {
+    	throws IOException, AuthenticationException, TooManyRequestsException {
     	
     	ArrayList<Tag> tagList = new ArrayList<Tag>();
+
     	InputStream responseStream = null;
-    	TreeMap<String, String> params = new TreeMap<String, String>();
-    	String url = FETCH_TAGS_URI;
+    	final TreeMap<String, String> params = new TreeMap<String, String>();
     	  	
-    	responseStream = DeliciousApiCall(url, params, account, context);
-    	SaxTagParser parser = new SaxTagParser(responseStream);
+    	responseStream = DeliciousApiCall(FETCH_TAGS_URI, params, account, context);
+    	final SaxTagParser parser = new SaxTagParser(responseStream);
     	
-        try {
-        	tagList = parser.parse();
-        } catch (ParseException e) {
-        	Log.e(TAG, "Server error in fetching bookmark list");
-        	throw new IOException();
-        }
+    	try {
+			tagList = parser.parse();
+		} catch (ParseException e) {
+            Log.e(TAG, "Server error in fetching bookmark list");
+            throw new IOException();
+		}
 
         responseStream.close();
         return tagList;
@@ -446,27 +479,18 @@ public class DeliciousApi {
 			e.printStackTrace();
 		}
 
-    	String path = null;
-    	String scheme = null;
-    	
-		path = "v1/" + url;
-		scheme = SCHEME;
-    	
-    	HttpResponse resp = null;
-    	HttpGet post = null;
-    	
 		Uri.Builder builder = new Uri.Builder();
-		builder.scheme(scheme);
+		builder.scheme(SCHEME);
 		builder.authority(DELICIOUS_AUTHORITY);
-		builder.appendEncodedPath(path);
+		builder.appendEncodedPath(url);
 		for(String key : params.keySet()){
 			builder.appendQueryParameter(key, params.get(key));
 		}
 		
-		String finalUrl = builder.build().toString().replace("%3A", ":").replace("%2F", "/").replace("%2B", "+").replace("%3F", "?").replace("%3D", "=").replace("%20", "+");
+		String apiCallUrl = builder.build().toString();
 		
-		Log.d("apiCallUrl", finalUrl);
-		post = new HttpGet(finalUrl);
+		Log.d("apiCallUrl", apiCallUrl);
+		final HttpGet post = new HttpGet(apiCallUrl);
 
 		post.setHeader("User-Agent", "DeliciousDroid");
 		post.setHeader("Accept-Encoding", "gzip");
@@ -477,21 +501,25 @@ public class DeliciousApi {
         provider.setCredentials(SCOPE, credentials);
         
         client.addRequestInterceptor(new PreemptiveAuthInterceptor(), 0);
+               
+        final HttpResponse resp = client.execute(post);
         
-        resp = client.execute(post);
-        
-    	if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        final int statusCode = resp.getStatusLine().getStatusCode();
+
+    	if (statusCode == HttpStatus.SC_OK) {
     		
-    		InputStream instream = resp.getEntity().getContent();
+    		final HttpEntity entity = resp.getEntity();
     		
-    		Header encoding = resp.getEntity().getContentEncoding();
+    		InputStream instream = entity.getContent();
+    		
+    		final Header encoding = entity.getContentEncoding();
     		
     		if(encoding != null && encoding.getValue().equalsIgnoreCase("gzip")) {
     			instream = new GZIPInputStream(instream);
     		}
-
+    		
     		return instream;
-    	} else if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+    	} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
     		throw new AuthenticationException();
     	} else {
     		throw new IOException();
