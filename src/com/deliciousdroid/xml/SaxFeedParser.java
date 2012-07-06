@@ -41,6 +41,7 @@ public class SaxFeedParser {
 	static final String nsRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	static final String nsDc = "http://purl.org/dc/elements/1.1/";
 	static final String ns = "http://purl.org/rss/1.0/";
+	static final String dc = "http://purl.org/dc/elements/1.1/";
 	
     public SaxFeedParser(InputStream stream) {
     	is = stream;
@@ -73,6 +74,7 @@ public class SaxFeedParser {
         });
         item.getChild("pubDate").setEndTextElementListener(new EndTextElementListener(){
             public void end(String body) {
+            	if(body != null && !body.equals(""))
 				currentBookmark.setTime(DateParser.parseTime(body.trim()));
             }
         });
@@ -81,7 +83,7 @@ public class SaxFeedParser {
             	currentBookmark.setUrl(body);
             }
         });
-        item.getChild("creator").setEndTextElementListener(new EndTextElementListener(){
+        item.getChild(dc, "creator").setEndTextElementListener(new EndTextElementListener(){
             public void end(String body) {
             	currentBookmark.setAccount(body);
             }
@@ -93,7 +95,9 @@ public class SaxFeedParser {
         });
         item.getChild("category").setEndTextElementListener(new EndTextElementListener(){
             public void end(String body) {
-            	currentBookmark.setTagString(currentBookmark.getTagString() + " " + body);
+            	if(currentBookmark.getTagString() != null)
+            		currentBookmark.setTagString(currentBookmark.getTagString() + " " + body);
+            	else currentBookmark.setTagString(body);
             }
         });
 

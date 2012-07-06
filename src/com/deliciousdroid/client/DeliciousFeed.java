@@ -206,6 +206,8 @@ public class DeliciousFeed {
     		url += "/" + tagName;
     	url += "?count=100";
     	
+    	Log.d("fetchUserRecent", url);
+    	
         final HttpGet post = new HttpGet(url);
         
         Cursor bookmarkList = null;
