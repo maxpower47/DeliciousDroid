@@ -23,9 +23,8 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Label for this package -->
-    <string name="label">Pinboard</string>
-    <string name="pindroid">PinDroid</string>
-    <string name="pinboard_lower">pinboard</string>
+    <string name="label">Delicious</string>
+    <string name="delicious">Delicious</string>
     
     <string name="profile_action">Delicious</string>
     <string name="view_profile">View Profile</string>
@@ -44,17 +43,17 @@
     <string name="login_activity_ok_button">Sign in</string>
 
     <!-- Message shown in dialog if the username or password is invalid. -->
-    <string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Pinboard account is
+    <string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Delicious account is
         required. Please try again. </string>
     <!-- Message shown in dialog if the password is invalid -->
     <string name="login_activity_loginfail_text_pwonly">You entered the wrong password or your account has changed.
         Please re-enter your password.</string>
     <!-- Message shown in dialog to prompt the user for their password -->
-    <string name="login_activity_loginfail_text_pwmissing">Enter the password for your Pinboard account.</string>
+    <string name="login_activity_loginfail_text_pwmissing">Enter the password for your Delicious account.</string>
     <!-- Message shown if the provided account doesn't support the current activity. -->
-    <string name="login_activity_newaccount_text">Sign in to your Pinboard account. \n\nDon\'t have a Pinboard account?  \nSign up at http://pinboard.in/signup</string>
+    <string name="login_activity_newaccount_text">Sign in to your Delicious account. \n\nDon\'t have a Delicious account?  \nSign up at https://delicious.com/register</string>
 
-    <string name="titleMain">Pinboard</string>
+    <string name="titleMain">Delicious</string>
     
     <!-- Main -->
     <string name="main_menu_my_bookmarks">My Bookmarks</string>
@@ -132,14 +131,14 @@
     <string name="add_bookmark_blank_url">Error: Blank URL</string>
     
     <!-- Searching -->
-    <string name="main_search_label">Pinboard</string>
+    <string name="main_search_label">Delicious</string>
     <string name="main_search_hint">Tags, Titles, Notes</string>
     <string name="main_search_description">Tags, titles, and notes</string>
     
-    <string name="tag_search_label">Pinboard Tags</string>
+    <string name="tag_search_label">Delicious Tags</string>
     <string name="tag_search_hint">Tags</string>
     
-    <string name="bookmark_search_label">Pinboard Bookmarks</string>
+    <string name="bookmark_search_label">Delicious Bookmarks</string>
     <string name="bookmark_search_hint">Tags, Titles, Notes</string>
     
     <string name="search_results_bookmark">Bookmark Results</string>
@@ -156,7 +155,7 @@
     <!-- Content Provider -->
     <string name="bookmark_content_provider_label">Bookmarks</string>  
     
-    <string name="sync_receiver_label">PinDroid Bookmark Sync</string>
+    <string name="sync_receiver_label">DeliciousDroid Bookmark Sync</string>
     <string name="syncing_toast">Syncing…</string>
 
     <!-- ViewBookmark -->
@@ -175,10 +174,10 @@
     <string name="menu_view_sendbookmark_title">Share</string>
     
     <!-- Widget -->
-    <string name="search_widget_label">PinDroid 4x1</string>
+    <string name="search_widget_label">DeliciousDroid 4x1</string>
     
     <!-- Preferences -->
-    <string name="preferences_title">PinDroid Settings</string>
+    <string name="preferences_title">DeliciousDroid Settings</string>
     
     <string name="account_preferences_cat_title">General Settings</string>
     <string name="account_preferences_key">account_settings</string>
@@ -193,7 +192,7 @@
     
     <string name="pref_accountsettings_title">Account Settings</string>
     <string name="pref_accountsettings_key">pref_accountsettings</string>
-    <string name="pref_accountsettings_summary">Manage your Pinboard account on this device.</string>
+    <string name="pref_accountsettings_summary">Manage your Delicious account on this device.</string>
     
     <string name="pref_synctime_title">Sync Frequency</string>
     <string name="pref_synctime_key">pref_synctime</string>
@@ -267,28 +266,28 @@
     
     <string name="pref_help_title">Help</string>
     <string name="pref_help_key">pref_help</string>
-    <string name="pref_help_summary">Help on using PinDroid</string>
+    <string name="pref_help_summary">Help on using DeliciousDroid</string>
     
     <string name="pref_about_title">About</string>
     <string name="pref_about_key">pref_about</string>
-    <string name="pref_about_summary">About PinDroid</string>
+    <string name="pref_about_summary">About DeliciousDroid</string>
     
     <string name="pref_donate_title">Donate</string>
     <string name="pref_donate_key">pref_donate</string>
-    <string name="pref_donate_summary">Support PinDroid</string>
+    <string name="pref_donate_summary">Support DeliciousDroid</string>
     
     
-    <string name="perm_read_bookmarks_label">Read PinDroid bookmarks</string>
-    <string name="perm_read_bookmarks_description">Grants the ability to read the PinDroid bookmark store</string>
-    <string name="perm_write_bookmarks_label">Write PinDroid bookmarks</string>
-    <string name="perm_write_bookmarks_description">Grants the ability to write to the PinDroid bookmark store</string>
+    <string name="perm_read_bookmarks_label">Read DeliciousDroid bookmarks</string>
+    <string name="perm_read_bookmarks_description">Grants the ability to read the DeliciousDroid bookmark store</string>
+    <string name="perm_write_bookmarks_label">Write DeliciousDroid bookmarks</string>
+    <string name="perm_write_bookmarks_description">Grants the ability to write to the DeliciousDroid bookmark store</string>
     
     <!-- Image alt text, for accessibility -->
     <string name="alt_action_search_btn">Search</string>
     <string name="alt_bookmark_list_private">Private</string>
     <string name="alt_bookmark_view_private">Private</string>
     
-    <string name="alt_widget_main">PinDroid</string>
+    <string name="alt_widget_main">DeliciousDroid</string>
     <string name="alt_widget_my_bookmarks">My Bookmarks</string>
     <string name="alt_widget_unread_bookmarks">Unread Bookmarks</string>
     <string name="alt_widget_unread_bookmark_count">Unread Bookmark Count</string>
@@ -297,19 +296,13 @@
     <string name="alt_widget_search">Search</string>
     
     <!-- AboutActivity -->
-    <string name="about_activity_title">About PinDroid</string>
+    <string name="about_activity_title">About DeliciousDroid</string>
     <string name="about_text">
     &lt;html&gt; 
     &lt;body style="background-color:#000000;color:#BEBEBE"&gt;
-    	PinDroid is a port of DeliciousDroid for the Pinboard bookmarking system.&lt;br/&gt;&lt;br/&gt;
+    	DeliciousDroid is a client for the Delicious bookmarking system.&lt;br/&gt;&lt;br/&gt;
     	Developed, maintained, and supported by Matt Schmidt&lt;br/&gt;&lt;br/&gt;
-    	Find a bug or have a suggestion for a new feature?  Open an issue at &lt;a href=\'http://code.google.com/p/pindroid/issues\'&gt;http://code.google.com/p/pindroid/issues&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;
-    	Or, drop me a line on Twitter @PinDroid&lt;br/&gt;&lt;br/&gt;
-    	&lt;b&gt;Known Issues:&lt;/b&gt;
-    	&lt;ul&gt;
-     		&lt;li&gt;Only a single Pinboard account is currently supported. &lt;/li&gt;
-     		&lt;li&gt;Certain features from DeliciousDroid have not been ported yet due to limitations in Pinboards API, including contact syncing and viewing network bookmark lists. &lt;/li&gt;
-    	&lt;/ul&gt;&lt;br/&gt;
+    	Find a bug or have a suggestion for a new feature?  Open an issue at &lt;a href=\'http://code.google.com/p/deliciousdroid/issues\'&gt;http://code.google.com/p/deliciousdroid/issues&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;
     	Read view powered by viewtext.org
     &lt;/body&gt;
     &lt;/html&gt;
