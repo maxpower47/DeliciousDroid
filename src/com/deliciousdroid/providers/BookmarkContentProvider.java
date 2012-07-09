@@ -45,7 +45,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
@@ -63,7 +62,6 @@ public class BookmarkContentProvider extends ContentProvider {
 	
 	private AccountManager mAccountManager = null;
 	private Account mAccount = null;
-	private static Context mContext;
 	
 	private SQLiteDatabase db;
 	private DatabaseHelper dbHelper;
@@ -410,8 +408,6 @@ public class BookmarkContentProvider extends ContentProvider {
 	private Map<String, SearchSuggestionContent> getTagSearchSuggestions(String query) {
 		Log.d("getTagSearchSuggestions", query);
 		
-		Resources res = getContext().getResources();
-		
 		String[] tags = query.split(" ");
 		
 		mAccountManager = AccountManager.get(getContext());
@@ -450,8 +446,6 @@ public class BookmarkContentProvider extends ContentProvider {
 				
 				int count = c.getInt(countColumn);
 				String name = c.getString(nameColumn);
-				
-				String tagCount = Integer.toString(count) + " " + res.getString(R.string.bookmark_count);
 				
 				suggestions.put(name, new SearchSuggestionContent(name, 
 					Integer.toString(count) + " bookmark" + (count > 1 ? "s" : ""),
