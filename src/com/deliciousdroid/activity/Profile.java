@@ -24,7 +24,7 @@ package com.deliciousdroid.activity;
 import com.deliciousdroid.Constants;
 import com.deliciousdroid.providers.BookmarkContentProvider;
 
-import android.app.ActivityGroup;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,7 +34,7 @@ import android.util.Log;
 import android.webkit.WebView;
 
 
-public class Profile extends ActivityGroup {
+public class Profile extends Activity {
 	
 	WebView mWebView;
 
@@ -46,7 +46,11 @@ public class Profile extends ActivityGroup {
 		Intent i = getIntent();
 		Uri contact = Uri.parse(i.getDataString());
 		
-		Cursor c = managedQuery(contact, null, null, null, null);
+		// Sets the columns to retrieve for the user profile
+		String[] projection = new String[] { ContactsContract.Data.DATA1 };
+
+		// Retrieves the profile from the Contacts Provider
+		Cursor c = getContentResolver().query(contact, projection, null, null, null);
 		
 		int userNameCol = c.getColumnIndex(ContactsContract.Data.DATA1);
 		String userName = "";
