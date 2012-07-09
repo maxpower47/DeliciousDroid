@@ -37,7 +37,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
 import com.deliciousdroid.client.HttpClientFactory;
 import com.deliciousdroid.xml.SaxFeedParser;
@@ -55,8 +54,7 @@ public class DeliciousFeed {
     public static final String FETCH_FRIEND_UPDATES_URI = "http://feeds.delicious.com/v2/json/networkmembers/";
     public static final String FETCH_FRIEND_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/";
     public static final String FETCH_NETWORK_RECENT_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/network/";
-    public static final String FETCH_HOTLIST_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss";
-    public static final String FETCH_POPULAR_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/popular";
+    public static final String FETCH_RECENT_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/recent";
     public static final String FETCH_STATUS_URI = "http://feeds.delicious.com/v2/json/network/";
     public static final String FETCH_TAGS_URI = "http://feeds.delicious.com/v2/json/tags/";
 	
@@ -267,39 +265,6 @@ public class DeliciousFeed {
     }
     
     /**
-     * Retrieves a list of hotlist bookmarks from Delicious.
-     * 
-     * @param limit The number of bookmarks to retrieve, maximum of 100.
-     * @return The list of bookmarks received from the server.
-     * @throws JSONException If an error was encountered in deserializing the JSON object returned from 
-     * the server.
-     * @throws IOException If a server error was encountered.
-     * @throws AuthenticationException If an authentication error was encountered.
-     */
-    public static Cursor fetchHotlist()
-    	throws IOException, ParseException {
-
-        final HttpGet post = new HttpGet(FETCH_HOTLIST_BOOKMARKS_URI + "?count=100");
-        
-        Cursor bookmarkList = null;
-
-        final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
-        InputStream responseStream = resp.getEntity().getContent();
-
-        if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-        	SaxFeedParser parser = new SaxFeedParser(responseStream);
-
-			bookmarkList = parser.parse();
-
-        } else {
-        	Log.e(TAG, "Server error in fetching network recent list");
-            throw new IOException();
-        }
-        
-        return bookmarkList;
-    }
-    
-    /**
      * Retrieves a list of popular bookmarks from Delicious.
      * 
      * @param limit The number of bookmarks to retrieve, maximum of 100.
@@ -309,10 +274,10 @@ public class DeliciousFeed {
      * @throws IOException If a server error was encountered.
      * @throws AuthenticationException If an authentication error was encountered.
      */
-    public static Cursor fetchPopular()
+    public static Cursor fetchRecent()
     	throws IOException, ParseException {
 
-        final HttpGet post = new HttpGet(FETCH_POPULAR_BOOKMARKS_URI + "?count=100");
+        final HttpGet post = new HttpGet(FETCH_RECENT_BOOKMARKS_URI + "?count=100");
         
         Cursor bookmarkList = null;
 

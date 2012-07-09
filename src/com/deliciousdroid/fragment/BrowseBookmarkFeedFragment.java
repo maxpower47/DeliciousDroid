@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import com.deliciousdroid.fragment.BrowseBookmarksFragment.OnBookmarkSelectedListener;
-import com.deliciousdroid.Constants;
 import com.deliciousdroid.R;
 import com.deliciousdroid.activity.FragmentBaseActivity;
 import com.deliciousdroid.client.DeliciousFeed;
@@ -33,7 +32,6 @@ import com.deliciousdroid.listadapter.BookmarkViewBinder;
 import com.deliciousdroid.platform.BookmarkManager;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -289,7 +287,7 @@ public class BrowseBookmarkFeedFragment extends ListFragment
  			   if(user.equals("network")) {
  				   results = DeliciousFeed.fetchNetworkRecent(base.mAccount.name);
  			   } else if(user.equals("recent")) {
- 				  results = DeliciousFeed.fetchPopular();
+ 				  results = DeliciousFeed.fetchRecent();
  			   } else {
  				  results = DeliciousFeed.fetchUserRecent(user, tag);
  			   }
