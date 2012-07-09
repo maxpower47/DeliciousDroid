@@ -21,6 +21,7 @@
 
 package com.deliciousdroid.platform;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -30,6 +31,7 @@ import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.RawContacts;
 import android.provider.ContactsContract.StatusUpdates;
 import android.provider.ContactsContract.CommonDataKinds.Im;
+import android.provider.ContactsContract.StreamItems;
 import android.util.Log;
 
 import com.deliciousdroid.R;
@@ -64,8 +66,7 @@ public class ContactManager {
         
         List<Long> currentContacts = lookupAllContacts(resolver);
         
-        final BatchOperation batchOperation =
-            new BatchOperation(context, resolver);
+        final BatchOperation batchOperation = new BatchOperation(context, resolver);
         Log.d(TAG, "In SyncContacts");
         for (final User user : users) {
             userName = user.getUserName();
@@ -100,15 +101,13 @@ public class ContactManager {
      * @param accountName the username of the logged in user
      * @param statuses the list of statuses to store
      */
-    public static void insertStatuses(Context context, String username,
-        List<User.Status> list) {
+    public static void insertStatuses(Context context, String username, List<User.Status> list) {
         final ContentValues values = new ContentValues();
         final ContentResolver resolver = context.getContentResolver();
         
         final ArrayList<String> processedUsers = new ArrayList<String>();
         
-        final BatchOperation batchOperation =
-            new BatchOperation(context, resolver);
+        final BatchOperation batchOperation = new BatchOperation(context, resolver);
         for (final User.Status status : list) {
             // Look up the user's sample SyncAdapter data row
             final String userName = status.getUserName();
@@ -125,15 +124,11 @@ public class ContactManager {
 	                values.put(StatusUpdates.IM_ACCOUNT, username);
 	                values.put(StatusUpdates.IM_HANDLE, status.getUserName());
 	                values.put(StatusUpdates.STATUS_TIMESTAMP, status.getTimeStamp().getTime());
-	                values.put(StatusUpdates.STATUS_RES_PACKAGE, context
-	                    .getPackageName());
+	                values.put(StatusUpdates.STATUS_RES_PACKAGE, context.getPackageName());
 	                values.put(StatusUpdates.STATUS_ICON, R.drawable.ic_main);
 	                values.put(StatusUpdates.STATUS_LABEL, R.string.label);
 
-	                batchOperation
-	                    .add(ContactOperations.newInsertCpo(
-	                        StatusUpdates.CONTENT_URI, true).withValues(values)
-	                        .build());
+	                batchOperation.add(ContactOperations.newInsertCpo(StatusUpdates.CONTENT_URI, true).withValues(values).build());
 	                // A sync adapter should batch operations on multiple contacts,
 	                // because it will make a dramatic performance difference.
 	                if (batchOperation.size() >= 50) {
@@ -143,6 +138,46 @@ public class ContactManager {
 	            
 	            processedUsers.add(userName);
             }
+        }
+        batchOperation.execute();
+    }
+    
+    /**
+     * Add a list of status messages to the contacts provider.
+     * 
+     * @param context the context to use
+     * @param accountName the username of the logged in user
+     * @param statuses the list of statuses to store
+     */
+    @TargetApi(15)
+	public static void insertStreamStatuses(Context context, String username, List<User.Status> list) {
+        final ContentValues values = new ContentValues();
+        final ContentResolver resolver = context.getContentResolver();
+        
+        final BatchOperation batchOperation = new BatchOperation(context, resolver);
+        for (final User.Status status : list) {
+            // Look up the user's sample SyncAdapter data row
+            final String userName = status.getUserName();
+            
+            final long rawContactId = lookupRawContact(resolver, userName);
+
+            // Insert the activity into the stream
+            if (rawContactId > 0) {
+            	values.put(StreamItems.RAW_CONTACT_ID, rawContactId);
+                values.put(StreamItems.TEXT, status.getStatus());
+                values.put(StreamItems.TIMESTAMP, status.getTimeStamp().getTime());
+                values.put(StreamItems.COMMENTS, "blah");
+                values.put(StreamItems.ACCOUNT_NAME, username);
+                values.put(StreamItems.ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
+
+                batchOperation.add(ContactOperations.newInsertCpo(StreamItems.CONTENT_URI, false).withValues(values).build());
+                // A sync adapter should batch operations on multiple contacts,
+                // because it will make a dramatic performance difference.
+                if (batchOperation.size() >= 50) {
+                    batchOperation.execute();
+                }
+            }
+	            
         }
         batchOperation.execute();
     }
@@ -157,9 +192,7 @@ public class ContactManager {
     private static void addContact(Context context, String accountName,
         User user, BatchOperation batchOperation) {
         // Put the data in the contacts provider
-        final ContactOperations contactOp =
-            ContactOperations.createNewContact(context, user.getUserName(),
-                accountName, batchOperation);
+        final ContactOperations contactOp = ContactOperations.createNewContact(context, user.getUserName(), accountName, batchOperation);
         contactOp.addName(user.getUserName()).addProfileAction(user.getUserName());
     }
 
@@ -170,11 +203,8 @@ public class ContactManager {
      * @param rawContactId the unique Id for this rawContact in contacts
      *        provider
      */
-    private static void deleteContact(Context context, long rawContactId,
-        BatchOperation batchOperation) {
-        batchOperation.add(ContactOperations.newDeleteCpo(
-            ContentUris.withAppendedId(RawContacts.CONTENT_URI, rawContactId),
-            true).build());
+    private static void deleteContact(Context context, long rawContactId, BatchOperation batchOperation) {
+        batchOperation.add(ContactOperations.newDeleteCpo(ContentUris.withAppendedId(RawContacts.CONTENT_URI, rawContactId), true).build());
     }
 
 
@@ -189,9 +219,7 @@ public class ContactManager {
     private static long lookupRawContact(ContentResolver resolver, String userName) {
         long authorId = 0;
         final Cursor c =
-            resolver.query(RawContacts.CONTENT_URI, UserIdQuery.PROJECTION,
-                UserIdQuery.SELECTION, new String[] {userName},
-                null);
+            resolver.query(RawContacts.CONTENT_URI, UserIdQuery.PROJECTION, UserIdQuery.SELECTION, new String[] {userName}, null);
         try {
             if (c.moveToFirst()) {
                 authorId = c.getLong(UserIdQuery.COLUMN_ID);
@@ -215,9 +243,7 @@ public class ContactManager {
     private static long lookupProfile(ContentResolver resolver, String userName) {
         long profileId = 0;
         final Cursor c =
-            resolver.query(Data.CONTENT_URI, ProfileQuery.PROJECTION,
-                ProfileQuery.SELECTION, new String[] {userName},
-                null);
+            resolver.query(Data.CONTENT_URI, ProfileQuery.PROJECTION, ProfileQuery.SELECTION, new String[] {userName}, null);
         try {
             if (c != null && c.moveToFirst()) {
                 profileId = c.getLong(ProfileQuery.COLUMN_ID);
@@ -242,8 +268,7 @@ public class ContactManager {
     private static List<Long> lookupAllContacts(ContentResolver resolver) {
         List<Long> result = new ArrayList<Long>();
         final Cursor c =
-            resolver.query(RawContacts.CONTENT_URI, AllUsersQuery.PROJECTION,
-            		AllUsersQuery.SELECTION, null, null);
+            resolver.query(RawContacts.CONTENT_URI, AllUsersQuery.PROJECTION, AllUsersQuery.SELECTION, null, null);
         try {
             while (c.moveToNext()) {
                 result.add(c.getLong(AllUsersQuery.COLUMN_ID));
@@ -265,9 +290,7 @@ public class ContactManager {
 
         public final static int COLUMN_ID = 0;
 
-        public static final String SELECTION =
-            Data.MIMETYPE + "='" + ContactSyncAdapterColumns.MIME_PROFILE
-                + "' AND " + ContactSyncAdapterColumns.DATA_PID + "=?";
+        public static final String SELECTION = Data.MIMETYPE + "='" + ContactSyncAdapterColumns.MIME_PROFILE + "' AND " + ContactSyncAdapterColumns.DATA_PID + "=?";
     }
     /**
      * Constants for a query to find a contact given a sample SyncAdapter user
@@ -278,9 +301,7 @@ public class ContactManager {
 
         public final static int COLUMN_ID = 0;
 
-        public static final String SELECTION =
-            RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "' AND "
-                + RawContacts.SOURCE_ID + "=?";
+        public static final String SELECTION = RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "' AND " + RawContacts.SOURCE_ID + "=?";
     }
     
     /**
@@ -291,7 +312,6 @@ public class ContactManager {
 
         public final static int COLUMN_ID = 0;
 
-        public static final String SELECTION =
-            RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "'";
+        public static final String SELECTION = RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "'";
     }
 }

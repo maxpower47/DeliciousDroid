@@ -29,6 +29,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -83,6 +84,10 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
             // fetch and update status messages for all the synced users.
             statuses = DeliciousFeed.fetchFriendStatuses(account);
             ContactManager.insertStatuses(mContext, account.name, statuses);
+            
+            if (Build.VERSION.SDK_INT >= 15) {
+            	ContactManager.insertStreamStatuses(mContext, account.name, statuses);
+        	}
         } catch (final IOException e) {
             Log.e(TAG, "IOException", e);
             syncResult.stats.numIoExceptions++;
