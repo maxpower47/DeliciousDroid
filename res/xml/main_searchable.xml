@@ -25,4 +25,4 @@
 	android:label="@string/main_search_label"
 	android:hint="@string/main_search_hint"
 	android:searchSuggestAuthority="com.deliciousdroid.providers.BookmarkContentProvider"
-	android:searchSuggestIntentAction="android.intent.action.VIEW"/>
+	android:searchSuggestIntentAction="com.deliciousdroid.intent.action.SearchSuggestion"/>
