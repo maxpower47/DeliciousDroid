@@ -59,7 +59,6 @@ public class MainFragment extends ListFragment {
 		setHasOptionsMenu(true);
 		
 		String[] MENU_ITEMS = new String[] {getString(R.string.main_menu_my_bookmarks),
-				getString(R.string.main_menu_my_unread_bookmarks),
 				getString(R.string.main_menu_my_tags),
 				getString(R.string.main_menu_recent_bookmarks),
 				getString(R.string.main_menu_network_bookmarks)};
@@ -74,12 +73,10 @@ public class MainFragment extends ListFragment {
 		    	if(position == 0){
 		    		mainActionListener.onMyBookmarksSelected();
 		    	} else if(position == 1){
-		    		mainActionListener.onMyUnreadSelected();
-		    	} else if(position == 2){
 		    		mainActionListener.onMyTagsSelected();
-		    	} else if(position == 3){
+		    	} else if(position == 2){
 		    		mainActionListener.onRecentSelected();
-		    	} else if(position == 4){
+		    	} else if(position == 3){
 		    		mainActionListener.onMyNetworkSelected();
 		    	} 
 		    }

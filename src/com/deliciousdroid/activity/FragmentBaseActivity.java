@@ -56,7 +56,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity {
 	protected SharedPreferences settings;
 	
 	public boolean privateDefault;
-	public boolean toreadDefault;
 	public String defaultAction;
 	public boolean markAsRead;
 	public String readingBackground;
@@ -177,7 +176,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity {
 	
 	private void loadSettings(){
     	privateDefault = settings.getBoolean("pref_save_private_default", false);
-    	toreadDefault = settings.getBoolean("pref_save_toread_default", false);
     	defaultAction = settings.getString("pref_view_bookmark_default_action", "browser");
     	markAsRead = settings.getBoolean("pref_markasread", false);
     	readingBackground = settings.getString("pref_reading_background", "-1");

@@ -77,7 +77,6 @@ public class AddBookmarkFragment extends Fragment {
 	private TextView mPopularTags;
 	private ProgressBar mPopularProgress;
 	private CompoundButton mPrivate;
-	private CompoundButton mToRead;
 	private Bookmark bookmark;
 	private Bookmark oldBookmark;
 	private Boolean update = false;
@@ -112,14 +111,13 @@ public class AddBookmarkFragment extends Fragment {
 		mPopularTags = (TextView) getView().findViewById(R.id.add_popular_tags);
 		mPopularProgress = (ProgressBar) getView().findViewById(R.id.add_popular_tags_progress);
 		mPrivate = (CompoundButton) getView().findViewById(R.id.add_edit_private);
-		mToRead = (CompoundButton) getView().findViewById(R.id.add_edit_toread);
 		
 		mRecommendedTags.setMovementMethod(LinkMovementMethod.getInstance());
 		mPopularTags.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		if(base.mAccount != null){
 			String[] tagArray = new String[5];
-			tagArray = TagManager.GetTagsAsArray(base.mAccount.name, null, base).toArray(tagArray);
+			tagArray = TagManager.GetTagsAsArray(base.mAccount.name, Tag.Name + " ASC", base).toArray(tagArray);
 			ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(base, R.layout.autocomplete_view, tagArray);
 			mEditTags.setAdapter(autoCompleteAdapter);
 			mEditTags.setTokenizer(new SpaceTokenizer());
@@ -192,7 +190,6 @@ public class AddBookmarkFragment extends Fragment {
 	
 	private void setDefaultValues(){   	
     	mPrivate.setChecked(base.privateDefault);
-    	mToRead.setChecked(base.toreadDefault);
 	}
 	
     private void save() {
