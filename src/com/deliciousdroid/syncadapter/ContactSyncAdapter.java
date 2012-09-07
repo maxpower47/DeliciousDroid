@@ -82,11 +82,13 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.d(TAG, "Calling contactManager's sync contacts");
             ContactManager.syncContacts(mContext, account.name, users);
             // fetch and update status messages for all the synced users.
-            statuses = DeliciousFeed.fetchFriendStatuses(account);
-            ContactManager.insertStatuses(mContext, account.name, statuses);
             
+               
             if (Build.VERSION.SDK_INT >= 15) {
-            	ContactManager.insertStreamStatuses(mContext, account.name, statuses);
+            	ContactManager.insertStreamStatuses(mContext, account.name);
+        	} else {
+        		statuses = DeliciousFeed.fetchFriendStatuses(account);
+        		ContactManager.insertStatuses(mContext, account.name, statuses);
         	}
         } catch (final IOException e) {
             Log.e(TAG, "IOException", e);

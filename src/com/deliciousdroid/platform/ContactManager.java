@@ -36,10 +36,16 @@ import android.util.Log;
 
 import com.deliciousdroid.R;
 import com.deliciousdroid.Constants;
+import com.deliciousdroid.client.DeliciousFeed;
 import com.deliciousdroid.client.User;
+import com.deliciousdroid.client.User.Status;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+
+import org.apache.http.auth.AuthenticationException;
+import org.json.JSONException;
 
 /**
  * Class for managing contacts sync related mOperations
@@ -148,38 +154,67 @@ public class ContactManager {
      * @param context the context to use
      * @param accountName the username of the logged in user
      * @param statuses the list of statuses to store
-     */
+     */  
     @TargetApi(15)
-	public static void insertStreamStatuses(Context context, String username, List<User.Status> list) {
-        final ContentValues values = new ContentValues();
-        final ContentResolver resolver = context.getContentResolver();
-        
-        final BatchOperation batchOperation = new BatchOperation(context, resolver);
-        for (final User.Status status : list) {
-            // Look up the user's sample SyncAdapter data row
-            final String userName = status.getUserName();
-            
-            final long rawContactId = lookupRawContact(resolver, userName);
-
-            // Insert the activity into the stream
-            if (rawContactId > 0) {
-            	values.put(StreamItems.RAW_CONTACT_ID, rawContactId);
-                values.put(StreamItems.TEXT, status.getStatus());
-                values.put(StreamItems.TIMESTAMP, status.getTimeStamp().getTime());
-                values.put(StreamItems.COMMENTS, "blah");
-                values.put(StreamItems.ACCOUNT_NAME, username);
-                values.put(StreamItems.ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
-
-                batchOperation.add(ContactOperations.newInsertCpo(StreamItems.CONTENT_URI, false).withValues(values).build());
-                // A sync adapter should batch operations on multiple contacts,
-                // because it will make a dramatic performance difference.
-                if (batchOperation.size() >= 50) {
-                    batchOperation.execute();
-                }
-            }
-	            
-        }
-        batchOperation.execute();
+	public static void insertStreamStatuses(Context context, String username) {
+    	final ContentValues values = new ContentValues();
+    	final ContentResolver resolver = context.getContentResolver();
+    	final BatchOperation batchOperation = new BatchOperation(context, resolver);
+    	List<Long> currentContacts = lookupAllContacts(resolver);
+    	
+    	for(long id : currentContacts){
+    		
+    		String friendUsername = lookupUsername(resolver, id);
+    		long watermark = lookupHighWatermark(resolver, id);
+    		long newWatermark = watermark;
+    		
+    		try {
+				List<Status> statuses = DeliciousFeed.fetchFriendStatuses(friendUsername);
+				
+				for(Status status : statuses){
+				
+					if(status.getTimeStamp().getTime() > watermark){
+						
+						if(status.getTimeStamp().getTime() > newWatermark)
+							newWatermark = status.getTimeStamp().getTime();
+				
+						values.clear();
+		            	values.put(StreamItems.RAW_CONTACT_ID, id);
+		                values.put(StreamItems.TEXT, status.getStatus());
+		                values.put(StreamItems.TIMESTAMP, status.getTimeStamp().getTime());
+		                values.put(StreamItems.COMMENTS, "blah");
+		                values.put(StreamItems.ACCOUNT_NAME, username);
+		                values.put(StreamItems.ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
+		                values.put(StreamItems.RES_ICON, R.drawable.ic_main);
+		                values.put(StreamItems.RES_PACKAGE, context.getPackageName());
+		                values.put(StreamItems.RES_LABEL, R.string.label);
+		
+		                batchOperation.add(ContactOperations.newInsertCpo(StreamItems.CONTENT_URI, false).withValues(values).build());
+		                // A sync adapter should batch operations on multiple contacts,
+		                // because it will make a dramatic performance difference.
+		                if (batchOperation.size() >= 50) {
+		                    batchOperation.execute();
+		                }
+					}
+				}
+				
+	    		values.clear();
+	    		values.put(RawContacts.SYNC1, Long.toString(newWatermark));
+	    		batchOperation.add(ContactOperations.newUpdateCpo(RawContacts.CONTENT_URI, false)
+	    			.withValues(values)
+	    			.withSelection(RawContacts._ID + "=?", new String[]{Long.toString(id)}).build());
+	    		
+	    		batchOperation.execute();
+				
+				
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 
     /**
@@ -280,6 +315,39 @@ public class ContactManager {
         }
         return result;
     }
+    
+    private static long lookupHighWatermark(ContentResolver resolver, long id) {
+        long result = 0;
+        final Cursor c =
+            resolver.query(RawContacts.CONTENT_URI, HighWatermarkQuery.PROJECTION, HighWatermarkQuery.SELECTION, new String[] {Long.toString(id)}, null);
+        try {
+            while (c.moveToNext()) {
+                result = c.getLong(HighWatermarkQuery.COLUMN_ID);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return result;
+    }
+    
+    
+    private static String lookupUsername(ContentResolver resolver, long id) {
+        String result = null;
+        final Cursor c =
+            resolver.query(RawContacts.CONTENT_URI, UsernameQuery.PROJECTION, UsernameQuery.SELECTION, new String[] {Long.toString(id)}, null);
+        try {
+            while (c.moveToNext()) {
+                result = c.getString(UsernameQuery.COLUMN_ID);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return result;
+    }
 
     /**
      * Constants for a query to find a contact given a sample SyncAdapter user
@@ -313,5 +381,21 @@ public class ContactManager {
         public final static int COLUMN_ID = 0;
 
         public static final String SELECTION = RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "'";
+    }
+    
+    private interface HighWatermarkQuery {
+        public final static String[] PROJECTION = new String[] {RawContacts.SYNC1};
+
+        public final static int COLUMN_ID = 0;
+
+        public static final String SELECTION = RawContacts._ID + "=?";
+    }
+    
+    private interface UsernameQuery {
+        public final static String[] PROJECTION = new String[] {RawContacts.SOURCE_ID};
+
+        public final static int COLUMN_ID = 0;
+
+        public static final String SELECTION = RawContacts._ID + "=?";
     }
 }

@@ -57,6 +57,7 @@ public class DeliciousFeed {
     public static final String FETCH_RECENT_BOOKMARKS_URI = "http://feeds.delicious.com/v2/rss/recent";
     public static final String FETCH_STATUS_URI = "http://feeds.delicious.com/v2/json/network/";
     public static final String FETCH_TAGS_URI = "http://feeds.delicious.com/v2/json/tags/";
+    public static final String FETCH_BOOKMARKS_URI = "http://feeds.delicious.com/v2/json/";
 	
     /**
      * Retrieves a list of contacts in a users network.
@@ -137,6 +138,34 @@ public class DeliciousFeed {
         }
         return statusList;
     }
+    
+    public static List<User.Status> fetchFriendStatuses(String friendUsername) 
+        	throws JSONException, IOException, AuthenticationException {
+            final ArrayList<User.Status> statusList = new ArrayList<User.Status>();
+
+            final HttpGet post = new HttpGet(FETCH_BOOKMARKS_URI + friendUsername + "?count=5");
+
+            final HttpResponse resp = HttpClientFactory.getThreadSafeClient().execute(post);
+            final String response = EntityUtils.toString(resp.getEntity());
+
+            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+
+                final JSONArray statuses = new JSONArray(response);
+                Log.d(TAG, response);
+                for (int i = 0; i < statuses.length(); i++) {
+                    statusList.add(User.Status.valueOf(statuses.getJSONObject(i)));
+                }
+            } else {
+                if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+                    Log.e(TAG, "Authentication exception in fetching friend status list");
+                    throw new AuthenticationException();
+                } else {
+                    Log.e(TAG, "Server error in fetching friend status list");
+                    throw new IOException();
+                }
+            }
+            return statusList;
+        }
     
     /**
      * Retrieves a list of tags for a Delicious user.
