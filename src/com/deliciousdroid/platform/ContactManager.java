@@ -182,13 +182,12 @@ public class ContactManager {
 		            	values.put(StreamItems.RAW_CONTACT_ID, id);
 		                values.put(StreamItems.TEXT, status.getStatus());
 		                values.put(StreamItems.TIMESTAMP, status.getTimeStamp().getTime());
-		                values.put(StreamItems.COMMENTS, "blah");
 		                values.put(StreamItems.ACCOUNT_NAME, username);
 		                values.put(StreamItems.ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
 		                values.put(StreamItems.RES_ICON, R.drawable.ic_main);
 		                values.put(StreamItems.RES_PACKAGE, context.getPackageName());
 		                values.put(StreamItems.RES_LABEL, R.string.label);
-		
+
 		                batchOperation.add(ContactOperations.newInsertCpo(StreamItems.CONTENT_URI, false).withValues(values).build());
 		                // A sync adapter should batch operations on multiple contacts,
 		                // because it will make a dramatic performance difference.
