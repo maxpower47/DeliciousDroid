@@ -281,7 +281,7 @@ public class BrowseBookmarkFeedFragment extends ListFragment
             Cursor results = null;
             
  	       if(user.equals("global"))
- 	    	   user = "";
+ 	    	   user = "tag";
         
  		   try {
  			   if(user.equals("network")) {
