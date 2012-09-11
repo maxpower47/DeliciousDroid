@@ -44,6 +44,7 @@ import com.deliciousdroid.client.DeliciousApi;
 import com.deliciousdroid.client.TooManyRequestsException;
 import com.deliciousdroid.client.Update;
 import com.deliciousdroid.platform.BookmarkManager;
+import com.deliciousdroid.platform.BundleManager;
 import com.deliciousdroid.platform.TagManager;
 import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 import com.deliciousdroid.providers.TagContent.Tag;
@@ -131,7 +132,13 @@ public class BookmarkSyncAdapter extends AbstractThreadedSyncAdapter {
 			if(!tagList.isEmpty()){
 				TagManager.BulkInsert(tagList, username, mContext);
 			}
-        
+			
+			final ArrayList<com.deliciousdroid.providers.BundleContent.Bundle> bundleList = DeliciousApi.getBundles(account,  mContext);
+			BundleManager.TruncateBundles(username, mContext);
+			if(!bundleList.isEmpty()){
+				BundleManager.BulkInsert(bundleList, username, mContext);
+			}
+					
             setServerSyncMarker(account, update.getLastUpdate());
 
             syncResult.stats.numEntries += addBookmarkList.size();

@@ -40,8 +40,8 @@ public class Main extends FragmentBaseActivity implements MainFragment.OnMainAct
 		startActivity(IntentHelper.ViewBookmarks("", mAccount.name, this));	
 	}
 
-	public void onMyUnreadSelected() {
-		startActivity(IntentHelper.ViewUnread(mAccount.name, this));
+	public void onMyBundlesSelected() {
+		startActivity(IntentHelper.ViewBundles(mAccount.name, this));
 	}
 
 	public void onMyTagsSelected() {

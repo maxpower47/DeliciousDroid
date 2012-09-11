@@ -41,24 +41,36 @@ public class BookmarkManager {
 		final String[] projection = new String[] {Bookmark._ID, Bookmark.Url, Bookmark.Description, 
 				Bookmark.Meta, Bookmark.Tags, Bookmark.Shared, Bookmark.Synced, Bookmark.Deleted};
 		String selection = null;
-		String[] selectionargs = new String[]{username, "% " + tagname + " %", 
-				"% " + tagname, tagname + " %", tagname};
-		
-		if(tagname != null && tagname != "") {
-			selection = Bookmark.Account + "=? AND " +
-				"(" + Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " LIKE ? OR " +
-				Bookmark.Tags + " = ?)";
+		ArrayList<String> selectionList = new ArrayList<String>();
+		final ArrayList<String> queryList = new ArrayList<String>();
 
+
+		if(tagname != null && tagname != "") {
+			String[] tagList = tagname.split(",");
+
+			for(String s : tagList) {
+				queryList.add("(" + Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " LIKE ? OR " +
+					Bookmark.Tags + " = ?)");
+
+				selectionList.add("% " + s + " %");
+				selectionList.add("% " + s);
+				selectionList.add(s + " %");
+				selectionList.add(s);
+			}
+			selection = TextUtils.join(" OR ", queryList) + " AND " +
+				Bookmark.Account + "=?";
+
+			selectionList.add(username);
 		} else {
-			selectionargs = new String[]{username};
+			selectionList.add(username);
 			selection = Bookmark.Account + "=?";
 		}
 
 		selection += " AND " + Bookmark.Deleted + "=0";
 		
-		return new CursorLoader(context, Bookmark.CONTENT_URI, projection, selection, selectionargs, sortorder);
+		return new CursorLoader(context, Bookmark.CONTENT_URI, projection, selection, selectionList.toArray(new String[]{}), sortorder);
 	}
 	
 	public static ArrayList<Bookmark> GetLocalBookmarks(String username, Context context){

@@ -31,16 +31,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 
 public class BundleManager {
 	
-	public static Cursor GetBundles(String account, String sortorder, Context context) {	
+	public static CursorLoader GetBundles(String account, String sortorder, Context context) {	
 		String[] projection = new String[] {Bundle._ID, Bundle.Name, Bundle.Tags};
 		String selection = Bundle.Account + "=?";
 		String[] selectionargs = new String[]{account};
 
-		return context.getContentResolver().query(Bundle.CONTENT_URI, projection, selection, selectionargs, sortorder);				
+		return new CursorLoader(context, Bundle.CONTENT_URI, projection, selection, selectionargs, sortorder);				
 	}
 	
 	public static void AddBundle(Bundle bundle, String account, Context context){
@@ -131,7 +132,7 @@ public class BundleManager {
 		context.getContentResolver().delete(Bundle.CONTENT_URI, selection, null);
 	}
 	
-	public static Cursor SearchBundles(String query, String username, Context context) {
+	public static CursorLoader SearchBundles(String query, String username, Context context) {
 		String[] projection = new String[] { Bundle._ID, Bundle.Name, Bundle.Tags };
 		String selection = null;
 		String sortorder = null;
@@ -158,7 +159,7 @@ public class BundleManager {
 		
 		Uri bundles = Bundle.CONTENT_URI;
 		
-		return context.getContentResolver().query(bundles, projection, selection, selectionlist.toArray(new String[]{}), sortorder);				
+		return new CursorLoader(context, bundles, projection, selection, selectionlist.toArray(new String[]{}), sortorder);				
 	}
 	
 	public static Bundle CursorToBundle(Cursor c) {

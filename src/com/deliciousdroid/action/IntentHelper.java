@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 
 import com.deliciousdroid.activity.AddBookmark;
 import com.deliciousdroid.activity.BrowseBookmarks;
+import com.deliciousdroid.activity.BrowseBundles;
 import com.deliciousdroid.activity.BrowseTags;
 import com.deliciousdroid.activity.ViewBookmark;
 import com.deliciousdroid.Constants;
@@ -137,15 +138,14 @@ public class IntentHelper {
 		return i;
 	}
 	
-	public static Intent ViewUnread(String account, Context context) {
-		Intent i = new Intent(context, BrowseBookmarks.class);
+	public static Intent ViewBundles(String account, Context context) {
+		Intent i = new Intent(context, BrowseBundles.class);
 		i.setAction(Intent.ACTION_VIEW);
 		i.addCategory(Intent.CATEGORY_DEFAULT);
 		Uri.Builder data = new Uri.Builder();
 		data.scheme(Constants.CONTENT_SCHEME);
 		data.encodedAuthority(account + "@" + BookmarkContentProvider.AUTHORITY);
-		data.appendEncodedPath("bookmarks");
-		data.appendQueryParameter("unread", "1");
+		data.appendEncodedPath("bundles");
 		i.setData(data.build());
 		
 		return i;

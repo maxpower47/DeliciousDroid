@@ -21,14 +21,19 @@
  * USA
  */
  -->
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical">
-	<include android:id="@+id/include_action_bar" layout="@layout/action_bar" />
-	<fragment class="com.deliciousdroid.fragment.BrowseBundlesFragment"
-		android:id="@+id/listcontent"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" >
-	</fragment>
-</LinearLayout>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:id="@+id/menu_sortbundle" 
+		android:title="@string/menu_sort_bundle_title" 
+		android:icon="@drawable/ic_menu_sort_alphabetically"
+		android:orderInCategory="12">
+		<menu>
+			<item 
+				android:id="@+id/menu_bundle_sort_name_asc" 
+				android:title="@string/bundle_sort_name_asc" />
+			<item 
+				android:id="@+id/menu_bundle_sort_name_desc" 
+				android:title="@string/bundle_sort_name_desc" />
+		</menu>
+	</item>
+</menu>
