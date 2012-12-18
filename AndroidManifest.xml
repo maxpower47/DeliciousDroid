@@ -137,7 +137,12 @@
         	</intent-filter>
         	<meta-data android:name="android.app.searchable" android:resource="@xml/main_searchable"/>
         </activity>
-        <activity android:name=".activity.Preferences" />
+        <activity android:name=".activity.Preferences" android:label="@string/preferences_title">
+			<intent-filter>
+				<action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+		</activity>
         <!-- The authenticator service -->
         <service
             android:name=".authenticator.AuthenticationService"
