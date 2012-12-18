@@ -51,6 +51,7 @@ import com.deliciousdroid.providers.BookmarkContent.Bookmark;
 public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkSelectedListener, 
 	OnBookmarkActionListener, OnBookmarkSaveListener, OnTagSelectedListener {
 
+	private String query = "";
 	private String tagname = "";
 	private Boolean unread = false;
 	private String path = "";
@@ -60,6 +61,10 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 	static final String STATE_LASTBOOKMARK = "lastBookmark";
 	static final String STATE_LASTVIEWTYPE = "lastViewType";
 	static final String STATE_USERNAME = "username";
+	static final String STATE_TAGNAME = "tagname";
+	static final String STATE_UNREAD = "unread";
+	static final String STATE_QUERY = "query";
+	static final String STATE_PATH = "path";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -72,10 +77,9 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction t = fm.beginTransaction();
 		
+		Fragment bookmarkFrag;
+		
 		if(fm.findFragmentById(R.id.listcontent) == null){
-			Fragment bookmarkFrag = new Fragment();
-	
-			
 			if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	    		Bundle searchData = intent.getBundleExtra(SearchManager.APP_DATA);
 	    		
@@ -85,7 +89,7 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 	    			unread = searchData.getBoolean("unread");
 	    		}
 	    		
-	    		String query = intent.getStringExtra(SearchManager.QUERY);
+	    		query = intent.getStringExtra(SearchManager.QUERY);
 	    		
 	    		if(intent.hasExtra("username")) {
 	    			username = intent.getStringExtra("username");
@@ -94,36 +98,48 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 	    		if(data != null && data.getUserInfo() != null){
 	    			username = data.getUserInfo();
 	    		}
-	    			
-	    		if(isMyself()){
-	    			bookmarkFrag = new BrowseBookmarksFragment();
-					((BrowseBookmarksFragment) bookmarkFrag).setSearchQuery(query, username, tagname, unread);
-	    		} else {
-	    			bookmarkFrag = new BrowseBookmarkFeedFragment();
-					((BrowseBookmarkFeedFragment) bookmarkFrag).setQuery(username, tagname);
-	    		}
-			} else if(!Constants.ACTION_SEARCH_SUGGESTION.equals(intent.getAction())) {
+			} else {
 				if(data != null) {
-					
 					if(data.getUserInfo() != "") {
 						username = data.getUserInfo();
 					} else username = mAccount.name;
-		
 					tagname = data.getQueryParameter("tagname");
 					unread = data.getQueryParameter("unread") != null;
 					path = data.getPath();
 				}
-				
-				if(isMyself()) {
-					bookmarkFrag = new BrowseBookmarksFragment();
-					((BrowseBookmarksFragment) bookmarkFrag).setQuery(username, tagname, unread);
-				} else {
-					bookmarkFrag = new BrowseBookmarkFeedFragment();
-					((BrowseBookmarkFeedFragment) bookmarkFrag).setQuery(username, tagname);
-				}
+			}
+			
+			if(isMyself()) {
+				bookmarkFrag = new BrowseBookmarksFragment();
+			} else {
+				bookmarkFrag = new BrowseBookmarkFeedFragment();
 			}
 
 			t.add(R.id.listcontent, bookmarkFrag);
+		} else {
+			if(savedInstanceState != null){
+			    username = savedInstanceState.getString(STATE_USERNAME);
+			    tagname = savedInstanceState.getString(STATE_TAGNAME);
+			    unread = savedInstanceState.getBoolean(STATE_UNREAD);
+			    query = savedInstanceState.getString(STATE_QUERY);
+			    path = savedInstanceState.getString(STATE_PATH);
+			}
+			
+			bookmarkFrag = fm.findFragmentById(R.id.listcontent);
+		}
+		
+		if(isMyself()){
+			if(query != null && !query.equals("")){
+				((BrowseBookmarksFragment) bookmarkFrag).setSearchQuery(query, username, tagname, unread);
+			} else {
+				((BrowseBookmarksFragment) bookmarkFrag).setQuery(username, tagname, unread);
+			} 
+		} else {
+			if(query != null && !query.equals("")){
+				((BrowseBookmarkFeedFragment) bookmarkFrag).setQuery(username, tagname);
+			} else {
+				((BrowseBookmarkFeedFragment) bookmarkFrag).setQuery(username, query);
+			}
 		}
 		
 		BrowseTagsFragment tagFrag = (BrowseTagsFragment) fm.findFragmentById(R.id.tagcontent);
@@ -131,7 +147,7 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 			tagFrag.setAccount(username);
 		}
 		
-		if(path.contains("tags")){
+		if(path != null && path.contains("tags")){
 			t.hide(fm.findFragmentById(R.id.maincontent));
 			findViewById(R.id.panel_collapse_button).setVisibility(View.GONE);
 		} else{
@@ -179,14 +195,15 @@ public class BrowseBookmarks extends FragmentBaseActivity implements OnBookmarkS
 		}
 		
 		savedInstanceState.putString(STATE_USERNAME, username);
+		savedInstanceState.putString(STATE_TAGNAME, tagname);
+		savedInstanceState.putBoolean(STATE_UNREAD, unread);
+		savedInstanceState.putString(STATE_QUERY, query);
 
 	    super.onSaveInstanceState(savedInstanceState);
 	}
 	
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 	    super.onRestoreInstanceState(savedInstanceState);
-	   
-	    username = savedInstanceState.getString(STATE_USERNAME);
 	    
 	    if(findViewById(R.id.maincontent) != null) {
 	    	lastSelected = (Bookmark)savedInstanceState.getSerializable(STATE_LASTBOOKMARK);
