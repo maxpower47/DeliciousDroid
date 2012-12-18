@@ -145,8 +145,12 @@ public class DeliciousApi {
     	  	
 		params.put("description", bookmark.getDescription());
 		params.put("extended", bookmark.getNotes());
-		params.put("tags", bookmark.getTagString());
+		
+		// until delicious fixes their api we need to use commas to delimit tags
+		// tags with spaces, although supported by the web interface, will not work with deliciousdroid
+		params.put("tags", bookmark.getTagString().replace(' ', ','));
 		params.put("url", bookmark.getUrl());
+		params.put("replace", "yes");
 		
 		if(bookmark.getShared()){
 			params.put("shared", "yes");
