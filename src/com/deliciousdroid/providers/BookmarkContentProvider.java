@@ -395,7 +395,7 @@ public class BookmarkContentProvider extends ContentProvider {
 				String title = c.getString(descColumn);
 				
 				suggestions.put(title, new SearchSuggestionContent(title, 
-					c.getString(urlColumn), R.drawable.ic_main, R.drawable.ic_bookmark, 
+					c.getString(urlColumn), c.getString(urlColumn), R.drawable.ic_main, R.drawable.ic_bookmark, 
 					data.toString()));
 				
 			} while(c.moveToNext());	
@@ -461,30 +461,35 @@ public class BookmarkContentProvider extends ContentProvider {
 	private Cursor getSearchCursor(Map<String, SearchSuggestionContent> list) {
     	SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getContext());
     	Boolean icons = settings.getBoolean("pref_searchicons", true);
+    	
+    	String suggestText2Url = Constants.SUGGEST_COLUMN_TEXT_2_URL;
+    	if(android.os.Build.VERSION.SDK_INT >= 8) {
+    		suggestText2Url = SearchManager.SUGGEST_COLUMN_TEXT_2_URL;
+    	}
 		
     	MatrixCursor mc;
     	
     	if(icons) {
 			mc = new MatrixCursor(new String[] {BaseColumns._ID, 
-					SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_TEXT_2, 
+					SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_TEXT_2, suggestText2Url,
 					SearchManager.SUGGEST_COLUMN_INTENT_DATA, 
 					SearchManager.SUGGEST_COLUMN_ICON_1, SearchManager.SUGGEST_COLUMN_ICON_2});
 	
 			int i = 0;
 			
 			for(SearchSuggestionContent s : list.values()) {
-				mc.addRow(new Object[]{ i++, s.getText1(), s.getText2(), s.getIntentData(), 
+				mc.addRow(new Object[]{ i++, s.getText1(), s.getText2(), s.getText2Url(), s.getIntentData(), 
 					s.getIcon1(), s.getIcon2() });
 			}
     	} else {
 			mc = new MatrixCursor(new String[] {BaseColumns._ID, 
-					SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_TEXT_2, 
+					SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_TEXT_2, suggestText2Url,
 					SearchManager.SUGGEST_COLUMN_INTENT_DATA});
 	
 			int i = 0;
 			
 			for(SearchSuggestionContent s : list.values()) {
-				mc.addRow(new Object[]{ i++, s.getText1(), s.getText2(), s.getIntentData() });
+				mc.addRow(new Object[]{ i++, s.getText1(), s.getText2(), s.getText2Url(), s.getIntentData() });
 			}
     	}
 		

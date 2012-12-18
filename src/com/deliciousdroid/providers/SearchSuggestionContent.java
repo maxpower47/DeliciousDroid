@@ -27,6 +27,7 @@ public class SearchSuggestionContent {
 
 	private String text1;
 	private String text2;
+	private String text2Url;
 	private int icon1;
 	private int icon2;
 	private String intentData;
@@ -37,6 +38,10 @@ public class SearchSuggestionContent {
 	
 	public String getText2() {
 		return text2;
+	}
+	
+	public String getText2Url() {
+		return text2Url;
 	}
 	
 	public int getIcon1() {
@@ -54,6 +59,15 @@ public class SearchSuggestionContent {
 	public SearchSuggestionContent(String t1, String t2, int i1, int i2, String data) {
 		text1 = t1;
 		text2 = t2;
+		icon1 = i1;
+		icon2 = i2;
+		intentData = data;
+	}
+	
+	public SearchSuggestionContent(String t1, String t2, String t2u, int i1, int i2, String data) {
+		text1 = t1;
+		text2 = t2;
+		text2Url = t2u;
 		icon1 = i1;
 		icon2 = i2;
 		intentData = data;

@@ -49,6 +49,8 @@ public class Constants {
 	public static final int BOOKMARK_PAGE_SIZE = 500;
 	
 	public static final String ACTION_SEARCH_SUGGESTION = "com.deliciousdroid.intent.action.SearchSuggestion";
+	
+	public static final String SUGGEST_COLUMN_TEXT_2_URL = "suggest_text_2_url";
 
     /**
      * Authtoken type string.
