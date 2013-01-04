@@ -66,7 +66,7 @@ public class BookmarkContentProvider extends ContentProvider {
 	private SQLiteDatabase db;
 	private DatabaseHelper dbHelper;
 	private static final String DATABASE_NAME = "DeliciousBookmarks.db";
-	private static final int DATABASE_VERSION = 22;
+	private static final int DATABASE_VERSION = 23;
 	private static final String BOOKMARK_TABLE_NAME = "bookmark";
 	private static final String TAG_TABLE_NAME = "tag";
 	private static final String BUNDLE_TABLE_NAME = "bundle";
